@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Lock the document to light color scheme -->
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
+
+    <!-- Ensure browser UI (address bar/status bar) uses our light palette -->
     <meta name="theme-color" content="#f7f5f2">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-48.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-48.png">
-    <link rel="shortcut icon" href="assets/favicon-48.png">
-    <link rel="apple-touch-icon" href="assets/favicon-48.png">
+<!-- Display & status bar -->
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#f7f5f2">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <!-- Open Graph (social share) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Admiral Energy — Lower bills. Quiet backup. Solar that fits.">
-    <meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-    <meta property="og:image" content="assets/share-image.png">
-    <meta property="og:url" content="/">
-    <meta property="og:site_name" content="Admiral Energy">
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-48.png">
+<link rel="shortcut icon" href="assets/favicon-48.png">
+<link rel="apple-touch-icon" href="assets/favicon-48.png">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Admiral Energy — Lower bills. Quiet backup. Solar that fits.">
-    <meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-    <meta name="twitter:image" content="assets/share-image.png">
+<!-- Open Graph (social share) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
+<meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
+<meta property="og:image" content="assets/share-image.png">
+<meta property="og:url" content="https://admiralenergy.netlify.app">
+<meta property="og:site_name" content="Admiral Energy">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
+<meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
+<meta name="twitter:image" content="assets/share-image.png">
+
     <title>Admiral Energy - Lower Bills. Quiet Backup. Solar That Fits your home.</title>
     
     <!-- Add Rubik font -->
@@ -72,6 +82,54 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* Force a light-only site, including form controls */
+        :root, html, body { color-scheme: light; background: #f7f5f2; color: #0c2f4a; }
+
+        /* Important surfaces that were being auto-darkened on Android/Samsung */
+        nav,
+        .hero,
+        .hero-form,
+        .quiz-container,
+        .faq-item,
+        .trust-section,
+        .outcome-card,
+        .sticky-cta,
+        .bill-upload-container {
+            background-color: #ffffff; /* or use #f7f5f2 where appropriate */
+            color: #0c2f4a;
+        }
+
+        /* Form controls: keep them light even when OS prefers dark */
+        input, select, textarea, button {
+            background: #ffffff !important;
+            color: #0c2f4a !important;
+            border: 2px solid #e5e7eb !important;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Autofill states can get inverted; paint them explicitly */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #0c2f4a;
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+                    box-shadow: 0 0 0px 1000px #ffffff inset;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+
+        /* Defensive override: even if the user prefers dark, we still serve light */
+        @media (prefers-color-scheme: dark) {
+            html, body { background: #f7f5f2 !important; color: #0c2f4a !important; }
+            input, select, textarea, button {
+                background: #ffffff !important; color: #0c2f4a !important; border-color: #e5e7eb !important;
+            }
+            nav, .hero, .hero-form, .quiz-container, .faq-item, .trust-section,
+            .outcome-card, .sticky-cta, .bill-upload-container {
+                background-color: #ffffff !important; color: #0c2f4a !important;
+            }
+        }
+
         :root {
             --primary-navy: #0c2f4a;
             --accent-gold: #c9a648;
@@ -82,30 +140,12 @@
             --success-green: #10b981;
         }
 
-        :root, html, body {
-            color-scheme: light;
-            background: #f7f5f2;
-            color: #0c2f4a;
-        }
-
         body {
             font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
             background: var(--bone-white);
             color: var(--primary-navy);
             line-height: 1.6;
             overflow-x: hidden;
-        }
-
-        input, select, textarea, button {
-            background: #ffffff;
-            color: #0c2f4a;
-            border: 2px solid #e5e7eb;
-        }
-
-        /* Force light palette even if device is in dark mode */
-        @media (prefers-color-scheme: dark) {
-            html, body { background: #f7f5f2; color: #0c2f4a; }
-            input, select, textarea, button { background: #ffffff; color: #0c2f4a; }
         }
 
         /* Animations */
