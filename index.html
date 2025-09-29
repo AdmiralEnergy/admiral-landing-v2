@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light only">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
     <meta name="theme-color" content="#f7f5f2">
     <title>Admiral Energy - Lower Bills. Quiet Backup. Solar That Fits your home.</title>
     
@@ -60,6 +61,12 @@
             --success-green: #10b981;
         }
 
+        :root, html, body {
+            color-scheme: light;
+            background: #f7f5f2;
+            color: #0c2f4a;
+        }
+
         body {
             font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
             background: var(--bone-white);
@@ -68,9 +75,16 @@
             overflow-x: hidden;
         }
 
+        input, select, textarea, button {
+            background: #ffffff;
+            color: #0c2f4a;
+            border: 2px solid #e5e7eb;
+        }
+
         /* Force light palette even if device is in dark mode */
         @media (prefers-color-scheme: dark) {
-            body { background: #f7f5f2 !important; color: #0c2f4a !important; }
+            html, body { background: #f7f5f2; color: #0c2f4a; }
+            input, select, textarea, button { background: #ffffff; color: #0c2f4a; }
         }
 
         /* Animations */
@@ -96,13 +110,6 @@
         .hero-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
         .hero-video { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(12,47,74,0.2); animation: slideInLeft 1s ease-out; background: var(--primary-navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
         .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
-        .unmute-btn{
-          position:absolute; left:12px; bottom:12px; z-index:5;
-          padding:.6rem .8rem; border:0; border-radius:999px;
-          font-weight:700; font-size:.95rem; cursor:pointer;
-          background:rgba(12,47,74,.9); color:#fff; box-shadow:0 6px 20px rgba(0,0,0,.25);
-        }
-        @media (max-width:768px){ .unmute-btn{ left:50%; transform:translateX(-50%); bottom:10px; } }
         .video-placeholder { text-align: center; color: white; padding: 2rem; }
         .admiral-avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; animation: pulse 3s infinite; }
 
@@ -245,13 +252,19 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-video">
-                <!-- Updated: poster fallback to admiral-fallback.png and id for runtime fallback logic -->
-                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/admiral-fallback.png">
+                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/admiralenergylogo.png">
                     <source src="assets/admiral-intro.mp4" type="video/mp4">
-                    <!-- Fallback image inside video for browsers that show alternate content -->
-                    <img src="assets/admiral-fallback.png" alt="Admiral Energy">
+                    Your browser does not support the video tag.
                 </video>
-                <button id="unmuteBtn" class="unmute-btn" aria-label="Unmute video">🔊 Tap for sound</button>
+
+                <button id="muteToggle"
+                    aria-label="Unmute video"
+                    aria-pressed="false"
+                    style="position:absolute;left:12px;bottom:12px;z-index:2;
+                           border:none;border-radius:999px;padding:.55rem .8rem;
+                           background:rgba(12,47,74,.9);color:#fff;font-weight:700;font-size:.9rem;">
+                    Unmute
+                </button>
             </div>
             <div class="hero-content">
                 <h1>Lower bills. Quiet backup. A plan that fits your roof.</h1>
@@ -696,44 +709,28 @@
     </script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      const video = document.getElementById('heroVideo');
-      const btn   = document.getElementById('unmuteBtn');
-      if(!video || !btn) return;
+    document.addEventListener('DOMContentLoaded', () => {
+      const v = document.getElementById('heroVideo');
+      const btn = document.getElementById('muteToggle');
+      if (!v || !btn) return;
 
-      // Ensure initial state
-      video.muted = true; // preserve autoplay on iOS
+      const sync = () => {
+        btn.textContent = v.muted ? 'Unmute' : 'Mute';
+        btn.setAttribute('aria-label', v.muted ? 'Unmute video' : 'Mute video');
+        btn.setAttribute('aria-pressed', String(!v.muted));
+      };
 
-      function hideBtn(){ btn.style.display = 'none'; }
-      function showBtn(){ btn.style.display = 'inline-flex'; }
+      btn.addEventListener('click', async () => {
+        v.muted = !v.muted;
+        if (v.paused) { try { await v.play(); } catch (e) {} }
+        sync();
+      });
 
-      function enableSound(){
-        try {
-          video.muted = false;
-          if (video.paused) { video.play().catch(()=>{}); }
-          hideBtn();
-          sessionStorage.setItem('hero_unmuted', '1');
-          console.log('[heroVideo] sound ON');
-        } catch(e){ console.warn('[heroVideo] unmute failed', e); }
-      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'm') btn.click();
+      });
 
-      // Show button only while muted
-      if (video.muted) showBtn(); else hideBtn();
-
-      // Click to unmute
-      btn.addEventListener('click', enableSound);
-
-      // If user already unmuted in this session and interacts again, keep it unmuted after navigation within page
-      document.addEventListener('pointerdown', function once(){
-        if (sessionStorage.getItem('hero_unmuted') === '1') {
-          // Still require a gesture before unmuting (iOS policy) — this is that gesture.
-          enableSound();
-        }
-        document.removeEventListener('pointerdown', once, {capture:false});
-      }, {capture:false});
-
-      // If video becomes muted again (e.g., iOS behavior), re-show button
-      video.addEventListener('volumechange', ()=>{ video.muted ? showBtn() : hideBtn(); });
+      sync();
     });
     </script>
 </body>
