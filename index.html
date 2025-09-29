@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <meta name="theme-color" content="#f7f5f2">
+    <title>Admiral Energy - Lower Bills. Quiet Backup. Solar That Fits.</title>
+    
+    <!-- Add Rubik font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Reddit Pixel (required for Reddit ads tracking) -->
+    <script>
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+    rdt('init','a2_hpzbegj1w700');
+    rdt('track','PageVisit');
+    </script>
+    <!-- End Reddit Pixel -->
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-navy: #0c2f4a;
+            --accent-gold: #c9a648;
+            --bone-white: #f7f5f2;
+            --dark-gold: #a08537;
+            --light-navy: #1a4568;
+            --text-gray: #4a5568;
+            --success-green: #10b981;
+        }
+
+        body {
+            font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: var(--bone-white);
+            color: var(--primary-navy);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Force light palette even if device is in dark mode */
+        @media (prefers-color-scheme: dark) {
+            body { background: #f7f5f2 !important; color: #0c2f4a !important; }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: translateY(0);} }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px);} to { opacity: 1; transform: translateX(0);} }
+        @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.05);} }
+        @keyframes shimmer { 0% { background-position: -1000px 0;} 100% { background-position: 1000px 0;} }
+        @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-10px);} }
+
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; background: rgba(247,245,242,0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 2rem; box-shadow: 0 2px 20px rgba(12,47,74,0.1); animation: fadeInUp 0.8s ease-out; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-navy); display: flex; align-items: center; gap: 0.5rem; }
+        .logo::before { content: none !important; }
+
+        /* Hero Section */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem; background: linear-gradient(135deg, var(--bone-white) 0%, rgba(201,166,72,0.1) 100%); position: relative; overflow: hidden; }
+        .hero::before { content: ""; position: absolute; top: -50%; right: -25%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(201,166,72,0.1) 0%, transparent 70%); animation: float 20s ease-in-out infinite; }
+        .hero-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+        .hero-video { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(12,47,74,0.2); animation: slideInLeft 1s ease-out; background: var(--primary-navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+        .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
+        .video-placeholder { text-align: center; color: white; padding: 2rem; }
+        .admiral-avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; animation: pulse 3s infinite; }
+
+        .hero-content { animation: fadeInUp 1s ease-out 0.3s both; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-navy), var(--light-navy)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { font-size: 1.3rem; color: var(--text-gray); margin-bottom: 2.5rem; line-height: 1.5; }
+        .hero-form { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 40px rgba(12,47,74,0.1); }
+        .form-row { display: grid; grid-template-columns: 2fr 2fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-group { position: relative; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: var(--primary-navy); }
+        .form-group input, .form-group select { width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; background: white; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px rgba(201,166,72,0.1); }
+        .cta-button { width: 100%; padding: 1.125rem 2rem; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .cta-button::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s ease; }
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,166,72,0.3); }
+
+        /* Quiz Section */
+        .quiz-section { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12,47,74,0.95); backdrop-filter: blur(20px); z-index: 2000; padding: 2rem; overflow-y: auto; }
+        .quiz-container { max-width: 600px; margin: 4rem auto; background: white; border-radius: 20px; padding: 3rem; animation: fadeInUp 0.5s ease-out; }
+        .progress-bar { height: 8px; background: #e5e7eb; border-radius: 10px; margin-bottom: 2rem; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-gold), var(--dark-gold)); border-radius: 10px; transition: width 0.5s ease; position: relative; }
+        .progress-fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; animation: fadeInUp 0.5s ease-out; }
+        .quiz-step h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-navy); }
+        .micro-value { color: var(--success-green); font-size: 0.9rem; margin-top: 0.5rem; font-style: italic; }
+
+        /* Options Grid */
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        .option-card { padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; text-align: center; background: white; }
+        .option-card:hover { border-color: var(--accent-gold); transform: translateY(-3px); box-shadow: 0 5px 20px rgba(201,166,72,0.2); }
+        .option-card.selected { border-color: var(--accent-gold); background: linear-gradient(135deg, rgba(201,166,72,0.1), rgba(201,166,72,0.05)); }
+
+        /* Bill Slider */
+        .bill-slider { margin: 2rem 0; }
+        .slider { width: 100%; height: 8px; border-radius: 10px; background: #e5e7eb; outline: none; -webkit-appearance: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-gold); cursor: pointer; box-shadow: 0 2px 10px rgba(201,166,72,0.3); }
+        .slider::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-gold); cursor: pointer; box-shadow: 0 2px 10px rgba(201,166,72,0.3); }
+        .bill-display { text-align: center; font-size: 2rem; font-weight: 700; color: var(--primary-navy); margin: 1rem 0; }
+
+        /* Outcome Card */
+        .outcome-card { background: linear-gradient(135deg, white, rgba(201,166,72,0.05)); border-radius: 20px; padding: 3rem; margin: 2rem 0; box-shadow: 0 20px 60px rgba(12,47,74,0.1); animation: fadeInUp 0.8s ease-out; }
+        .outcome-card h2 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary-navy); }
+        .savings-highlight { background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3rem; font-weight: 900; margin: 1rem 0; }
+        .outcome-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .outcome-btn-primary { padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .outcome-btn-secondary { padding: 1rem 2rem; background: transparent; color: var(--primary-navy); border: 2px solid var(--primary-navy); border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+
+        /* Bill Upload Modal */
+        .bill-upload-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; padding: 1rem; overflow-y: auto; }
+        .bill-upload-container { max-width: 600px; margin: 2rem auto; background: white; border-radius: 20px; padding: 2rem; animation: fadeInUp 0.3s ease-out; }
+        .upload-zone { border: 2px dashed var(--accent-gold); border-radius: 10px; padding: 3rem; text-align: center; background: rgba(201,166,72,0.05); cursor: pointer; transition: all 0.3s ease; margin: 2rem 0; }
+        .upload-zone:hover { background: rgba(201,166,72,0.1); border-color: var(--dark-gold); }
+        .upload-zone.dragover { background: rgba(201,166,72,0.15); transform: scale(1.02); }
+        .file-preview { margin: 2rem 0; padding: 1rem; background: var(--bone-white); border-radius: 10px; display: none; }
+        .file-preview.show { display: block; }
+        .file-preview img { max-width: 100%; max-height: 200px; border-radius: 5px; }
+        .upload-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+
+        /* Trust Section */
+        .trust-section { padding: 5rem 2rem; background: white; }
+        .trust-container { max-width: 1400px; margin: 0 auto; }
+        .badges-row { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 4rem; }
+        .badge { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeInUp 1s ease-out; }
+        .badge-icon { width: 60px; height: 60px; background: linear-gradient(135deg, rgba(201,166,72,0.1), rgba(201,166,72,0.05)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s ease; }
+        .badge:hover .badge-icon { transform: scale(1.1) rotate(5deg); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .testimonial-card { background: var(--bone-white); padding: 2rem; border-radius: 15px; position: relative; animation: fadeInUp 1s ease-out; }
+        .testimonial-card::before { content: "\201C"; position: absolute; top: -10px; left: 20px; font-size: 4rem; color: var(--accent-gold); opacity: 0.3; }
+        .testimonial-text { font-style: italic; margin-bottom: 1rem; line-height: 1.6; }
+        .testimonial-author { font-weight: 700; color: var(--primary-navy); }
+
+        /* FAQ Section */
+        .faq-section { padding: 5rem 2rem; background: var(--bone-white); }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: white; margin-bottom: 1rem; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(12,47,74,0.05); transition: box-shadow 0.3s ease; }
+        .faq-item:hover { box-shadow: 0 5px 20px rgba(12,47,74,0.1); }
+        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--primary-navy); transition: background 0.3s ease; }
+        .faq-question:hover { background: rgba(201,166,72,0.05); }
+        .faq-arrow { transition: transform 0.3s ease; }
+        .faq-item.active .faq-arrow { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+        .faq-item.active .faq-answer { max-height: 500px; }
+        .faq-answer-content { padding: 0 1.5rem 1.5rem; color: var(--text-gray); line-height: 1.6; }
+
+        /* Sticky CTA */
+        .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 -5px 20px rgba(12,47,74,0.1); z-index: 999; transition: bottom 0.3s ease; display: none; }
+        .sticky-cta.show { bottom: 0; }
+
+        /* Toast notification */
+        .toast { position: fixed; top: 20px; right: 20px; background: var(--success-green); color: white; padding: 1rem 1.5rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 4000; display: none; animation: fadeInUp 0.3s ease-out; }
+        .toast.show { display: block; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav { padding: 0.75rem 1rem; }
+            .logo { font-size: 1.1rem; display: flex; align-items: center; }
+            .logo img { height: 32px; width: auto; margin-right: 8px; }
+            .hero { padding: 5rem 1rem 1.5rem; }
+            .hero-container { grid-template-columns: 1fr; gap: 1.25rem; }
+            .hero h1 { font-size: clamp(1.6rem, 6.5vw, 2.2rem); line-height: 1.15; }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-video { order: 2; aspect-ratio: 16 / 9; }
+            .hero-form { padding: 1rem; }
+            .form-row { grid-template-columns: 1fr; gap: 0.75rem; }
+            .form-group input, .form-group select { padding: 0.9rem 0.875rem; font-size: 16px; }
+            .cta-button { padding: 1rem; font-size: 1rem; min-height: 48px; }
+            .quiz-container { margin: 2rem auto; padding: 1.25rem; border-radius: 14px; }
+            .options-grid { grid-template-columns: 1fr; }
+            .option-card { min-height: 56px; }
+            .outcome-buttons { grid-template-columns: 1fr; }
+            .upload-buttons { grid-template-columns: 1fr; }
+            .badges-row { gap: 2rem; }
+            .sticky-cta { display: block; }
+            input, select, button { font-size: 16px; }
+        }
+
+        /* Loading Animation */
+        .loading-spinner { display: none; width: 40px; height: 40px; margin: 2rem auto; border: 4px solid #e5e7eb; border-top: 4px solid var(--accent-gold); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/admiralenergylogo.png" alt="Admiral Energy" style="height:40px;width:auto;vertical-align:middle;margin-right:10px;">
+                Admiral Energy
+            </div>
+            <div style="display: flex; gap: 2rem; align-items: center;">
+                <span style="font-weight: 600; color: var(--text-gray);">Veteran-Owned</span>
+                <span style="font-weight: 600; color: var(--text-gray);">Charlotte, NC</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-video">
+                <!-- Updated: poster fallback to admiral-fallback.png and id for runtime fallback logic -->
+                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/admiral-fallback.png">
+                    <source src="assets/admiral-intro.mp4" type="video/mp4">
+                    <!-- Fallback image inside video for browsers that show alternate content -->
+                    <img src="assets/admiral-fallback.png" alt="Admiral Energy">
+                </video>
+            </div>
+            <div class="hero-content">
+                <h1>Lower bills. Quiet backup. A plan that fits your roof.</h1>
+                <p class="hero-subtitle">60 seconds to check fit for solar + battery. No pressure, no spam.</p>
+                <div class="hero-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zip">ZIP Code</label>
+                            <input type="text" id="zip" placeholder="28086" maxlength="5" pattern="[0-9]{5}">
+                        </div>
+                        <div class="form-group">
+                            <label for="utility">Utility Provider</label>
+                            <select id="utility">
+                                <option value="">Select...</option>
+                                <option value="duke">Duke Energy</option>
+                                <option value="union">Union Power</option>
+                                <option value="city">City of Charlotte</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="cta-button" onclick="startQuiz()">See my savings & backup options</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section (Hidden by default) -->
+    <div class="quiz-section" id="quizSection">
+        <div class="quiz-container">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            
+            <!-- Step 1: Roof Type -->
+            <div class="quiz-step active" data-step="1">
+                <h3>What type of roof do you have?</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption(this, 'asphalt')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏠</div>
+                        <div>Asphalt Shingle</div>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'metal')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏭</div>
+                        <div>Metal Standing Seam</div>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'tile')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
+                        <div>Tile</div>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'flat')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
+                        <div>Flat/Other</div>
+                    </div>
+                </div>
+                <p class="micro-value" id="roofFeedback"></p>
+                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
+            </div>
+
+            <!-- Step 2: Electric Bill -->
+            <div class="quiz-step" data-step="2">
+                <h3>What's your average monthly electric bill?</h3>
+                <div class="bill-slider">
+                    <div class="bill-display">$<span id="billAmount">150</span></div>
+                    <input type="range" class="slider" id="billSlider" min="50" max="500" value="150" oninput="updateBill(this.value)">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--text-gray);">
+                        <span>$50</span>
+                        <span>$500+</span>
+                    </div>
+                </div>
+                <p class="micro-value" id="billFeedback"></p>
+                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
+            </div>
+
+            <!-- Step 3: Homeowner Status -->
+            <div class="quiz-step" data-step="3">
+                <h3>Do you own your home?</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption(this, 'yes'); nextStep()">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                        <div>Yes, I own</div>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'no'); showRenterGuide()">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔑</div>
+                        <div>No, I rent</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Roof Shading -->
+            <div class="quiz-step" data-step="4">
+                <h3>How much shade does your roof get?</h3>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption(this, 'low')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">☀️</div>
+                        <div>Low</div>
+                        <small style="color: var(--text-gray);">Few trees, good sun</small>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'moderate')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌤️</div>
+                        <div>Moderate</div>
+                        <small style="color: var(--text-gray);">Some tree coverage</small>
+                    </div>
+                    <div class="option-card" onclick="selectOption(this, 'heavy')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌳</div>
+                        <div>Heavy</div>
+                        <small style="color: var(--text-gray);">Significant tree coverage</small>
+                    </div>
+                </div>
+                <p class="micro-value" id="shadeFeedback"></p>
+                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
+            </div>
+
+            <!-- Step 5: Contact Info -->
+            <div class="quiz-step" data-step="5">
+                <h3>Almost done! Let's get your personalized quote.</h3>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Name</label>
+                    <input type="text" id="firstName" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                    <input type="email" id="email" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Mobile Phone</label>
+                    <input type="tel" id="phone" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
+                    <p style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem;">
+                        By clicking Next, you agree to receive a one-time text with your secure upload link. We use your bill only to size your system and confirm program eligibility. We never sell your data.
+                    </p>
+                </div>
+                <button class="cta-button" onclick="completeQuiz()">Get My Personalized Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outcome Section with Duke Energy rebate framing -->
+    <section id="outcomeSection" style="display: none; padding: 5rem 2rem;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="outcome-card">
+                <h2>🎉 Great news! You're a strong fit for Duke Energy rebates and solar.</h2>
+                <p style="font-size: 1.1rem; color: var(--text-gray); margin-bottom: 1.5rem;" id="rebateText">
+                    Based on homes like yours in <span id="userZip">Charlotte</span> with <span id="userUtility">Duke Energy</span>, you're likely eligible for Duke Energy solar + battery rebates. We'll also verify if you still qualify for the federal Investment Tax Credit (ITC).
+                </p>
+                <div class="savings-highlight" id="systemSize">7-10 kW System + 10-15 kWh Battery</div>
+                <div style="margin: 1.5rem 0; line-height: 1.8;">
+                    <p><strong>✓ Rebate path:</strong> Duke Energy solar + battery incentives (we'll confirm your exact eligibility)</p>
+                    <p><strong>✓ Bill control:</strong> Predictable energy costs with solar</p>
+                    <p><strong>✓ Backup power:</strong> Quiet, instant switchover with a battery</p>
+                    <p><strong>✓ ITC check:</strong> We verify current eligibility during your consult</p>
+                </div>
+                <div class="outcome-buttons">
+                    <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
+                    <button class="outcome-btn-secondary" onclick="openCalendly()">🗓️ Book my 20-min plan</button>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem;">
+                    <a href="javascript:void(0)" onclick="sendUploadLink()" style="color: var(--accent-gold); font-weight: 600;">Prefer SMS? Text me a secure upload link</a>
+                </p>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-gray);">Veteran-owned. Permits handled. NCC-licensed installers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bill Upload Modal -->
+    <div class="bill-upload-modal" id="billUploadModal">
+        <div class="bill-upload-container">
+            <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
+            <p style="color: var(--text-gray); margin-bottom: 2rem;">We use usage (kWh), rate plan, and service address to size your system. You may redact account #.</p>
+            
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill here</p>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse</p>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 1rem;">Accepted: PDF, JPG, PNG, HEIC • Max size: 10 MB</p>
+            </div>
+            
+            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display: none;" onchange="handleFileSelect(event)">
+            
+            <div class="file-preview" id="filePreview">
+                <h4 style="margin-bottom: 1rem;">Selected file:</h4>
+                <div id="previewContent"></div>
+            </div>
+            
+            <div class="upload-buttons">
+                <button class="outcome-btn-primary" onclick="uploadBill()">Upload & continue</button>
+                <button class="outcome-btn-secondary" onclick="skipAndBook()">Skip and book a call</button>
+            </div>
+            
+            <button onclick="closeBillUpload()" style="margin-top: 1rem; padding: 0.75rem; background: transparent; color: var(--text-gray); border: none; cursor: pointer; width: 100%; text-align: center;">Cancel</button>
+        </div>
+        <div aria-live="polite" id="uploadStatus" style="position: absolute; left: -10000px;"></div>
+    </div>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-navy);">Why Charlotte Homeowners Trust Admiral Energy</h2>
+            <div class="badges-row">
+                <div class="badge"><div class="badge-icon">🎖️</div><span style="font-weight: 600;">Veteran-Owned</span></div>
+                <div class="badge"><div class="badge-icon">📍</div><span style="font-weight: 600;">Local Charlotte Team</span></div>
+                <div class="badge"><div class="badge-icon">✅</div><span style="font-weight: 600;">Licensed & Insured</span></div>
+                <div class="badge"><div class="badge-icon">🛠️</div><span style="font-weight: 600;">25-Year Warranty</span></div>
+                <div class="badge"><div class="badge-icon">⚡</div><span style="font-weight: 600;">Workmanship Guarantee</span></div>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Outage last week? We didn't notice—battery switched instantly. The Admiral's team handled everything from permits to install."</p>
+                    <p class="testimonial-author">— Sarah M., Myers Park</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Cut my Duke Energy bill by 45% and the battery backup gives us peace of mind during storm season. Professional crew, zero hassle."</p>
+                    <p class="testimonial-author">— James T., Ballantyne</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The Admiral made it simple. One call, clear pricing, and they handled my HOA approval. System looks great on our roof."</p>
+                    <p class="testimonial-author">— Maria G., SouthPark</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-navy);">Common Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Aren't electric bills still going up even with solar?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, utility rates continue to rise. Solar turns part of your bill into a fixed asset payment that doesn't increase. Your battery can also help by storing cheap energy for use during expensive peak hours. While you'll still have some grid connection fees, your overall energy costs become much more predictable and lower over time.
+                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can my HOA block solar panels?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        In North Carolina, HOAs cannot ban solar outright—it's protected by state law. They can provide reasonable guidelines about placement and appearance, but they must allow solar installations. We handle all HOA submissions and work directly with your board to ensure smooth approval. We've successfully installed in over 50 Charlotte-area HOA communities.
+                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Why choose a battery over a generator?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Batteries offer instant, silent switchover during outages—no fuel runs, no maintenance, no noise complaints from neighbors. They also save money daily by storing cheap off-peak energy for use during expensive peak hours. Generators only work during outages, while batteries provide value every single day through smart energy management.
+                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky CTA (Mobile) -->
+    <div class="sticky-cta" id="stickyCTA">
+        <button class="cta-button" onclick="scrollToQuiz()">Get my plan</button>
+    </div>
+
+    <!-- Calendly Modal (Hidden) -->
+    <div id="calendlyModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 3000;">
+        <div style="max-width: 600px; margin: 5rem auto; background: white; border-radius: 20px; padding: 2rem;">
+            <h2 style="margin-bottom: 1rem;">Book Your Solar Consultation</h2>
+            <p style="color: var(--text-gray); margin-bottom: 2rem;">Choose a time that works for you. We'll call to discuss your specific roof, review incentives, and answer all your questions.</p>
+            <div style="background: var(--bone-white); padding: 3rem; border-radius: 10px; text-align: center;">
+                <p style="font-style: italic; color: var(--text-gray);">[Calendly booking widget would be embedded here]</p>
+            </div>
+            <button onclick="closeCalendly()" style="margin-top: 1rem; padding: 0.75rem 2rem; background: var(--text-gray); color: white; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage">Bill received — we'll build your quote and follow up.</span>
+    </div>
+
+    <script>
+        // Quiz state
+        let quizData = { utility: '', roofType: '', billAmount: 150, homeowner: '', shading: '', firstName: '', email: '', phone: '' };
+        let currentStep = 1; const totalSteps = 5; let selectedFile = null; let leadId = null;
+
+        function generateLeadId() { return 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
+
+        function startQuiz() {
+            const zip = document.getElementById('zip').value; const utility = document.getElementById('utility').value;
+            if (!zip || zip.length !== 5) { alert('Please enter a valid 5-digit ZIP code'); return; }
+            if (!utility) { alert('Please select your utility provider'); return; }
+            quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId();
+            document.getElementById('quizSection').style.display = 'block'; document.body.style.overflow = 'hidden';
+        }
+
+        function selectOption(element, value) {
+            const siblings = element.parentElement.querySelectorAll('.option-card'); siblings.forEach(s => s.classList.remove('selected'));
+            element.classList.add('selected');
+            const step = parseInt(element.closest('.quiz-step').dataset.step);
+            switch(step) {
+                case 1: quizData.roofType = value; showFeedback('roofFeedback', getRoofFeedback(value)); break;
+                case 3: quizData.homeowner = value; break;
+                case 4: quizData.shading = value; showFeedback('shadeFeedback', getShadingFeedback(value)); break;
+            }
+        }
+
+        function getRoofFeedback(type) {
+            const feedback = { asphalt: 'Great! Asphalt shingle is typically an easy install.', metal: 'Excellent! Metal roofs are ideal for solar mounting.', tile: 'Good choice! Tile roofs work well with specialized mounting.', flat: 'Perfect! Flat roofs offer flexible panel positioning.' };
+            return feedback[type];
+        }
+        function getShadingFeedback(level) {
+            const feedback = { low: 'Perfect! Maximum sun exposure means maximum savings.', moderate: "We'll design around any shade for optimal performance.", heavy: 'No problem! We can still make solar work with strategic placement.' };
+            return feedback[level];
+        }
+        function showFeedback(elementId, message) { const el = document.getElementById(elementId); if (!el) return; el.textContent = '✓ ' + message; el.style.opacity = '0'; setTimeout(() => { el.style.transition = 'opacity 0.5s ease'; el.style.opacity = '1'; }, 100); }
+
+        function updateBill(value) {
+            document.getElementById('billAmount').textContent = value; quizData.billAmount = parseInt(value);
+            let feedback = ''; const v = +value;
+            if (v < 100) feedback = 'Small bills can still benefit from solar!';
+            else if (v < 200) feedback = 'Perfect range for a 6-8 kW system.';
+            else if (v < 300) feedback = 'Great candidate for 8-10 kW with battery backup.';
+            else feedback = 'Excellent savings potential with a larger system!';
+            showFeedback('billFeedback', feedback);
+        }
+
+        function nextStep() { const steps = document.querySelectorAll('.quiz-step'); steps[currentStep - 1].classList.remove('active'); currentStep++; if (currentStep <= totalSteps) { steps[currentStep - 1].classList.add('active'); updateProgress(); } }
+        function updateProgress() { const progress = (currentStep / totalSteps) * 100; document.getElementById('progressFill').style.width = progress + '%'; }
+
+        function completeQuiz() {
+            const firstName = document.getElementById('firstName').value; const email = document.getElementById('email').value; const phone = document.getElementById('phone').value;
+            if (!firstName || !email || !phone) { alert('Please fill in all fields to get your quote'); return; }
+            quizData.firstName = firstName; quizData.email = email; quizData.phone = phone;
+            const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
+            document.getElementById('userZip').textContent = quizData.zip; document.getElementById('userUtility').textContent = utilityNames[quizData.utility] || 'your utility';
+            let systemSize = ''; const bill = quizData.billAmount;
+            if (bill < 100) systemSize = '5-7 kW System + 10 kWh Battery';
+            else if (bill < 200) systemSize = '7-9 kW System + 10-13 kWh Battery';
+            else if (bill < 300) systemSize = '9-11 kW System + 13-15 kWh Battery';
+            else systemSize = '11-15 kW System + 15-20 kWh Battery';
+            if (quizData.shading === 'heavy') { systemSize = systemSize.replace(/(\d+)-(\d+)/, (m, a, b) => (parseInt(a)+1)+'-'+(parseInt(b)+1)); }
+            document.getElementById('systemSize').textContent = systemSize;
+            document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
+            document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
+            console.log('Quiz completed:', quizData);
+        }
+
+        function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
+        function toggleFAQ(el) { el.parentElement.classList.toggle('active'); }
+        function openCalendly() { document.getElementById('calendlyModal').style.display = 'block'; }
+        function closeCalendly() { document.getElementById('calendlyModal').style.display = 'none'; }
+
+        function openBillUpload() { document.getElementById('billUploadModal').style.display = 'block'; document.body.style.overflow = 'hidden'; document.getElementById('uploadZone').focus(); }
+        function closeBillUpload() { document.getElementById('billUploadModal').style.display = 'none'; document.body.style.overflow = 'auto'; selectedFile = null; document.getElementById('filePreview').classList.remove('show'); }
+        function skipAndBook() { closeBillUpload(); openCalendly(); }
+
+        function handleDragEnter(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.add('dragover'); }
+        function handleDragOver(e){ e.preventDefault(); e.stopPropagation(); }
+        function handleDragLeave(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.remove('dragover'); }
+        function handleDrop(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.remove('dragover'); const files=e.dataTransfer.files; if(files.length>0){ handleFile(files[0]); } }
+        function handleFileSelect(event){ const file = event.target.files[0]; if(file){ handleFile(file); } }
+
+        function handleFile(file){
+            const validTypes = ['application/pdf','image/jpeg','image/jpg','image/png','image/heic'];
+            if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) { alert('Please upload a PDF or image file (JPG, PNG, HEIC)'); return; }
+            if (file.size > 10 * 1024 * 1024) { alert('File size must be less than 10MB'); return; }
+            selectedFile = file; showFilePreview(file); document.getElementById('uploadStatus').textContent = 'File selected: ' + file.name;
+        }
+
+        function showFilePreview(file){
+            const previewEl = document.getElementById('filePreview'); const previewContent = document.getElementById('previewContent');
+            previewEl.classList.add('show');
+            if (file.type.startsWith('image/')) { const reader = new FileReader(); reader.onload = e => { previewContent.innerHTML = `<img src="${e.target.result}" alt="Bill preview" style="max-width: 100%; max-height: 200px; border-radius: 5px;">`; }; reader.readAsDataURL(file); }
+            else { previewContent.innerHTML = `<div style="display:flex; align-items:center; gap:1rem;"><span style="font-size:2rem;">🖨️</span><div><p style="font-weight:600;">${file.name}</p><p style=\"color: var(--text-gray); font-size: 0.9rem;\">${(file.size/1024).toFixed(1)} KB</p></div></div>`; }
+        }
+
+        function uploadBill(){
+            if (!selectedFile) { alert('Please select a file to upload'); return; }
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('zip', quizData.zip);
+            formData.append('utility', quizData.utility);
+            formData.append('firstName', quizData.firstName);
+            formData.append('email', quizData.email);
+            formData.append('phone', quizData.phone);
+            formData.append('leadId', leadId);
+            console.log('Uploading bill with data:', { fileName: selectedFile.name, fileSize: selectedFile.size, ...quizData, leadId });
+            document.getElementById('uploadStatus').textContent = 'Uploading file...';
+            setTimeout(() => {
+                console.log('Upload successful:', { ok: true, url: '/uploads/' + leadId + '/' + selectedFile.name });
+                showToast("Bill received — we'll build your quote and follow up.");
+                closeBillUpload();
+                document.getElementById('uploadStatus').textContent = 'File uploaded successfully';
+            }, 1500);
+        }
+
+        function sendUploadLink(){ alert('Link sent! Check your phone for a secure upload link.'); console.log('SMS upload link requested for:', quizData.phone); }
+        function showToast(message){ const toast=document.getElementById('toast'); document.getElementById('toastMessage').textContent = message; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
+        function scrollToQuiz(){ if (document.getElementById('quizSection').style.display === 'block') { document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' }); } else { document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' }); } }
+
+        window.addEventListener('scroll', function(){ const sticky=document.getElementById('stickyCTA'); if (window.innerWidth <= 768) { if (window.scrollY > window.innerHeight * 0.3) sticky.classList.add('show'); else sticky.classList.remove('show'); } });
+
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e){ e.preventDefault(); const t=document.querySelector(this.getAttribute('href')); if(t){ t.scrollIntoView({ behavior: 'smooth' }); }}));
+            const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; }}); }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+            document.querySelectorAll('.badge, .testimonial-card').forEach(el => { el.style.animationPlayState='paused'; observer.observe(el); });
+            const uploadZone = document.getElementById('uploadZone');
+            uploadZone.addEventListener('dragenter', handleDragEnter);
+            uploadZone.addEventListener('dragover', handleDragOver);
+            uploadZone.addEventListener('dragleave', handleDragLeave);
+            uploadZone.addEventListener('drop', handleDrop);
+            document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { if (document.getElementById('billUploadModal').style.display === 'block') closeBillUpload(); if (document.getElementById('calendlyModal').style.display === 'block') closeCalendly(); } });
+        });
+
+        // Runtime video fallback for iOS/slow networks
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('heroVideo'); if (!video) return;
+            let fallbackTimeout = setTimeout(() => {
+                if (video.readyState < 2) {
+                    video.outerHTML = '<img src="assets/admiral-fallback.png" alt="Admiral Energy Video Fallback" style="width:100%;border-radius:20px;">';
+                }
+            }, 2500);
+            video.addEventListener('playing', () => clearTimeout(fallbackTimeout));
+            video.addEventListener('error', () => {
+                video.outerHTML = '<img src="assets/admiral-fallback.png" alt="Admiral Energy Video Fallback" style="width:100%;border-radius:20px;">';
+            });
+        });
+    </script>
+</body>
+</html>
