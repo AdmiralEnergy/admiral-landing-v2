@@ -489,7 +489,7 @@
                 </div>
                 <div class="outcome-buttons">
                     <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
-                    <button class="outcome-btn-secondary" onclick="openCalendly()">🗓️ Book my 20-min plan</button>
+                    <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
                 </div>
                 <p style="text-align: center; margin-top: 1.5rem;">
                     <a href="javascript:void(0)" onclick="sendUploadLink()" style="color: var(--accent-gold); font-weight: 600;">Prefer SMS? Text me a secure upload link</a>
@@ -729,7 +729,7 @@
 
         function openBillUpload() { document.getElementById('billUploadModal').style.display = 'block'; document.body.style.overflow = 'hidden'; document.getElementById('uploadZone').focus(); }
         function closeBillUpload() { document.getElementById('billUploadModal').style.display = 'none'; document.body.style.overflow = 'auto'; selectedFile = null; document.getElementById('filePreview').classList.remove('show'); }
-        function skipAndBook() { closeBillUpload(); openCalendly(); }
+        function skipAndBook() { closeBillUpload(); openCalendlyPrefilled(quizData.firstName, quizData.email); }
 
         function handleDragEnter(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.add('dragover'); }
         function handleDragOver(e){ e.preventDefault(); e.stopPropagation(); }
@@ -870,29 +870,49 @@
         }
       });
 
+      function encodeForm(data){
+        return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k] ?? '')).join('&');
+      }
+
       // Submit hidden Netlify form + open Calendly
-      function submitLeadAndSchedule(quizData){
-        const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.value = (val||''); };
-        set('nf_zip', quizData.zip);
-        set('nf_utility', quizData.utility);
-        set('nf_roof_type', quizData.roofType);
-        set('nf_bill_amount', quizData.billAmount);
-        set('nf_homeowner', quizData.homeowner);
-        set('nf_shading', quizData.shading);
-        set('nf_first_name', quizData.firstName);
-        set('nf_email', quizData.email);
-        set('nf_phone', quizData.phone);
+      async function submitLeadAndSchedule(quizData){
+        const utm = (k)=> (document.getElementById(k)?.value || '');
+        const payload = {
+          'form-name': 'lead-intake',
+          zip: quizData.zip,
+          utility: quizData.utility,
+          roof_type: quizData.roofType,
+          bill_amount: quizData.billAmount,
+          homeowner: quizData.homeowner,
+          shading: quizData.shading,
+          first_name: quizData.firstName,
+          email: quizData.email,
+          phone: quizData.phone,
+          lead_id: 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          utm_source: utm('utm_source'),
+          utm_medium: utm('utm_medium'),
+          utm_campaign: utm('utm_campaign'),
+          utm_content: utm('utm_content'),
+          utm_term: utm('utm_term'),
+          'bot-field': ''
+        };
 
-        const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
-        set('nf_lead_id', leadId);
-
-        // Track & submit
+        // analytics first
         try { gtag('event','generate_lead',{method:'quiz_form'}); } catch(e){}
-        try { rdt && rdt('track','Lead'); } catch(e){}
+        try { window.rdt && rdt('track','Lead'); } catch(e){}
 
-        document.getElementById('lead-intake').submit();
+        // Netlify form POST without navigation
+        try {
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeForm(payload)
+          });
+        } catch (err) {
+          console.warn('Netlify POST failed', err);
+        }
 
-        // Calendly popup
+        // Calendly popup with prefill
         openCalendlyPrefilled(quizData.firstName, quizData.email);
       }
 
