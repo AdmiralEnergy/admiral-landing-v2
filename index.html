@@ -44,6 +44,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RX78MRB03L');
+    </script>
+
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
     <!-- Reddit Pixel (required for Reddit ads tracking) -->
     <script>
     !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
@@ -614,6 +626,30 @@
         <span id="toastMessage">Bill received — we'll build your quote and follow up.</span>
     </div>
 
+    <form name="lead-intake" id="lead-intake" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="position:absolute;left:-9999px;visibility:hidden;">
+      <input type="hidden" name="form-name" value="lead-intake">
+      <input type="text" name="bot-field" tabindex="-1" autocomplete="off">
+
+      <!-- UTM -->
+      <input type="hidden" name="utm_source" id="utm_source">
+      <input type="hidden" name="utm_medium" id="utm_medium">
+      <input type="hidden" name="utm_campaign" id="utm_campaign">
+      <input type="hidden" name="utm_content" id="utm_content">
+      <input type="hidden" name="utm_term" id="utm_term">
+
+      <!-- Lead fields -->
+      <input type="hidden" name="zip" id="nf_zip">
+      <input type="hidden" name="utility" id="nf_utility">
+      <input type="hidden" name="roof_type" id="nf_roof_type">
+      <input type="hidden" name="bill_amount" id="nf_bill_amount">
+      <input type="hidden" name="homeowner" id="nf_homeowner">
+      <input type="hidden" name="shading" id="nf_shading">
+      <input type="hidden" name="first_name" id="nf_first_name">
+      <input type="hidden" name="email" id="nf_email">
+      <input type="hidden" name="phone" id="nf_phone">
+      <input type="hidden" name="lead_id" id="nf_lead_id">
+    </form>
+
     <script>
         // Quiz state
         let quizData = { utility: '', roofType: '', billAmount: 150, homeowner: '', shading: '', firstName: '', email: '', phone: '' };
@@ -679,6 +715,7 @@
             document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
             document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
             console.log('Quiz completed:', quizData);
+            submitLeadAndSchedule(quizData);
         }
 
         function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
@@ -793,6 +830,74 @@
 
       sync();
     });
+    </script>
+
+    <script>
+      // Capture UTMs from URL once
+      (function(){
+        const p = new URLSearchParams(location.search);
+        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{
+          const el = document.getElementById(k);
+          if (el && p.get(k)) el.value = p.get(k);
+        });
+      })();
+
+      // Safe Calendly popup with prefill
+      function openCalendlyPrefilled(firstName, email){
+        const url = new URL('https://calendly.com/davide-admiralenergy/20minute-solar-introcall');
+        if (firstName) url.searchParams.set('name', firstName);
+        if (email) url.searchParams.set('email', email);
+
+        // Wait for Calendly widget to be ready
+        let tries = 0;
+        (function waitCalendly(){
+          tries++;
+          if (window.Calendly && Calendly.initPopupWidget){
+            Calendly.initPopupWidget({ url: url.toString() });
+            try { gtag('event','begin_schedule'); } catch(e){}
+            try { rdt && rdt('track','ViewContent'); } catch(e){}
+          } else if (tries < 60) {
+            setTimeout(waitCalendly, 100);
+          }
+        })();
+      }
+
+      // Listen for Calendly booking
+      window.addEventListener('message', function(e){
+        if (e && e.data && e.data.event === 'calendly.event_scheduled') {
+          try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
+          try { rdt && rdt('track','Purchase'); } catch(err){}
+        }
+      });
+
+      // Submit hidden Netlify form + open Calendly
+      function submitLeadAndSchedule(quizData){
+        const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.value = (val||''); };
+        set('nf_zip', quizData.zip);
+        set('nf_utility', quizData.utility);
+        set('nf_roof_type', quizData.roofType);
+        set('nf_bill_amount', quizData.billAmount);
+        set('nf_homeowner', quizData.homeowner);
+        set('nf_shading', quizData.shading);
+        set('nf_first_name', quizData.firstName);
+        set('nf_email', quizData.email);
+        set('nf_phone', quizData.phone);
+
+        const leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+        set('nf_lead_id', leadId);
+
+        // Track & submit
+        try { gtag('event','generate_lead',{method:'quiz_form'}); } catch(e){}
+        try { rdt && rdt('track','Lead'); } catch(e){}
+
+        document.getElementById('lead-intake').submit();
+
+        // Calendly popup
+        openCalendlyPrefilled(quizData.firstName, quizData.email);
+      }
+
+      // Hook into the end of your quiz. After you compute 'quizData' and show the outcome, call:
+      // submitLeadAndSchedule(quizData);
     </script>
 </body>
 </html>
