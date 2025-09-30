@@ -487,6 +487,25 @@
                     <p><strong>✓ Backup power:</strong> Quiet, instant switchover with a battery</p>
                     <p><strong>✓ ITC check:</strong> We verify current eligibility during your consult</p>
                 </div>
+                <div class="admiral-explainer" style="margin:1.25rem 0 0;">
+                  <div style="display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap;">
+                    <video id="admiralExplainer"
+                           src="assets/admiral-bill-explainer.mp4"
+                           poster="assets/admiral-bill-explainer-poster.png"
+                           playsinline muted autoplay loop
+                           style="width:320px; max-width:100%; border-radius:12px; box-shadow:0 6px 20px rgba(12,47,74,.12);"></video>
+
+                    <div style="flex:1; min-width:260px">
+                      <h3 style="margin:.25rem 0 .5rem; font-size:1.1rem;">Why we ask for your bill (30s)</h3>
+                      <ul style="margin:.25rem 0 1rem; padding-left:1.1rem; color:var(--text-gray); line-height:1.6;">
+                        <li><strong>Address</strong> → we model your roof & sun (no door visit needed).</li>
+                        <li><strong>kWh from your bill</strong> → we right-size the system.</li>
+                      </ul>
+                      <button id="explainerMute" class="outcome-btn-secondary" style="margin-right:.5rem;">🔇 Unmute</button>
+                      <a href="assets/duke-bill-sample.png" target="_blank" class="outcome-btn-secondary" role="button">🧾 See sample bill</a>
+                    </div>
+                  </div>
+                </div>
                 <div class="outcome-buttons">
                     <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
                     <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
@@ -518,7 +537,12 @@
                 <h4 style="margin-bottom: 1rem;">Selected file:</h4>
                 <div id="previewContent"></div>
             </div>
-            
+
+            <label for="serviceAddress" style="display:block; font-weight:600; margin:.75rem 0 .25rem;">Service address (optional)</label>
+            <input id="serviceAddress" name="service_address" type="text" placeholder="Street, City, ZIP"
+                   style="width:100%; padding:.75rem; border:1px solid #d7d3cb; border-radius:10px; background:#fff;">
+            <p style="color:var(--text-gray); font-size:.85rem; margin:.25rem 0 1rem;">Skip this if your bill has the address—uploading the bill is enough.</p>
+
             <div class="upload-buttons">
                 <button class="outcome-btn-primary" onclick="uploadBill()">Upload & continue</button>
                 <button class="outcome-btn-secondary" onclick="skipAndBook()">Skip and book a call</button>
@@ -648,6 +672,7 @@
       <input type="hidden" name="email" id="nf_email">
       <input type="hidden" name="phone" id="nf_phone">
       <input type="hidden" name="lead_id" id="nf_lead_id">
+      <input type="hidden" name="service_address" id="nf_service_address">
     </form>
 
     <script>
@@ -715,7 +740,6 @@
             document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
             document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
             console.log('Quiz completed:', quizData);
-            submitLeadAndSchedule(quizData);
         }
 
         function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
@@ -727,7 +751,14 @@
         function openCalendly() { document.getElementById('calendlyModal').style.display = 'block'; }
         function closeCalendly() { document.getElementById('calendlyModal').style.display = 'none'; }
 
-        function openBillUpload() { document.getElementById('billUploadModal').style.display = 'block'; document.body.style.overflow = 'hidden'; document.getElementById('uploadZone').focus(); }
+        function openBillUpload() {
+            try { gtag('event','begin_bill_upload'); } catch(e){}
+            try { window.rdt && rdt('track','ViewContent'); } catch(e){}
+            document.getElementById('billUploadModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            const zone = document.getElementById('uploadZone');
+            if (zone) zone.focus();
+        }
         function closeBillUpload() { document.getElementById('billUploadModal').style.display = 'none'; document.body.style.overflow = 'auto'; selectedFile = null; document.getElementById('filePreview').classList.remove('show'); }
         function skipAndBook() { closeBillUpload(); openCalendlyPrefilled(quizData.firstName, quizData.email); }
 
@@ -761,6 +792,10 @@
             formData.append('email', quizData.email);
             formData.append('phone', quizData.phone);
             formData.append('leadId', leadId);
+            const serviceAddress = document.getElementById('serviceAddress')?.value || '';
+            if (serviceAddress) { formData.append('service_address', serviceAddress); }
+            const nfServiceUpload = document.getElementById('nf_service_address');
+            if (nfServiceUpload) nfServiceUpload.value = serviceAddress;
             console.log('Uploading bill with data:', { fileName: selectedFile.name, fileSize: selectedFile.size, ...quizData, leadId });
             document.getElementById('uploadStatus').textContent = 'Uploading file...';
             setTimeout(() => {
@@ -768,6 +803,9 @@
                 showToast("Bill received — we'll build your quote and follow up.");
                 closeBillUpload();
                 document.getElementById('uploadStatus').textContent = 'File uploaded successfully';
+                try { gtag('event','bill_uploaded'); } catch(e){}
+                try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
+                setTimeout(()=>{ openCalendlyPrefilled(quizData.firstName, quizData.email); }, 1200);
             }, 1500);
         }
 
@@ -833,6 +871,18 @@
     </script>
 
     <script>
+      (function(){
+        const v = document.getElementById('admiralExplainer');
+        const b = document.getElementById('explainerMute');
+        if (!v || !b) return;
+        const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
+        b.addEventListener('click', async ()=>{ v.muted = !v.muted; if (!v.paused) { try{ await v.play(); }catch(e){} } sync(); });
+        v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+        sync();
+      })();
+    </script>
+
+    <script>
       // Capture UTMs from URL once
       (function(){
         const p = new URLSearchParams(location.search);
@@ -855,7 +905,6 @@
           if (window.Calendly && Calendly.initPopupWidget){
             Calendly.initPopupWidget({ url: url.toString() });
             try { gtag('event','begin_schedule'); } catch(e){}
-            try { rdt && rdt('track','ViewContent'); } catch(e){}
           } else if (tries < 60) {
             setTimeout(waitCalendly, 100);
           }
@@ -877,6 +926,21 @@
       // Submit hidden Netlify form + open Calendly
       async function submitLeadAndSchedule(quizData){
         const utm = (k)=> (document.getElementById(k)?.value || '');
+        const serviceAddress = document.getElementById('serviceAddress')?.value || '';
+        const assignHidden = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
+        assignHidden('nf_zip', quizData.zip);
+        assignHidden('nf_utility', quizData.utility);
+        assignHidden('nf_roof_type', quizData.roofType);
+        assignHidden('nf_bill_amount', quizData.billAmount);
+        assignHidden('nf_homeowner', quizData.homeowner);
+        assignHidden('nf_shading', quizData.shading);
+        assignHidden('nf_first_name', quizData.firstName);
+        assignHidden('nf_email', quizData.email);
+        assignHidden('nf_phone', quizData.phone);
+        assignHidden('nf_service_address', serviceAddress);
+        const generatedLeadId = (leadId && typeof leadId === 'string') ? leadId : 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+        leadId = generatedLeadId;
+        assignHidden('nf_lead_id', generatedLeadId);
         const payload = {
           'form-name': 'lead-intake',
           zip: quizData.zip,
@@ -888,7 +952,8 @@
           first_name: quizData.firstName,
           email: quizData.email,
           phone: quizData.phone,
-          lead_id: 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          lead_id: generatedLeadId,
+          service_address: serviceAddress,
           utm_source: utm('utm_source'),
           utm_medium: utm('utm_medium'),
           utm_campaign: utm('utm_campaign'),
