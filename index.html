@@ -44,6 +44,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RX78MRB03L');
+    </script>
+
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
     <!-- Reddit Pixel (required for Reddit ads tracking) -->
     <script>
     !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
@@ -226,10 +238,24 @@
         .upload-zone { border: 2px dashed var(--accent-gold); border-radius: 10px; padding: 3rem; text-align: center; background: rgba(201,166,72,0.05); cursor: pointer; transition: all 0.3s ease; margin: 2rem 0; }
         .upload-zone:hover { background: rgba(201,166,72,0.1); border-color: var(--dark-gold); }
         .upload-zone.dragover { background: rgba(201,166,72,0.15); transform: scale(1.02); }
-        .file-preview { margin: 2rem 0; padding: 1rem; background: var(--bone-white); border-radius: 10px; display: none; }
-        .file-preview.show { display: block; }
+        .file-preview { margin: 2rem 0; padding: 1rem; background: var(--bone-white); border-radius: 10px; }
+        .file-preview[hidden] { display: none; }
         .file-preview img { max-width: 100%; max-height: 200px; border-radius: 5px; }
-        .upload-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+
+        /* Mobile polish for outcome next-steps */
+        .next-steps{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:start;margin-top:1.25rem}
+        .actions{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;justify-content:flex-start}
+        .actions .outcome-btn-primary,
+        .actions .outcome-btn-secondary{min-width:240px}
+
+        @media (max-width:880px){
+          .next-steps{grid-template-columns:1fr}
+          .actions{justify-content:stretch}
+          .actions .outcome-btn-primary,
+          .actions .outcome-btn-secondary{flex:1 1 100%; min-width:0; width:100%}
+          .video{width:100%; height:auto; display:block}
+          .admiral-explainer{margin-top:.75rem}
+        }
 
         /* Trust Section */
         .trust-section { padding: 5rem 2rem; background: white; }
@@ -283,7 +309,6 @@
             .options-grid { grid-template-columns: 1fr; }
             .option-card { min-height: 56px; }
             .outcome-buttons { grid-template-columns: 1fr; }
-            .upload-buttons { grid-template-columns: 1fr; }
             .badges-row { gap: 2rem; }
             .sticky-cta { display: block; }
             input, select, button { font-size: 16px; }
@@ -475,9 +500,30 @@
                     <p><strong>✓ Backup power:</strong> Quiet, instant switchover with a battery</p>
                     <p><strong>✓ ITC check:</strong> We verify current eligibility during your consult</p>
                 </div>
-                <div class="outcome-buttons">
-                    <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
-                    <button class="outcome-btn-secondary" onclick="openCalendly()">🗓️ Book my 20-min plan</button>
+                <div class="next-steps">
+                  <div class="admiral-explainer" style="margin:1.25rem 0 0;">
+                    <div style="display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap;">
+                      <video id="admiralExplainer" class="video"
+                             src="assets/admiral-bill-explainer.mp4"
+                             poster="assets/admiral-bill-explainer-poster.png"
+                             playsinline muted autoplay loop
+                             style="width:320px; max-width:100%; border-radius:12px; box-shadow:0 6px 20px rgba(12,47,74,.12);"></video>
+
+                      <div style="flex:1; min-width:260px">
+                        <h3 style="margin:.25rem 0 .5rem; font-size:1.1rem;">Why we ask for your bill (30s)</h3>
+                        <ul style="margin:.25rem 0 1rem; padding-left:1.1rem; color:var(--text-gray); line-height:1.6;">
+                          <li><strong>Address</strong> → we model your roof & sun (no door visit needed).</li>
+                          <li><strong>kWh from your bill</strong> → we right-size the system.</li>
+                        </ul>
+                        <button id="explainerMute" class="outcome-btn-secondary" style="margin-right:.5rem;">🔇 Unmute</button>
+                        <a href="assets/duke-bill-sample.png" target="_blank" class="outcome-btn-secondary" role="button">🧾 See sample bill</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="outcome-buttons actions">
+                      <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
+                      <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
+                  </div>
                 </div>
                 <p style="text-align: center; margin-top: 1.5rem;">
                     <a href="javascript:void(0)" onclick="sendUploadLink()" style="color: var(--accent-gold); font-weight: 600;">Prefer SMS? Text me a secure upload link</a>
@@ -490,31 +536,40 @@
     <!-- Bill Upload Modal -->
     <div class="bill-upload-modal" id="billUploadModal">
         <div class="bill-upload-container">
-            <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
-            <p style="color: var(--text-gray); margin-bottom: 2rem;">We use usage (kWh), rate plan, and service address to size your system. You may redact account #.</p>
-            
-            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+            <form name="bill-upload" id="bill-upload" method="POST" data-netlify="true" enctype="multipart/form-data">
+              <input type="hidden" name="form-name" value="bill-upload">
+              <input type="hidden" name="lead_id" id="bu_lead_id">
+              <input type="hidden" name="email" id="bu_email">
+
+              <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
+              <p style="color: var(--text-gray); margin-bottom: .75rem;">
+                We use your <strong>address</strong> (roof & sun) and <strong>kWh</strong> from your bill (system size). You may hide the account #.
+                <a href="assets/duke-bill-sample.png" target="_blank" rel="noopener" style="margin-left:.25rem;">See sample bill</a>.
+              </p>
+
+              <div class="upload-zone" id="bu_drop" role="button" tabindex="0" onclick="document.getElementById('dukeBillInput').click()">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
-                <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill here</p>
-                <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse</p>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 1rem;">Accepted: PDF, JPG, PNG, HEIC • Max size: 10 MB</p>
-            </div>
-            
-            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display: none;" onchange="handleFileSelect(event)">
-            
-            <div class="file-preview" id="filePreview">
-                <h4 style="margin-bottom: 1rem;">Selected file:</h4>
-                <div id="previewContent"></div>
-            </div>
-            
-            <div class="upload-buttons">
-                <button class="outcome-btn-primary" onclick="uploadBill()">Upload & continue</button>
-                <button class="outcome-btn-secondary" onclick="skipAndBook()">Skip and book a call</button>
-            </div>
-            
-            <button onclick="closeBillUpload()" style="margin-top: 1rem; padding: 0.75rem; background: transparent; color: var(--text-gray); border: none; cursor: pointer; width: 100%; text-align: center;">Cancel</button>
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill</p>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse — PDF, JPG, PNG, HEIC • Max 10 MB</p>
+              </div>
+
+              <input type="file" id="dukeBillInput" name="duke_bill" accept=".pdf,.jpg,.jpeg,.png,.heic,image/*,application/pdf" style="display:none;">
+
+              <div class="file-preview" id="bu_preview" hidden>
+                <h4 style="margin:1rem 0 .5rem;">Selected file</h4>
+                <div id="bu_preview_content"></div>
+              </div>
+
+              <label for="serviceAddress" style="display:block; font-weight:600; margin:1rem 0 .25rem;">Service address (optional)</label>
+              <input id="serviceAddress" name="service_address" type="text" placeholder="Street, City, ZIP"
+                     style="width:100%; padding:.75rem; border:1px solid #d7d3cb; border-radius:10px; background:#fff;">
+
+              <div class="bu-actions" style="display:flex; gap:.75rem; margin-top:1rem; justify-content:center;">
+                <button type="submit" class="outcome-btn-primary">Submit & Book My Review Call</button>
+                <button type="button" class="outcome-btn-secondary" id="bu_skip">Skip — Book without upload</button>
+              </div>
+            </form>
         </div>
-        <div aria-live="polite" id="uploadStatus" style="position: absolute; left: -10000px;"></div>
     </div>
 
     <!-- Trust Section -->
@@ -614,10 +669,37 @@
         <span id="toastMessage">Bill received — we'll build your quote and follow up.</span>
     </div>
 
+    <form name="lead-intake" id="lead-intake" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="position:absolute;left:-9999px;visibility:hidden;">
+      <input type="hidden" name="form-name" value="lead-intake">
+      <input type="text" name="bot-field" tabindex="-1" autocomplete="off">
+
+      <!-- UTM -->
+      <input type="hidden" name="utm_source" id="utm_source">
+      <input type="hidden" name="utm_medium" id="utm_medium">
+      <input type="hidden" name="utm_campaign" id="utm_campaign">
+      <input type="hidden" name="utm_content" id="utm_content">
+      <input type="hidden" name="utm_term" id="utm_term">
+
+      <!-- Lead fields -->
+      <input type="hidden" name="zip" id="nf_zip">
+      <input type="hidden" name="utility" id="nf_utility">
+      <input type="hidden" name="roof_type" id="nf_roof_type">
+      <input type="hidden" name="bill_amount" id="nf_bill_amount">
+      <input type="hidden" name="homeowner" id="nf_homeowner">
+      <input type="hidden" name="shading" id="nf_shading">
+      <input type="hidden" name="first_name" id="nf_first_name">
+      <input type="hidden" name="email" id="nf_email">
+      <input type="hidden" name="phone" id="nf_phone">
+      <input type="hidden" name="lead_id" id="nf_lead_id">
+      <input type="hidden" name="service_address" id="nf_service_address">
+    </form>
+
     <script>
         // Quiz state
         let quizData = { utility: '', roofType: '', billAmount: 150, homeowner: '', shading: '', firstName: '', email: '', phone: '' };
-        let currentStep = 1; const totalSteps = 5; let selectedFile = null; let leadId = null;
+        window.quizData = quizData;
+        let currentStep = 1; const totalSteps = 5; let leadId = null;
+        window.leadId = leadId;
 
         function generateLeadId() { return 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
 
@@ -625,7 +707,7 @@
             const zip = document.getElementById('zip').value; const utility = document.getElementById('utility').value;
             if (!zip || zip.length !== 5) { alert('Please enter a valid 5-digit ZIP code'); return; }
             if (!utility) { alert('Please select your utility provider'); return; }
-            quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId();
+            quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId(); window.leadId = leadId;
             document.getElementById('quizSection').style.display = 'block'; document.body.style.overflow = 'hidden';
         }
 
@@ -678,6 +760,7 @@
             document.getElementById('systemSize').textContent = systemSize;
             document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
             document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
+            window.quizData = quizData;
             console.log('Quiz completed:', quizData);
         }
 
@@ -690,48 +773,33 @@
         function openCalendly() { document.getElementById('calendlyModal').style.display = 'block'; }
         function closeCalendly() { document.getElementById('calendlyModal').style.display = 'none'; }
 
-        function openBillUpload() { document.getElementById('billUploadModal').style.display = 'block'; document.body.style.overflow = 'hidden'; document.getElementById('uploadZone').focus(); }
-        function closeBillUpload() { document.getElementById('billUploadModal').style.display = 'none'; document.body.style.overflow = 'auto'; selectedFile = null; document.getElementById('filePreview').classList.remove('show'); }
-        function skipAndBook() { closeBillUpload(); openCalendly(); }
-
-        function handleDragEnter(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.add('dragover'); }
-        function handleDragOver(e){ e.preventDefault(); e.stopPropagation(); }
-        function handleDragLeave(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.remove('dragover'); }
-        function handleDrop(e){ e.preventDefault(); e.stopPropagation(); document.getElementById('uploadZone').classList.remove('dragover'); const files=e.dataTransfer.files; if(files.length>0){ handleFile(files[0]); } }
-        function handleFileSelect(event){ const file = event.target.files[0]; if(file){ handleFile(file); } }
-
-        function handleFile(file){
-            const validTypes = ['application/pdf','image/jpeg','image/jpg','image/png','image/heic'];
-            if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) { alert('Please upload a PDF or image file (JPG, PNG, HEIC)'); return; }
-            if (file.size > 10 * 1024 * 1024) { alert('File size must be less than 10MB'); return; }
-            selectedFile = file; showFilePreview(file); document.getElementById('uploadStatus').textContent = 'File selected: ' + file.name;
+        function openBillUpload() {
+            try { gtag('event','begin_bill_upload'); } catch(e){}
+            try { window.rdt && rdt('track','ViewContent'); } catch(e){}
+            document.getElementById('billUploadModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            const zone = document.getElementById('bu_drop');
+            if (zone) zone.focus();
+            const leadField = document.getElementById('bu_lead_id');
+            if (leadField) leadField.value = (window.leadId ||= 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
+            const emailField = document.getElementById('bu_email');
+            if (emailField) emailField.value = (window.quizData?.email) || '';
+            const addressField = document.getElementById('serviceAddress');
+            if (addressField && !addressField.value && window.quizData?.zip) {
+                addressField.value = (addressField.value||'') + (addressField.value ? ' ' : '') + window.quizData.zip;
+            }
         }
-
-        function showFilePreview(file){
-            const previewEl = document.getElementById('filePreview'); const previewContent = document.getElementById('previewContent');
-            previewEl.classList.add('show');
-            if (file.type.startsWith('image/')) { const reader = new FileReader(); reader.onload = e => { previewContent.innerHTML = `<img src="${e.target.result}" alt="Bill preview" style="max-width: 100%; max-height: 200px; border-radius: 5px;">`; }; reader.readAsDataURL(file); }
-            else { previewContent.innerHTML = `<div style="display:flex; align-items:center; gap:1rem;"><span style="font-size:2rem;">🖨️</span><div><p style="font-weight:600;">${file.name}</p><p style=\"color: var(--text-gray); font-size: 0.9rem;\">${(file.size/1024).toFixed(1)} KB</p></div></div>`; }
-        }
-
-        function uploadBill(){
-            if (!selectedFile) { alert('Please select a file to upload'); return; }
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('zip', quizData.zip);
-            formData.append('utility', quizData.utility);
-            formData.append('firstName', quizData.firstName);
-            formData.append('email', quizData.email);
-            formData.append('phone', quizData.phone);
-            formData.append('leadId', leadId);
-            console.log('Uploading bill with data:', { fileName: selectedFile.name, fileSize: selectedFile.size, ...quizData, leadId });
-            document.getElementById('uploadStatus').textContent = 'Uploading file...';
-            setTimeout(() => {
-                console.log('Upload successful:', { ok: true, url: '/uploads/' + leadId + '/' + selectedFile.name });
-                showToast("Bill received — we'll build your quote and follow up.");
-                closeBillUpload();
-                document.getElementById('uploadStatus').textContent = 'File uploaded successfully';
-            }, 1500);
+        function closeBillUpload() {
+            document.getElementById('billUploadModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            const form = document.getElementById('bill-upload');
+            if (form) {
+                form.reset();
+            }
+            const previewWrap = document.getElementById('bu_preview');
+            const preview = document.getElementById('bu_preview_content');
+            if (previewWrap) previewWrap.hidden = true;
+            if (preview) preview.innerHTML = '';
         }
 
         function sendUploadLink(){ alert('Link sent! Check your phone for a secure upload link.'); console.log('SMS upload link requested for:', quizData.phone); }
@@ -744,13 +812,6 @@
             document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e){ e.preventDefault(); const t=document.querySelector(this.getAttribute('href')); if(t){ t.scrollIntoView({ behavior: 'smooth' }); }}));
             const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; }}); }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
             document.querySelectorAll('.badge, .testimonial-card').forEach(el => { el.style.animationPlayState='paused'; observer.observe(el); });
-            const uploadZone = document.getElementById('uploadZone');
-            if (uploadZone){
-                uploadZone.addEventListener('dragenter', handleDragEnter);
-                uploadZone.addEventListener('dragover', handleDragOver);
-                uploadZone.addEventListener('dragleave', handleDragLeave);
-                uploadZone.addEventListener('drop', handleDrop);
-            }
             document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { if (document.getElementById('billUploadModal').style.display === 'block') closeBillUpload(); if (document.getElementById('calendlyModal').style.display === 'block') closeCalendly(); } });
         });
 
@@ -793,6 +854,186 @@
 
       sync();
     });
+    </script>
+
+    <script>
+      (function(){
+        const v = document.getElementById('admiralExplainer');
+        const b = document.getElementById('explainerMute');
+        if (!v || !b) return;
+        const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
+        b.addEventListener('click', async ()=>{ v.muted = !v.muted; if (!v.paused) { try{ await v.play(); }catch(e){} } sync(); });
+        v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+        sync();
+      })();
+    </script>
+
+    <script>
+(function(){
+  const form = document.getElementById('bill-upload');
+  const drop = document.getElementById('bu_drop');
+  const input = document.getElementById('dukeBillInput');
+  const previewWrap = document.getElementById('bu_preview');
+  const preview = document.getElementById('bu_preview_content');
+  const skipBtn = document.getElementById('bu_skip');
+  if(!form || !drop || !input) return;
+
+  function syncHidden(){
+    document.getElementById('bu_lead_id').value = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
+    document.getElementById('bu_email').value   = (window.quizData?.email)||'';
+    const a = document.getElementById('serviceAddress');
+    if (a && !a.value && window.quizData?.zip) a.value = (a.value||'') + (a.value?' ':'') + window.quizData.zip;
+  }
+  syncHidden();
+
+  drop.addEventListener('click', ()=>input.click());
+  drop.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); input.click(); }});
+  drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
+  ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
+  drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); } });
+  input.addEventListener('change', ()=>{ const f=input.files?.[0]; if(f) renderPreview(f); });
+
+  function renderPreview(file){
+    if(!validate(file)){ input.value=''; return; }
+    previewWrap.hidden = false;
+    if(file.type.startsWith('image/')){
+      const r=new FileReader(); r.onload=ev=> preview.innerHTML = `<img alt="Bill preview" src="${ev.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;">`; r.readAsDataURL(file);
+    } else {
+      preview.innerHTML = `<div><strong>${file.name}</strong> — ${(file.size/1024).toFixed(1)} KB</div>`;
+    }
+  }
+  function validate(file){
+    const ok = /^(application\/pdf|image\/(jpeg|jpg|png|heic))$/i.test(file.type) || /\.pdf$|\.jpe?g$|\.png$|\.heic$/i.test(file.name);
+    if(!ok){ alert('Please upload PDF, JPG, PNG, or HEIC.'); return false; }
+    if(file.size > 10*1024*1024){ alert('Max 10 MB.'); return false; }
+    return true;
+  }
+
+  form.addEventListener('submit', function(){
+    syncHidden();
+    try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
+    try { window.rdt && rdt('track','Lead'); } catch(e){}
+    setTimeout(()=>{
+      try { showToast("Bill received — we'll build your quote and follow up."); } catch(e){}
+      try { gtag('event','bill_uploaded'); } catch(e){}
+      try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
+      closeBillUpload?.();
+      const first = (window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
+      openCalendlyPrefilled(first, email);
+    }, 900);
+  });
+
+  skipBtn?.addEventListener('click', function(){
+    try { gtag('event','skip_upload'); } catch(e){}
+    closeBillUpload?.();
+    const first=(window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
+    openCalendlyPrefilled(first, email);
+  });
+})();
+    </script>
+
+    <script>
+      // Capture UTMs from URL once
+      (function(){
+        const p = new URLSearchParams(location.search);
+        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{
+          const el = document.getElementById(k);
+          if (el && p.get(k)) el.value = p.get(k);
+        });
+      })();
+
+      // Safe Calendly popup with prefill
+      function openCalendlyPrefilled(firstName, email){
+        const url = new URL('https://calendly.com/davide-admiralenergy/20minute-solar-introcall');
+        if (firstName) url.searchParams.set('name', firstName);
+        if (email) url.searchParams.set('email', email);
+
+        // Wait for Calendly widget to be ready
+        let tries = 0;
+        (function waitCalendly(){
+          tries++;
+          if (window.Calendly && Calendly.initPopupWidget){
+            Calendly.initPopupWidget({ url: url.toString() });
+            try { gtag('event','begin_schedule'); } catch(e){}
+          } else if (tries < 60) {
+            setTimeout(waitCalendly, 100);
+          }
+        })();
+      }
+
+      // Listen for Calendly booking
+      window.addEventListener('message', function(e){
+        if (e && e.data && e.data.event === 'calendly.event_scheduled') {
+          try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
+          try { rdt && rdt('track','Purchase'); } catch(err){}
+        }
+      });
+
+      function encodeForm(data){
+        return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k] ?? '')).join('&');
+      }
+
+      // Submit hidden Netlify form + open Calendly
+      async function submitLeadAndSchedule(quizData){
+        const utm = (k)=> (document.getElementById(k)?.value || '');
+        const serviceAddress = document.getElementById('serviceAddress')?.value || '';
+        const assignHidden = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
+        assignHidden('nf_zip', quizData.zip);
+        assignHidden('nf_utility', quizData.utility);
+        assignHidden('nf_roof_type', quizData.roofType);
+        assignHidden('nf_bill_amount', quizData.billAmount);
+        assignHidden('nf_homeowner', quizData.homeowner);
+        assignHidden('nf_shading', quizData.shading);
+        assignHidden('nf_first_name', quizData.firstName);
+        assignHidden('nf_email', quizData.email);
+        assignHidden('nf_phone', quizData.phone);
+        assignHidden('nf_service_address', serviceAddress);
+        const generatedLeadId = (leadId && typeof leadId === 'string') ? leadId : 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+        leadId = generatedLeadId;
+        window.leadId = generatedLeadId;
+        assignHidden('nf_lead_id', generatedLeadId);
+        const payload = {
+          'form-name': 'lead-intake',
+          zip: quizData.zip,
+          utility: quizData.utility,
+          roof_type: quizData.roofType,
+          bill_amount: quizData.billAmount,
+          homeowner: quizData.homeowner,
+          shading: quizData.shading,
+          first_name: quizData.firstName,
+          email: quizData.email,
+          phone: quizData.phone,
+          lead_id: generatedLeadId,
+          service_address: serviceAddress,
+          utm_source: utm('utm_source'),
+          utm_medium: utm('utm_medium'),
+          utm_campaign: utm('utm_campaign'),
+          utm_content: utm('utm_content'),
+          utm_term: utm('utm_term'),
+          'bot-field': ''
+        };
+
+        // analytics first
+        try { gtag('event','generate_lead',{method:'quiz_form'}); } catch(e){}
+        try { window.rdt && rdt('track','Lead'); } catch(e){}
+
+        // Netlify form POST without navigation
+        try {
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeForm(payload)
+          });
+        } catch (err) {
+          console.warn('Netlify POST failed', err);
+        }
+
+        // Calendly popup with prefill
+        openCalendlyPrefilled(quizData.firstName, quizData.email);
+      }
+
+      // Hook into the end of your quiz. After you compute 'quizData' and show the outcome, call:
+      // submitLeadAndSchedule(quizData);
     </script>
 </body>
 </html>
