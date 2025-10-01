@@ -576,7 +576,7 @@
                 <a href="assets/duke-bill-sample.png" target="_blank" rel="noopener" style="margin-left:.25rem;">See sample bill</a>.
               </p>
 
-              <div class="upload-zone" id="bu_drop" role="button" tabindex="0" onclick="document.getElementById('dukeBillInput').click()">
+              <div class="upload-zone" id="bu_drop" role="button" tabindex="0">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
                 <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill</p>
                 <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse — PDF, JPG, PNG, HEIC • Max 10 MB</p>
@@ -1096,12 +1096,35 @@
   }
   syncHidden();
 
-  drop.addEventListener('click', ()=>input.click());
-  drop.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); input.click(); }});
+  // --- open picker exactly once per action ---
+  let picking = false;
+
+  function openPickerOnce() {
+    if (picking) return;
+    picking = true;
+    try { input.value = ''; } catch(_) {}
+    input.click();
+  }
+
+  drop.addEventListener('click', (e) => {
+    e.preventDefault();
+    openPickerOnce();
+  });
+
+  drop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPickerOnce();
+    }
+  });
   drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
   ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
   drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); } });
-  input.addEventListener('change', ()=>{ const f=input.files?.[0]; if(f) renderPreview(f); });
+  input.addEventListener('change', () => {
+    picking = false;
+    const f = input.files?.[0];
+    if(f) renderPreview(f);
+  });
 
   function renderPreview(file){
     if(!validate(file)){ input.value=''; return; }
