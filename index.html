@@ -524,6 +524,16 @@
                       <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
                       <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
                   </div>
+      <!-- Optional opt-in -->
+      <div class="optin-wrap" style="margin-top:.75rem; text-align:center;">
+        <label for="optInUpdates" style="display:inline-flex; align-items:flex-start; gap:.5rem; cursor:pointer; max-width:720px;">
+          <input id="optInUpdates" type="checkbox" style="margin-top:.25rem;">
+          <span style="font-size:.95rem; color:var(--text-gray); text-align:left;">
+            Keep me updated on NC solar rebates, utility bills, and savings tips by email. I can unsubscribe anytime.
+            <a href="/privacy" style="color:var(--accent-gold); font-weight:600; margin-left:.25rem;">Privacy</a>
+          </span>
+        </label>
+      </div>
                 </div>
                 <p style="text-align: center; margin-top: 1.5rem;">
                     <a href="javascript:void(0)" onclick="sendUploadLink()" style="color: var(--accent-gold); font-weight: 600;">Prefer SMS? Text me a secure upload link</a>
@@ -540,6 +550,7 @@
               <input type="hidden" name="form-name" value="bill-upload">
               <input type="hidden" name="lead_id" id="bu_lead_id">
               <input type="hidden" name="email" id="bu_email">
+              <input type="hidden" name="opt_in" id="bu_opt_in" value="no">
 
               <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
               <p style="color: var(--text-gray); margin-bottom: .75rem;">
@@ -691,6 +702,7 @@
       <input type="hidden" name="email" id="nf_email">
       <input type="hidden" name="phone" id="nf_phone">
       <input type="hidden" name="lead_id" id="nf_lead_id">
+      <input type="hidden" name="opt_in" id="nf_opt_in" value="no">
       <input type="hidden" name="service_address" id="nf_service_address">
     </form>
 
@@ -881,6 +893,8 @@
   function syncHidden(){
     document.getElementById('bu_lead_id').value = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
     document.getElementById('bu_email').value   = (window.quizData?.email)||'';
+    document.getElementById('bu_opt_in').value =
+      (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no';
     const a = document.getElementById('serviceAddress');
     if (a && !a.value && window.quizData?.zip) a.value = (a.value||'') + (a.value?' ':'') + window.quizData.zip;
   }
@@ -1005,6 +1019,7 @@
           phone: quizData.phone,
           lead_id: generatedLeadId,
           service_address: serviceAddress,
+          opt_in: (document.getElementById('nf_opt_in')?.value || 'no'),
           utm_source: utm('utm_source'),
           utm_medium: utm('utm_medium'),
           utm_campaign: utm('utm_campaign'),
@@ -1034,6 +1049,33 @@
 
       // Hook into the end of your quiz. After you compute 'quizData' and show the outcome, call:
       // submitLeadAndSchedule(quizData);
+    </script>
+    <script>
+      (function(){
+        const cb = document.getElementById('optInUpdates');
+        const nf = document.getElementById('nf_opt_in');
+        const bu = document.getElementById('bu_opt_in');
+
+        function setAll(v){
+          if (nf) nf.value = v ? 'yes' : 'no';
+          if (bu) bu.value = v ? 'yes' : 'no';
+          try { localStorage.setItem('ae_optin', v ? 'yes' : 'no'); } catch(e){}
+        }
+
+        (function restore(){
+          try {
+            const saved = localStorage.getItem('ae_optin');
+            if (cb && saved) { cb.checked = (saved === 'yes'); }
+            setAll(cb && cb.checked);
+          } catch(e){}
+        })();
+
+        cb && cb.addEventListener('change', ()=>{
+          const on = cb.checked;
+          setAll(on);
+          try { gtag('event','opt_in_toggle',{on}); } catch(e){}
+        });
+      })();
     </script>
 </body>
 </html>
