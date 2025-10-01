@@ -543,6 +543,8 @@
               <input type="hidden" name="form-name" value="bill-upload">
               <input type="hidden" name="lead_id" id="bu_lead_id">
               <input type="hidden" name="email" id="bu_email">
+              <input type="hidden" name="first_name" id="bu_first_name">
+              <input type="hidden" name="phone" id="bu_phone">
 
               <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
               <p style="color: var(--text-gray); margin-bottom: .75rem;">
@@ -791,24 +793,39 @@
             }
         }
 
+        function determineSystemSize(bill, shading){
+            const numericBill = Number(bill) || 0;
+            let systemSize = '';
+            if (numericBill < 100) systemSize = '5-7 kW System + 10 kWh Battery';
+            else if (numericBill < 200) systemSize = '7-9 kW System + 10-13 kWh Battery';
+            else if (numericBill < 300) systemSize = '9-11 kW System + 13-15 kWh Battery';
+            else systemSize = '11-15 kW System + 15-20 kWh Battery';
+            if (shading === 'heavy') {
+                systemSize = systemSize.replace(/(\d+)-(\d+)/, (m, a, b) => (parseInt(a, 10)+1)+'-'+(parseInt(b, 10)+1));
+            }
+            return systemSize;
+        }
+
         function completeQuiz() {
             const firstName = document.getElementById('firstName').value; const email = document.getElementById('email').value; const phone = document.getElementById('phone').value;
             if (!firstName || !email || !phone) { alert('Please fill in all fields to get your quote'); return; }
             quizData.firstName = firstName; quizData.email = email; quizData.phone = phone;
             const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
             document.getElementById('userZip').textContent = quizData.zip; document.getElementById('userUtility').textContent = utilityNames[quizData.utility] || 'your utility';
-            let systemSize = ''; const bill = quizData.billAmount;
-            if (bill < 100) systemSize = '5-7 kW System + 10 kWh Battery';
-            else if (bill < 200) systemSize = '7-9 kW System + 10-13 kWh Battery';
-            else if (bill < 300) systemSize = '9-11 kW System + 13-15 kWh Battery';
-            else systemSize = '11-15 kW System + 15-20 kWh Battery';
-            if (quizData.shading === 'heavy') { systemSize = systemSize.replace(/(\d+)-(\d+)/, (m, a, b) => (parseInt(a)+1)+'-'+(parseInt(b)+1)); }
+            const bill = quizData.billAmount;
+            const systemSize = determineSystemSize(bill, quizData.shading);
             document.getElementById('systemSize').textContent = systemSize;
             applyOutcomeCopy(quizData);
             document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
             document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
             window.quizData = quizData;
             console.log('Quiz completed:', quizData);
+            if (!leadId) { leadId = generateLeadId(); window.leadId = leadId; }
+            try {
+                localStorage.setItem('ae_lead', JSON.stringify({ leadId, quizData, ts: Date.now() }));
+            } catch(err) {
+                console.warn('Persist lead failed', err);
+            }
         }
 
         function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
@@ -860,6 +877,57 @@
             const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; }}); }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
             document.querySelectorAll('.badge, .testimonial-card').forEach(el => { el.style.animationPlayState='paused'; observer.observe(el); });
             document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { if (document.getElementById('billUploadModal').style.display === 'block') closeBillUpload(); if (document.getElementById('calendlyModal').style.display === 'block') closeCalendly(); } });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const stored = localStorage.getItem('ae_lead');
+                if (!stored) return;
+                const parsed = JSON.parse(stored);
+                if (!parsed || !parsed.quizData) return;
+                quizData = { ...quizData, ...parsed.quizData };
+                window.quizData = quizData;
+                leadId = parsed.leadId || leadId || generateLeadId();
+                window.leadId = leadId;
+                const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
+                const zipEl = document.getElementById('userZip');
+                if (zipEl) zipEl.textContent = quizData.zip || '';
+                const utilEl = document.getElementById('userUtility');
+                if (utilEl) utilEl.textContent = utilityNames[quizData.utility] || 'your utility';
+                const systemEl = document.getElementById('systemSize');
+                if (systemEl) systemEl.textContent = determineSystemSize(quizData.billAmount, quizData.shading);
+                applyOutcomeCopy(quizData);
+                const quizSection = document.getElementById('quizSection');
+                if (quizSection) quizSection.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                const outcomeSection = document.getElementById('outcomeSection');
+                if (outcomeSection) {
+                    outcomeSection.style.display = 'block';
+                    const existingLink = outcomeSection.querySelector('.start-over-link');
+                    if (!existingLink) {
+                        const header = outcomeSection.querySelector('h2');
+                        if (header) {
+                            const startOverLink = document.createElement('a');
+                            startOverLink.href = '#';
+                            startOverLink.textContent = '(Not you? Start over)';
+                            startOverLink.className = 'start-over-link';
+                            startOverLink.style.marginLeft = '.5rem';
+                            startOverLink.style.fontSize = '.85rem';
+                            startOverLink.style.display = 'inline-block';
+                            startOverLink.style.color = 'var(--accent-gold)';
+                            startOverLink.style.fontWeight = '600';
+                            startOverLink.addEventListener('click', (evt) => {
+                                evt.preventDefault();
+                                try { localStorage.removeItem('ae_lead'); } catch(err) { console.warn('Failed to clear stored lead', err); }
+                                location.reload();
+                            });
+                            header.insertAdjacentElement('afterend', startOverLink);
+                        }
+                    }
+                }
+            } catch(err) {
+                console.warn('Restore lead failed', err);
+            }
         });
 
         // Runtime video fallback for iOS/slow networks
@@ -926,10 +994,17 @@
   if(!form || !drop || !input) return;
 
   function syncHidden(){
-    document.getElementById('bu_lead_id').value = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
-    document.getElementById('bu_email').value   = (window.quizData?.email)||'';
-    const a = document.getElementById('serviceAddress');
-    if (a && !a.value && window.quizData?.zip) a.value = (a.value||'') + (a.value?' ':'') + window.quizData.zip;
+    const leadField = document.getElementById('bu_lead_id');
+    const emailField = document.getElementById('bu_email');
+    const firstField = document.getElementById('bu_first_name');
+    const phoneField = document.getElementById('bu_phone');
+    const addressField = document.getElementById('serviceAddress');
+    const ensuredLeadId = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
+    if (leadField) leadField.value = ensuredLeadId;
+    if (emailField) emailField.value = (window.quizData?.email)||'';
+    if (firstField) firstField.value = (window.quizData?.firstName)||'';
+    if (phoneField) phoneField.value = (window.quizData?.phone)||'';
+    if (addressField && !addressField.value && window.quizData?.zip) addressField.value = window.quizData.zip;
   }
   syncHidden();
 
@@ -956,18 +1031,22 @@
     return true;
   }
 
-  form.addEventListener('submit', function(){
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
     syncHidden();
+
     try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
     try { window.rdt && rdt('track','Lead'); } catch(e){}
-    setTimeout(()=>{
-      try { showToast("Bill received — we'll build your quote and follow up."); } catch(e){}
-      try { gtag('event','bill_uploaded'); } catch(e){}
-      try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
-      closeBillUpload?.();
-      const first = (window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
-      openCalendlyPrefilled(first, email);
-    }, 900);
+
+    const fd = new FormData(form);
+    try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
+
+    showToast("Bill received — we'll build your quote and follow up.");
+    try { gtag('event','bill_uploaded'); } catch(e){}
+    try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
+
+    closeBillUpload?.();
+    openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
   });
 
   skipBtn?.addEventListener('click', function(){
