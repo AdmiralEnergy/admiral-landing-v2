@@ -1398,6 +1398,16 @@
         if (firstName) url.searchParams.set('name', firstName);
         if (email) url.searchParams.set('email', email);
 
+        let fallbackTimer;
+        if (!window.AE_DEBUG) {
+          fallbackTimer = setTimeout(()=>{
+            if (!(window.Calendly && Calendly.initPopupWidget)) {
+              showToast("Calendly fallback: opening in new tab…");
+              window.open(url.toString(), "_blank");
+            }
+          }, 6000);
+        }
+
         // Wait for Calendly widget to be ready
         let tries = 0;
         let opened = false;
@@ -1406,6 +1416,7 @@
           if (window.Calendly && Calendly.initPopupWidget){
             opened = true;
             Calendly.initPopupWidget({ url: url.toString() });
+            if (fallbackTimer) clearTimeout(fallbackTimer);
             try { gtag('event','begin_schedule'); } catch(e){}
             aeDebugLog('openCalendlyPrefilled', 'after', { method: 'widget' });
             aeDebugSetCheck('calendly', true);
