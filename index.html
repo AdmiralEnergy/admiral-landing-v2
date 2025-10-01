@@ -20,8 +20,9 @@
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-48.png">
-<link rel="shortcut icon" href="assets/favicon-48.png">
 <link rel="apple-touch-icon" href="assets/favicon-48.png">
+<link rel="shortcut icon" href="assets/favicon-48.png">
+<meta name="msapplication-TileImage" content="assets/favicon-48.png">
 
 <!-- Open Graph (social share) -->
 <meta property="og:type" content="website">
@@ -63,6 +64,15 @@
     rdt('track','PageVisit');
     </script>
     <!-- End Reddit Pixel -->
+
+    <script>
+    (function(){
+      const q = new URLSearchParams(location.search);
+      window.AE_DEBUG = window.AE_DEBUG || (q.get('debug') === '1');
+      if (!window.AE_DEBUG) return;
+      console.log('[AE][DEBUG] enabled');
+    })();
+    </script>
 
     <script>
     (function(){
@@ -112,12 +122,29 @@
         }
 
         /* Form controls: keep them light even when OS prefers dark */
-        input, select, textarea, button {
+        /* Normalize text-like controls, not checkboxes/radios */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="search"],
+        select,
+        textarea,
+        button {
             background: #ffffff !important;
             color: #0c2f4a !important;
             border: 2px solid #e5e7eb !important;
             -webkit-appearance: none;
             appearance: none;
+        }
+
+        /* Let checkboxes/radios keep native rendering (show the ✓),
+           but tint them to brand gold where supported */
+        input[type="checkbox"],
+        input[type="radio"] {
+            -webkit-appearance: checkbox;
+            appearance: checkbox;
+            accent-color: var(--accent-gold);
         }
 
         /* Autofill states can get inverted; paint them explicitly */
@@ -525,7 +552,7 @@
                   </div>
                   <div class="outcome-buttons actions">
                       <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
-                      <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
+                      <button class="outcome-btn-secondary" onclick="submitLeadAndSchedule(quizData)">🗓️ Book my 20-min plan</button>
                   </div>
 
                 </div>
@@ -567,7 +594,7 @@
                 <a href="assets/duke-bill-sample.png" target="_blank" rel="noopener" style="margin-left:.25rem;">See sample bill</a>.
               </p>
 
-              <div class="upload-zone" id="bu_drop" role="button" tabindex="0" onclick="document.getElementById('dukeBillInput').click()">
+              <div class="upload-zone" id="bu_drop" role="button" tabindex="0">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
                 <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill</p>
                 <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse — PDF, JPG, PNG, HEIC • Max 10 MB</p>
@@ -717,7 +744,56 @@
       <input type="hidden" name="service_address" id="nf_service_address">
     </form>
 
+    <form name="lead-optin" id="lead-optin" method="POST" data-netlify="true" style="position:absolute;left:-9999px;visibility:hidden;">
+      <input type="hidden" name="form-name" value="lead-optin">
+      <input type="hidden" name="lead_id" id="oi_lead_id">
+      <input type="hidden" name="email" id="oi_email">
+      <input type="hidden" name="opt_in" id="oi_opt_in" value="no">
+      <input type="hidden" name="ts" id="oi_ts">
+    </form>
+
     <script>
+    function postOptInUpdate(source = 'toggle'){
+      try {
+        const lead = (window.leadId ||= 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
+        const email = window.quizData?.email || '';
+        const val = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no';
+
+        const a = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        a('oi_lead_id', lead);
+        a('oi_email', email);
+        a('oi_opt_in', val);
+        a('oi_ts', new Date().toISOString());
+
+        const form = document.getElementById('lead-optin');
+        if (!form) return;
+
+        const fd = new FormData(form);
+        fd.append('source', source);
+        fetch('/', { method: 'POST', body: fd }).catch(()=>{});
+      } catch(e) { /* noop */ }
+    }
+    </script>
+
+    <script>
+        function aeDebugLog(name, stage, data) {
+            if (!window.AE_DEBUG) return;
+            const suffix = stage ? ` ${stage}` : '';
+            console.debug(`[AE][DEBUG] ${name}${suffix}`, data);
+        }
+
+        function aeDebugRefresh(reason) {
+            if (window.AE_DEBUG_PANEL?.refresh) {
+                window.AE_DEBUG_PANEL.refresh(reason);
+            }
+        }
+
+        function aeDebugSetCheck(key, value) {
+            if (window.AE_DEBUG_PANEL?.setCheck) {
+                window.AE_DEBUG_PANEL.setCheck(key, value);
+            }
+        }
+
         // Quiz state
         let quizData = { utility: '', roofType: '', billAmount: 150, homeowner: '', shading: '', firstName: '', email: '', phone: '' };
         window.quizData = quizData;
@@ -728,9 +804,20 @@
 
         function startQuiz() {
             const zip = document.getElementById('zip').value; const utility = document.getElementById('utility').value;
-            if (!zip || zip.length !== 5) { alert('Please enter a valid 5-digit ZIP code'); return; }
-            if (!utility) { alert('Please select your utility provider'); return; }
+            aeDebugLog('startQuiz', 'before', { zip, utility });
+            if (!zip || zip.length !== 5) {
+                aeDebugLog('startQuiz', 'abort', { reason: 'invalid_zip', zip });
+                alert('Please enter a valid 5-digit ZIP code');
+                return;
+            }
+            if (!utility) {
+                aeDebugLog('startQuiz', 'abort', { reason: 'missing_utility' });
+                alert('Please select your utility provider');
+                return;
+            }
             quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId(); window.leadId = leadId;
+            aeDebugLog('startQuiz', 'after', { leadId, quizData: { zip: quizData.zip, utility: quizData.utility } });
+            aeDebugRefresh('startQuiz');
             document.getElementById('quizSection').style.display = 'block'; document.body.style.overflow = 'hidden';
         }
 
@@ -826,7 +913,12 @@
 
         function completeQuiz() {
             const firstName = document.getElementById('firstName').value; const email = document.getElementById('email').value; const phone = document.getElementById('phone').value;
-            if (!firstName || !email || !phone) { alert('Please fill in all fields to get your quote'); return; }
+            aeDebugLog('completeQuiz', 'before', { firstName, email, phone });
+            if (!firstName || !email || !phone) {
+                aeDebugLog('completeQuiz', 'abort', { reason: 'missing_fields', firstName: !!firstName, email: !!email, phone: !!phone });
+                alert('Please fill in all fields to get your quote');
+                return;
+            }
             quizData.firstName = firstName; quizData.email = email; quizData.phone = phone;
             const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
             document.getElementById('userZip').textContent = quizData.zip; document.getElementById('userUtility').textContent = utilityNames[quizData.utility] || 'your utility';
@@ -837,13 +929,15 @@
             document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
             document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
             window.quizData = quizData;
-            console.log('Quiz completed:', quizData);
+            aeDebugLog('completeQuiz', 'after', { quizData });
             if (!leadId) { leadId = generateLeadId(); window.leadId = leadId; }
             try {
                 localStorage.setItem('ae_lead', JSON.stringify({ leadId, quizData, ts: Date.now() }));
+                if (window.AE_DEBUG) console.debug('[AE][DEBUG] saved', { key: 'ae_lead', value: { leadId, quizData } });
             } catch(err) {
                 console.warn('Persist lead failed', err);
             }
+            aeDebugRefresh('completeQuiz');
         }
 
         function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
@@ -856,6 +950,7 @@
         function closeCalendly() { document.getElementById('calendlyModal').style.display = 'none'; }
 
         function openBillUpload() {
+            aeDebugLog('openBillUpload', 'before', { leadId: window.leadId, quizData: window.quizData });
             try { gtag('event','begin_bill_upload'); } catch(e){}
             try { window.rdt && rdt('track','ViewContent'); } catch(e){}
             document.getElementById('billUploadModal').style.display = 'block';
@@ -870,8 +965,11 @@
             if (addressField && !addressField.value && window.quizData?.zip) {
                 addressField.value = (addressField.value||'') + (addressField.value ? ' ' : '') + window.quizData.zip;
             }
+            aeDebugLog('openBillUpload', 'after', { leadId: window.leadId, emailPrefill: document.getElementById('bu_email')?.value });
+            aeDebugRefresh('openBillUpload');
         }
         function closeBillUpload() {
+            aeDebugLog('closeBillUpload', 'before', {});
             document.getElementById('billUploadModal').style.display = 'none';
             document.body.style.overflow = 'auto';
             const form = document.getElementById('bill-upload');
@@ -882,6 +980,8 @@
             const preview = document.getElementById('bu_preview_content');
             if (previewWrap) previewWrap.hidden = true;
             if (preview) preview.innerHTML = '';
+            aeDebugLog('closeBillUpload', 'after', {});
+            aeDebugRefresh('closeBillUpload');
         }
 
         function sendUploadLink(){ alert('Link sent! Check your phone for a secure upload link.'); console.log('SMS upload link requested for:', quizData.phone); }
@@ -921,28 +1021,39 @@
                 const outcomeSection = document.getElementById('outcomeSection');
                 if (outcomeSection) {
                     outcomeSection.style.display = 'block';
-                    const existingLink = outcomeSection.querySelector('.start-over-link');
-                    if (!existingLink) {
-                        const header = outcomeSection.querySelector('h2');
-                        if (header) {
-                            const startOverLink = document.createElement('a');
-                            startOverLink.href = '#';
-                            startOverLink.textContent = '(Not you? Start over)';
-                            startOverLink.className = 'start-over-link';
-                            startOverLink.style.marginLeft = '.5rem';
-                            startOverLink.style.fontSize = '.85rem';
-                            startOverLink.style.display = 'inline-block';
-                            startOverLink.style.color = 'var(--accent-gold)';
-                            startOverLink.style.fontWeight = '600';
-                            startOverLink.addEventListener('click', (evt) => {
-                                evt.preventDefault();
-                                try { localStorage.removeItem('ae_lead'); } catch(err) { console.warn('Failed to clear stored lead', err); }
-                                location.reload();
-                            });
-                            header.insertAdjacentElement('afterend', startOverLink);
+                    if (window.AE_DEBUG) {
+                        const existingLink = outcomeSection.querySelector('.start-over-link');
+                        if (!existingLink) {
+                            const header = outcomeSection.querySelector('h2');
+                            if (header) {
+                                const startOverLink = document.createElement('a');
+                                startOverLink.href = '#';
+                                startOverLink.textContent = '[Reset lead]';
+                                startOverLink.className = 'start-over-link';
+                                startOverLink.style.marginLeft = '.5rem';
+                                startOverLink.style.fontSize = '.85rem';
+                                startOverLink.style.display = 'inline-block';
+                                startOverLink.style.color = 'var(--accent-gold)';
+                                startOverLink.style.fontWeight = '600';
+                                startOverLink.addEventListener('click', (evt) => {
+                                    evt.preventDefault();
+                                    try { localStorage.removeItem('ae_lead'); } catch(err) { console.warn('Failed to clear stored lead', err); }
+                                    try { localStorage.removeItem('ae_optin'); } catch(err){}
+                                    if (window.AE_DEBUG) {
+                                        try {
+                                            sessionStorage.removeItem('ae_qa_lead');
+                                            sessionStorage.removeItem('ae_qa_bill');
+                                            sessionStorage.removeItem('ae_qa_cal');
+                                        } catch(err){}
+                                    }
+                                    location.reload();
+                                });
+                                header.insertAdjacentElement('afterend', startOverLink);
+                            }
                         }
                     }
                 }
+                aeDebugRefresh('restore');
             } catch(err) {
                 console.warn('Restore lead failed', err);
             }
@@ -1017,29 +1128,52 @@
     const emailField = document.getElementById('bu_email');
     const firstField = document.getElementById('bu_first_name');
     const phoneField = document.getElementById('bu_phone');
-    const optField = document.getElementById('bu_opt_in');
+    const buOpt = document.getElementById('bu_opt_in');
     const addressField = document.getElementById('serviceAddress');
     const ensuredLeadId = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
     if (leadField) leadField.value = ensuredLeadId;
     if (emailField) emailField.value = (window.quizData?.email)||'';
     if (firstField) firstField.value = (window.quizData?.firstName)||'';
     if (phoneField) phoneField.value = (window.quizData?.phone)||'';
-    if (optField) {
-      let optVal = 'no';
-      try { optVal = localStorage.getItem('ae_optin') === 'yes' ? 'yes' : 'no'; } catch (err) {}
-      optField.value = optVal;
+    if (buOpt) {
+      let v = 'no';
+      try { v = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no'; } catch(e){}
+      buOpt.value = v;
     }
     if (addressField && !addressField.value && window.quizData?.zip) addressField.value = window.quizData.zip;
 
   }
   syncHidden();
 
-  drop.addEventListener('click', ()=>input.click());
-  drop.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); input.click(); }});
+  // --- open picker exactly once per action ---
+  let picking = false;
+
+  function openPickerOnce() {
+    if (picking) return;
+    picking = true;
+    try { input.value = ''; } catch(_) {}
+    input.click();
+  }
+
+  drop.addEventListener('click', (e) => {
+    e.preventDefault();
+    openPickerOnce();
+  });
+
+  drop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPickerOnce();
+    }
+  });
   drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
   ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
   drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); } });
-  input.addEventListener('change', ()=>{ const f=input.files?.[0]; if(f) renderPreview(f); });
+  input.addEventListener('change', () => {
+    picking = false;
+    const f = input.files?.[0];
+    if(f) renderPreview(f);
+  });
 
   function renderPreview(file){
     if(!validate(file)){ input.value=''; return; }
@@ -1066,7 +1200,14 @@
     try { window.rdt && rdt('track','Lead'); } catch(e){}
 
     const fd = new FormData(form);
+    if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
     try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
+    if (window.AE_DEBUG) {
+      console.debug('[AE][DEBUG] bill-upload POSTed');
+      aeDebugSetCheck('billPosted', true);
+      try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
+      aeDebugRefresh('billUploadSubmit');
+    }
 
     showToast("Bill received — we'll build your quote and follow up.");
     try { gtag('event','bill_uploaded'); } catch(e){}
@@ -1074,20 +1215,6 @@
 
     closeBillUpload?.();
     openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
-
-  form.addEventListener('submit', function(){
-    syncHidden();
-    try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-    try { window.rdt && rdt('track','Lead'); } catch(e){}
-    setTimeout(()=>{
-      try { showToast("Bill received — we'll build your quote and follow up."); } catch(e){}
-      try { gtag('event','bill_uploaded'); } catch(e){}
-      try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
-      closeBillUpload?.();
-      const first = (window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
-      openCalendlyPrefilled(first, email);
-    }, 900);
-
   });
 
   skipBtn?.addEventListener('click', function(){
@@ -1100,6 +1227,164 @@
     </script>
 
     <script>
+    (function(){
+      if (!window.AE_DEBUG) return;
+
+      const getSessionFlag = (key) => {
+        try { return sessionStorage.getItem(key) === '1'; } catch(e) { return false; }
+      };
+
+      const qaLabels = {
+        quizData: 'quizData present',
+        leadId: 'leadId present',
+        optSync: 'opt_in synced',
+        leadPosted: 'lead-intake POSTed',
+        billPosted: 'bill-upload POSTed',
+        calendly: 'Calendly opened'
+      };
+
+      const qaState = {
+        quizData: false,
+        leadId: false,
+        optSync: false,
+        leadPosted: getSessionFlag('ae_qa_lead'),
+        billPosted: getSessionFlag('ae_qa_bill'),
+        calendly: getSessionFlag('ae_qa_cal')
+      };
+
+      const panel = document.createElement('div');
+      panel.setAttribute('data-ae-debug', 'panel');
+      panel.style.cssText = 'position:fixed;bottom:1rem;right:1rem;width:320px;max-width:90vw;background:#fff;border:1px solid rgba(12,47,74,0.15);box-shadow:0 12px 30px rgba(12,47,74,0.25);border-radius:12px;padding:1rem;font-size:0.85rem;line-height:1.5;color:#0c2f4a;z-index:4000;font-family:inherit;';
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+          <strong style="font-size:0.95rem;">AE Debug</strong>
+          <span style="font-size:0.75rem;color:#4a5568;">${new Date().toLocaleTimeString()}</span>
+        </div>
+        <div style="margin-bottom:.75rem;">
+          <div><strong>leadId:</strong> <span data-ae-debug="lead">(none)</span></div>
+          <div style="margin-top:.5rem;"><strong>quizData</strong></div>
+          <pre data-ae-debug="quiz" style="background:#f7f5f2;border-radius:8px;padding:.5rem;max-height:120px;overflow:auto;font-size:0.75rem;">{}</pre>
+          <div style="margin-top:.5rem;"><strong>Opt-in</strong> <span data-ae-debug="opt">nf: -, bu: -, cb: -</span></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;">
+          <button type="button" data-ae-action="reset" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Start Over (clear localStorage)</button>
+          <button type="button" data-ae-action="open-calendly" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Open Calendly</button>
+          <button type="button" data-ae-action="post-lead" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">POST lead-intake</button>
+          <button type="button" data-ae-action="toggle-opt" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Toggle Opt-in</button>
+        </div>
+        <div>
+          <strong>QA Checklist</strong>
+          <ul style="list-style:none;padding:0;margin:.5rem 0 0 0;">
+            ${Object.keys(qaLabels).map(key => `<li data-ae-check="${key}" style="margin-bottom:.25rem;">⬜️ ${qaLabels[key]}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+
+      document.body.appendChild(panel);
+
+      const leadEl = panel.querySelector('[data-ae-debug="lead"]');
+      const quizEl = panel.querySelector('[data-ae-debug="quiz"]');
+      const optEl = panel.querySelector('[data-ae-debug="opt"]');
+      const checkEls = Object.fromEntries(Object.keys(qaLabels).map(key => [key, panel.querySelector(`[data-ae-check="${key}"]`)]));
+
+      function updateChecklist(){
+        Object.keys(qaLabels).forEach(key => {
+          const el = checkEls[key];
+          if (!el) return;
+          const on = !!qaState[key];
+          el.textContent = `${on ? '✅' : '⬜️'} ${qaLabels[key]}`;
+          el.style.color = on ? '#0a7a2a' : '#0c2f4a';
+        });
+      }
+
+      function refresh(reason){
+        const data = {
+          zip: window.quizData?.zip || '',
+          utility: window.quizData?.utility || '',
+          billAmount: window.quizData?.billAmount ?? '',
+          homeowner: window.quizData?.homeowner || '',
+          shading: window.quizData?.shading || '',
+          firstName: window.quizData?.firstName || '',
+          email: window.quizData?.email || '',
+          phone: window.quizData?.phone || ''
+        };
+        leadEl.textContent = window.leadId || '(none)';
+        quizEl.textContent = JSON.stringify(data, null, 2);
+        const nf = document.getElementById('nf_opt_in');
+        const bu = document.getElementById('bu_opt_in');
+        const cb = document.getElementById('optInUpdates');
+        const nfVal = nf?.value ?? '';
+        const buVal = bu?.value ?? '';
+        const cbVal = cb ? (cb.checked ? 'yes' : 'no') : '';
+        optEl.textContent = `nf: ${nfVal || 'n/a'} | bu: ${buVal || 'n/a'} | cb: ${cb ? cbVal : 'n/a'}`;
+        qaState.quizData = Object.values(data).some(Boolean);
+        qaState.leadId = !!window.leadId;
+        const hasValue = !!(nfVal || buVal || cbVal);
+        qaState.optSync = hasValue && nfVal === buVal && (!cb || cbVal === nfVal);
+        updateChecklist();
+        console.debug('[AE][DEBUG] panel refresh', { reason, qaState });
+      }
+
+      function setCheck(key, value){
+        if (!(key in qaState)) return;
+        qaState[key] = !!value;
+        updateChecklist();
+      }
+
+      const actions = {
+        reset(){
+          try { localStorage.removeItem('ae_lead'); } catch(e){}
+          try { localStorage.removeItem('ae_optin'); } catch(e){}
+          try {
+            sessionStorage.removeItem('ae_qa_lead');
+            sessionStorage.removeItem('ae_qa_bill');
+            sessionStorage.removeItem('ae_qa_cal');
+          } catch(e){}
+          location.reload();
+        },
+        'open-calendly'(){
+          openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
+        },
+        'post-lead'(){
+          try {
+            const result = postLeadOnly?.(window.quizData || {});
+            if (result && typeof result.then === 'function') {
+              result.catch(err => console.warn('[AE][DEBUG] postLeadOnly button error', err));
+            }
+          } catch(err) {
+            console.warn('[AE][DEBUG] postLeadOnly button error', err);
+          }
+        },
+        'toggle-opt'(){
+          const cb = document.getElementById('optInUpdates');
+          if (cb){
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+            refresh('toggle-opt');
+          }
+        }
+      };
+
+      panel.querySelectorAll('button[data-ae-action]').forEach(btn => {
+        btn.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          const action = btn.getAttribute('data-ae-action');
+          const fn = actions[action];
+          if (typeof fn === 'function') fn();
+        });
+      });
+
+      window.AE_DEBUG_PANEL = {
+        refresh,
+        setCheck
+      };
+
+      refresh('init');
+      setTimeout(() => refresh('post-init'), 250);
+    })();
+    </script>
+
+    <script>
 
 (function(){
   const cb = document.getElementById('optInUpdates');
@@ -1109,7 +1394,20 @@
   function setAll(v){
     if (nf) nf.value = v ? 'yes' : 'no';
     if (bu) bu.value = v ? 'yes' : 'no';
-    try { localStorage.setItem('ae_optin', v ? 'yes' : 'no'); } catch(e){}
+    try {
+      localStorage.setItem('ae_optin', v ? 'yes' : 'no');
+      if (window.AE_DEBUG) console.debug('[AE][DEBUG] saved', { key: 'ae_optin', value: v ? 'yes' : 'no' });
+    } catch(e){}
+    if (window.AE_DEBUG) {
+      console.debug('[AE][DEBUG] opt-in sync', { nf: nf?.value, bu: bu?.value, checked: cb?.checked });
+      const nfVal = nf?.value ?? '';
+      const buVal = bu?.value ?? '';
+      const cbVal = cb ? (cb.checked ? 'yes' : 'no') : '';
+      const hasValue = !!(nfVal || buVal || cbVal);
+      const synced = hasValue && nfVal === buVal && (!cb || cbVal === nfVal);
+      aeDebugSetCheck('optSync', synced);
+      aeDebugRefresh('optin');
+    }
   }
 
   (function restore(){
@@ -1117,12 +1415,16 @@
       const saved = localStorage.getItem('ae_optin');
       if (cb && saved) { cb.checked = (saved === 'yes'); }
       setAll(cb && cb.checked);
+      if (window.AE_DEBUG) {
+        console.debug('[AE][DEBUG] opt-in sync', { nf: nf?.value, bu: bu?.value, checked: cb?.checked });
+      }
     } catch(e){}
   })();
 
   cb && cb.addEventListener('change', ()=>{
     const on = cb.checked;
     setAll(on);
+    postOptInUpdate('toggle');
     try { gtag('event', 'opt_in_toggle', {on}); } catch(e){}
   });
 })();
@@ -1141,19 +1443,49 @@
 
       // Safe Calendly popup with prefill
       function openCalendlyPrefilled(firstName, email){
+        aeDebugLog('openCalendlyPrefilled', 'before', { firstName, email });
         const url = new URL('https://calendly.com/davide-admiralenergy/20minute-solar-introcall');
         if (firstName) url.searchParams.set('name', firstName);
         if (email) url.searchParams.set('email', email);
 
+        let fallbackTimer;
+        if (!window.AE_DEBUG) {
+          fallbackTimer = setTimeout(()=>{
+            if (!(window.Calendly && Calendly.initPopupWidget)) {
+              showToast("Calendly fallback: opening in new tab…");
+              window.open(url.toString(), "_blank");
+            }
+          }, 6000);
+        }
+
         // Wait for Calendly widget to be ready
         let tries = 0;
+        let opened = false;
         (function waitCalendly(){
           tries++;
           if (window.Calendly && Calendly.initPopupWidget){
+            opened = true;
             Calendly.initPopupWidget({ url: url.toString() });
+            if (fallbackTimer) clearTimeout(fallbackTimer);
             try { gtag('event','begin_schedule'); } catch(e){}
+            aeDebugLog('openCalendlyPrefilled', 'after', { method: 'widget' });
+            aeDebugSetCheck('calendly', true);
+            if (window.AE_DEBUG) {
+              try { sessionStorage.setItem('ae_qa_cal', '1'); } catch(e){}
+            }
+            aeDebugRefresh('openCalendlyPrefilled');
           } else if (tries < 60) {
             setTimeout(waitCalendly, 100);
+          } else if (window.AE_DEBUG && !opened) {
+            console.warn('[AE][DEBUG] Calendly widget not ready, mocking open');
+            window.open(url.toString(), '_blank');
+            aeDebugLog('openCalendlyPrefilled', 'mocked', { url: url.toString() });
+            aeDebugLog('openCalendlyPrefilled', 'after', { method: 'mock_window' });
+            aeDebugSetCheck('calendly', true);
+            if (window.AE_DEBUG) {
+              try { sessionStorage.setItem('ae_qa_cal', '1'); } catch(e){}
+            }
+            aeDebugRefresh('openCalendlyPrefilled');
           }
         })();
       }
@@ -1163,6 +1495,7 @@
         if (e && e.data && e.data.event === 'calendly.event_scheduled') {
           try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
           try { rdt && rdt('track','Purchase'); } catch(err){}
+          postOptInUpdate('calendly_scheduled');
         }
       });
 
@@ -1170,8 +1503,8 @@
         return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k] ?? '')).join('&');
       }
 
-      // Submit hidden Netlify form + open Calendly
-      async function submitLeadAndSchedule(quizData){
+      async function postLeadOnly(quizData){
+        aeDebugLog('postLeadOnly', 'before', { quizData });
         const utm = (k)=> (document.getElementById(k)?.value || '');
         const serviceAddress = document.getElementById('serviceAddress')?.value || '';
         const assignHidden = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
@@ -1228,12 +1561,31 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: encodeForm(payload)
           });
+          if (window.AE_DEBUG) {
+            console.debug('[AE][DEBUG] lead-intake POSTed');
+            aeDebugSetCheck('leadPosted', true);
+            try { sessionStorage.setItem('ae_qa_lead', '1'); } catch(e){}
+          } else {
+            aeDebugSetCheck('leadPosted', true);
+          }
         } catch (err) {
           console.warn('Netlify POST failed', err);
         }
 
+        aeDebugLog('postLeadOnly', 'after', { leadId: generatedLeadId });
+        aeDebugRefresh('postLeadOnly');
+        return { payload, leadId: generatedLeadId };
+      }
+
+      // Submit hidden Netlify form + open Calendly
+      async function submitLeadAndSchedule(quizData){
+        aeDebugLog('submitLeadAndSchedule', 'before', { quizData });
+        await postLeadOnly(quizData);
+
         // Calendly popup with prefill
         openCalendlyPrefilled(quizData.firstName, quizData.email);
+        aeDebugLog('submitLeadAndSchedule', 'after', { leadId, quizData: { firstName: quizData.firstName, email: quizData.email } });
+        aeDebugRefresh('submitLeadAndSchedule');
       }
 
       // Hook into the end of your quiz. After you compute 'quizData' and show the outcome, call:
