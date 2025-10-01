@@ -121,12 +121,29 @@
         }
 
         /* Form controls: keep them light even when OS prefers dark */
-        input, select, textarea, button {
+        /* Normalize text-like controls, not checkboxes/radios */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="search"],
+        select,
+        textarea,
+        button {
             background: #ffffff !important;
             color: #0c2f4a !important;
             border: 2px solid #e5e7eb !important;
             -webkit-appearance: none;
             appearance: none;
+        }
+
+        /* Let checkboxes/radios keep native rendering (show the ✓),
+           but tint them to brand gold where supported */
+        input[type="checkbox"],
+        input[type="radio"] {
+            -webkit-appearance: checkbox;
+            appearance: checkbox;
+            accent-color: var(--accent-gold);
         }
 
         /* Autofill states can get inverted; paint them explicitly */
@@ -1079,17 +1096,17 @@
     const emailField = document.getElementById('bu_email');
     const firstField = document.getElementById('bu_first_name');
     const phoneField = document.getElementById('bu_phone');
-    const optField = document.getElementById('bu_opt_in');
+    const buOpt = document.getElementById('bu_opt_in');
     const addressField = document.getElementById('serviceAddress');
     const ensuredLeadId = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
     if (leadField) leadField.value = ensuredLeadId;
     if (emailField) emailField.value = (window.quizData?.email)||'';
     if (firstField) firstField.value = (window.quizData?.firstName)||'';
     if (phoneField) phoneField.value = (window.quizData?.phone)||'';
-    if (optField) {
-      let optVal = 'no';
-      try { optVal = localStorage.getItem('ae_optin') === 'yes' ? 'yes' : 'no'; } catch (err) {}
-      optField.value = optVal;
+    if (buOpt) {
+      let v = 'no';
+      try { v = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no'; } catch(e){}
+      buOpt.value = v;
     }
     if (addressField && !addressField.value && window.quizData?.zip) addressField.value = window.quizData.zip;
 
