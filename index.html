@@ -66,14 +66,6 @@
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
-    <!-- Reddit Pixel (required for Reddit ads tracking) -->
-    <script>
-    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
-    rdt('init','a2_hpzbegj1w700');
-    rdt('track','PageVisit');
-    </script>
-    <!-- End Reddit Pixel -->
-
     <script>
     (function(){
       const q = new URLSearchParams(location.search);
@@ -84,30 +76,14 @@
     </script>
 
     <script>
-    (function(){
-      function debugOn(){ return new URLSearchParams(location.search).get('debug') === '1'; }
-      function ready(fn){ (document.readyState === 'complete') ? fn() : window.addEventListener('load', fn); }
-
-      ready(function(){
-        const okLoader = !!window.rdt;
-        if (debugOn()) console.log('[reddit-pixel] loader present:', okLoader);
-
-        // Wait briefly for pixel.js to attach sendEvent
-        var tries = 0, t = setInterval(function(){
-          tries++;
-          var canSend = !!(window.rdt && window.rdt.sendEvent);
-          if (debugOn()) console.log('[reddit-pixel] canSend?', canSend, 'try', tries);
-          if (canSend || tries > 20){ clearInterval(t);
-            if (canSend && debugOn()){
-              try {
-                rdt('track','Custom',{label:'PixelDebug', ts: Date.now()});
-                console.log('%c[reddit-pixel] DEBUG event fired','color:#0a0');
-              } catch(e){ console.warn('[reddit-pixel] debug send failed', e); }
-            }
-          }
-        }, 150);
-      });
-    })();
+      // Bridge: send events to GTM. GTM will decide how to fire Reddit tags.
+      window.aeEvt = function(name, params){
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(Object.assign({ event: 'rdt_' + name }, params || {}));
+      };
+      // Fire a pageview-equivalent for Reddit via GTM
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'rdt_PageVisit' });
     </script>
 
     <style>
@@ -831,6 +807,7 @@
             quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId(); window.leadId = leadId;
             aeDebugLog('startQuiz', 'after', { leadId, quizData: { zip: quizData.zip, utility: quizData.utility } });
             aeDebugRefresh('startQuiz');
+            aeEvt('ViewContent', { section: 'quiz_start' });
             document.getElementById('quizSection').style.display = 'block'; document.body.style.overflow = 'hidden';
         }
 
@@ -965,7 +942,7 @@
         function openBillUpload() {
             aeDebugLog('openBillUpload', 'before', { leadId: window.leadId, quizData: window.quizData });
             try { gtag('event','begin_bill_upload'); } catch(e){}
-            try { window.rdt && rdt('track','ViewContent'); } catch(e){}
+            aeEvt('ViewContent', { section: 'bill_upload_modal' });
             document.getElementById('billUploadModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
             const zone = document.getElementById('bu_drop');
@@ -1236,7 +1213,7 @@
     syncHidden();
 
     try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-    try { window.rdt && rdt('track','Lead'); } catch(e){}
+    aeEvt('Lead', { lead_id: window.leadId || '' });
 
     const fd = new FormData(form);
     if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
@@ -1250,7 +1227,7 @@
 
     showToast("Bill received — we'll build your quote and follow up.");
     try { gtag('event','bill_uploaded'); } catch(e){}
-    try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
+    aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
 
     closeBillUpload?.();
     openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
@@ -1258,6 +1235,7 @@
 
   skipBtn?.addEventListener('click', function(){
     try { gtag('event','skip_upload'); } catch(e){}
+    aeEvt('InitiateCheckout', { path: 'skip_upload' });
     closeBillUpload?.();
     const first=(window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
     openCalendlyPrefilled(first, email);
@@ -1533,7 +1511,7 @@
       window.addEventListener('message', function(e){
         if (e && e.data && e.data.event === 'calendly.event_scheduled') {
           try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
-          try { rdt && rdt('track','Purchase'); } catch(err){}
+          aeEvt('Purchase', { method: 'calendly' });
           postOptInUpdate('calendly_scheduled');
         }
       });
@@ -1591,7 +1569,7 @@
 
         // analytics first
         try { gtag('event','generate_lead',{method:'quiz_form'}); } catch(e){}
-        try { window.rdt && rdt('track','Lead'); } catch(e){}
+        aeEvt('Lead', { lead_id: window.leadId || '' });
 
         // Netlify form POST without navigation
         try {
