@@ -20,8 +20,9 @@
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-48.png">
-<link rel="shortcut icon" href="assets/favicon-48.png">
 <link rel="apple-touch-icon" href="assets/favicon-48.png">
+<link rel="shortcut icon" href="assets/favicon-48.png">
+<meta name="msapplication-TileImage" content="assets/favicon-48.png">
 
 <!-- Open Graph (social share) -->
 <meta property="og:type" content="website">
@@ -743,6 +744,37 @@
       <input type="hidden" name="service_address" id="nf_service_address">
     </form>
 
+    <form name="lead-optin" id="lead-optin" method="POST" data-netlify="true" style="position:absolute;left:-9999px;visibility:hidden;">
+      <input type="hidden" name="form-name" value="lead-optin">
+      <input type="hidden" name="lead_id" id="oi_lead_id">
+      <input type="hidden" name="email" id="oi_email">
+      <input type="hidden" name="opt_in" id="oi_opt_in" value="no">
+      <input type="hidden" name="ts" id="oi_ts">
+    </form>
+
+    <script>
+    function postOptInUpdate(source = 'toggle'){
+      try {
+        const lead = (window.leadId ||= 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
+        const email = window.quizData?.email || '';
+        const val = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no';
+
+        const a = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        a('oi_lead_id', lead);
+        a('oi_email', email);
+        a('oi_opt_in', val);
+        a('oi_ts', new Date().toISOString());
+
+        const form = document.getElementById('lead-optin');
+        if (!form) return;
+
+        const fd = new FormData(form);
+        fd.append('source', source);
+        fetch('/', { method: 'POST', body: fd }).catch(()=>{});
+      } catch(e) { /* noop */ }
+    }
+    </script>
+
     <script>
         function aeDebugLog(name, stage, data) {
             if (!window.AE_DEBUG) return;
@@ -1392,6 +1424,7 @@
   cb && cb.addEventListener('change', ()=>{
     const on = cb.checked;
     setAll(on);
+    postOptInUpdate('toggle');
     try { gtag('event', 'opt_in_toggle', {on}); } catch(e){}
   });
 })();
@@ -1462,6 +1495,7 @@
         if (e && e.data && e.data.event === 'calendly.event_scheduled') {
           try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
           try { rdt && rdt('track','Purchase'); } catch(err){}
+          postOptInUpdate('calendly_scheduled');
         }
       });
 
