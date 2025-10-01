@@ -1120,6 +1120,7 @@
   const preview = document.getElementById('bu_preview_content');
   const skipBtn = document.getElementById('bu_skip');
   const attachBtn = document.getElementById('bu_attach_btn');
+  let picking = false;
   if(!form || !drop || !input) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -1151,9 +1152,6 @@
 
   }
   syncHidden();
-
-  // --- open picker exactly once per action ---
-  let picking = false;
 
   function openPickerOnce() {
     if (picking) return;
@@ -1223,27 +1221,32 @@
     }
 
     e.preventDefault();
-    syncHidden();
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      syncHidden();
 
-    try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-    aeEvt('Lead', { lead_id: window.leadId || '' });
+      try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
+      aeEvt('Lead', { lead_id: window.leadId || '' });
 
-    const fd = new FormData(form);
-    if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
-    try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
-    if (window.AE_DEBUG) {
-      console.debug('[AE][DEBUG] bill-upload POSTed');
-      aeDebugSetCheck('billPosted', true);
-      try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
-      aeDebugRefresh('billUploadSubmit');
+      const fd = new FormData(form);
+      if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
+      try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
+      if (window.AE_DEBUG) {
+        console.debug('[AE][DEBUG] bill-upload POSTed');
+        aeDebugSetCheck('billPosted', true);
+        try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
+        aeDebugRefresh('billUploadSubmit');
+      }
+
+      showToast("Bill received — we'll build your quote and follow up.");
+      try { gtag('event','bill_uploaded'); } catch(e){}
+      aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
+
+      closeBillUpload?.();
+      openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
-
-    showToast("Bill received — we'll build your quote and follow up.");
-    try { gtag('event','bill_uploaded'); } catch(e){}
-    aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
-
-    closeBillUpload?.();
-    openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
   });
 
   attachBtn?.addEventListener('click', () => {
