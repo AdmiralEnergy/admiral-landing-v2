@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PDPNZ37H');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Lock the document to light color scheme -->
@@ -347,6 +356,10 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPNZ37H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -1080,6 +1093,8 @@
       const btn = document.getElementById('muteToggle');
       if (!v || !btn) return;
 
+      v.muted = (typeof v.muted === 'boolean') ? v.muted : true;
+
       const sync = () => {
         btn.textContent = v.muted ? 'Unmute' : 'Mute';
         btn.setAttribute('aria-label', v.muted ? 'Unmute video' : 'Mute video');
@@ -1088,7 +1103,10 @@
 
       btn.addEventListener('click', async () => {
         v.muted = !v.muted;
-        if (v.paused) { try { await v.play(); } catch (e) {} }
+        if (v.paused) {
+          v.muted = (typeof v.muted === 'boolean') ? v.muted : true;
+          try { await v.play(); } catch (_) {}
+        }
         sync();
       });
 
@@ -1122,6 +1140,13 @@
   const skipBtn = document.getElementById('bu_skip');
   if(!form || !drop || !input) return;
 
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const updateSubmitState = () => {
+    if (!submitBtn) return;
+    submitBtn.disabled = !(input?.files?.length > 0);
+  };
+  updateSubmitState();
+
   function syncHidden(){
 
     const leadField = document.getElementById('bu_lead_id');
@@ -1152,6 +1177,7 @@
     if (picking) return;
     picking = true;
     try { input.value = ''; } catch(_) {}
+    updateSubmitState();
     input.click();
   }
 
@@ -1168,11 +1194,12 @@
   });
   drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
   ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
-  drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); } });
+  drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); updateSubmitState(); } });
   input.addEventListener('change', () => {
     picking = false;
     const f = input.files?.[0];
     if(f) renderPreview(f);
+    updateSubmitState();
   });
 
   function renderPreview(file){
@@ -1193,6 +1220,18 @@
 
 
   form.addEventListener('submit', async function(e){
+    const inputEl = document.getElementById('dukeBillInput');
+    const file = inputEl?.files?.[0];
+
+    if (!file) {
+      e.preventDefault();
+      try { showToast?.('Please attach your bill or tap “Skip — Book without upload”.'); } catch(_) {
+        alert('Please attach your bill or tap “Skip — Book without upload”.');
+      }
+      document.getElementById('bu_drop')?.focus();
+      return;
+    }
+
     e.preventDefault();
     syncHidden();
 
