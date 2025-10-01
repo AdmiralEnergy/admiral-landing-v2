@@ -525,7 +525,7 @@
                   </div>
                   <div class="outcome-buttons actions">
                       <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
-                      <button class="outcome-btn-secondary" onclick="openCalendlyPrefilled(quizData.firstName, quizData.email)">🗓️ Book my 20-min plan</button>
+                      <button class="outcome-btn-secondary" onclick="submitLeadAndSchedule(quizData)">🗓️ Book my 20-min plan</button>
                   </div>
 
                 </div>
@@ -1074,20 +1074,6 @@
 
     closeBillUpload?.();
     openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
-
-  form.addEventListener('submit', function(){
-    syncHidden();
-    try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-    try { window.rdt && rdt('track','Lead'); } catch(e){}
-    setTimeout(()=>{
-      try { showToast("Bill received — we'll build your quote and follow up."); } catch(e){}
-      try { gtag('event','bill_uploaded'); } catch(e){}
-      try { window.rdt && rdt('track','CompleteRegistration'); } catch(e){}
-      closeBillUpload?.();
-      const first = (window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
-      openCalendlyPrefilled(first, email);
-    }, 900);
-
   });
 
   skipBtn?.addEventListener('click', function(){
