@@ -80,7 +80,103 @@
       }
     });
     
-    // Reddit Pixel + GA4 unified tracking helper
+    // UTM capture and persistence system
+    window.getUtmState = function() {
+      // Get UTMs from URL or localStorage
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmParams = {};
+      
+      // UTM parameters to track
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      
+      // First check URL
+      utmKeys.forEach(key => {
+        const urlValue = urlParams.get(key);
+        if (urlValue) {
+          utmParams[key] = urlValue;
+          localStorage.setItem(key, urlValue);
+        } else {
+          // Fallback to localStorage
+          const storedValue = localStorage.getItem(key);
+          if (storedValue) {
+            utmParams[key] = storedValue;
+          }
+        }
+      });
+      
+      // Add referrer
+      utmParams.referrer = document.referrer;
+      
+      return utmParams;
+    };
+    
+    // Initialize UTMs on page load
+    getUtmState();
+    
+    // Reddit and GA4 event helpers with retry + de-dupe
+    window.fireReddit = function(eventName, payload = {}) {
+      const utms = getUtmState();
+      const finalPayload = { ...payload, ...utms };
+      
+      try {
+        rdt('track', eventName, finalPayload);
+        
+        // Retry mechanism on network issues
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        const retryOnFailure = () => {
+          if (retryCount >= maxRetries) return;
+          
+          const retry = () => {
+            retryCount++;
+            try {
+              rdt('track', eventName, finalPayload);
+            } catch(e) {
+              if (retryCount < maxRetries) {
+                setTimeout(retry, 1000 * retryCount);
+              }
+            }
+          };
+          
+          // Retry on visibility change (user comes back)
+          document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) retry();
+          }, { once: true });
+          
+          // Retry on online
+          window.addEventListener('online', retry, { once: true });
+        };
+        
+        retryOnFailure();
+      } catch(e) {
+        console.warn('Reddit tracking failed:', e);
+      }
+    };
+    
+    window.fireGA4Lead = function(lead_id, utms = {}) {
+      if (!lead_id) return;
+      
+      // De-dupe check
+      const dedupeKey = 'lead_sent_' + lead_id;
+      if (sessionStorage.getItem(dedupeKey)) {
+        return; // Already sent
+      }
+      
+      try {
+        gtag('event', 'generate_lead', {
+          lead_id: lead_id,
+          ...utms
+        });
+        
+        // Mark as sent
+        sessionStorage.setItem(dedupeKey, '1');
+      } catch(e) {
+        console.warn('GA4 lead tracking failed:', e);
+      }
+    };
+
+    // Legacy tracking function for backward compatibility
     const trackEvent = (eventName, data = {}) => {
       const leadId = data.lead_id || window.leadId || '';
       
@@ -91,71 +187,6 @@
         event_category: 'engagement',
         event_label: data.section || eventName
       });
-      
-      // Reddit Pixel tracking based on event type
-      switch(eventName) {
-        case 'lead_captured':
-        case 'quiz_step_1_complete':
-          // CompleteRegistration - lead intake form completion
-          rdt('track','CompleteRegistration', (function(){
-            var o = {};
-            if (leadId) o.lead_id = leadId;
-            return o;
-          })());
-          break;
-          
-        case 'bill_uploaded':
-          // Lead - when they submit their bill
-          rdt('track','Lead', (function(){
-            var o = {};
-            if (leadId) o.lead_id = leadId;
-            return o;
-          })());
-          break;
-          
-        case 'calendly_opened':
-          // InitiateCheckout - attempt to schedule with calendly
-          rdt('track','InitiateCheckout', (function(){
-            var o = {};
-            var p = data.path || 'calendly_modal';
-            if (p) o.path = p;
-            return o;
-          })());
-          break;
-          
-        case 'calendly_booking_completed':
-          // Purchase - book a time on calendly (triggered via Calendly webhook/callback)
-          rdt('track','Purchase', (function(){
-            var o = {};
-            var m = 'calendly';
-            if (m) o.method = m;
-            return o;
-          })());
-          break;
-          
-        case 'video_interaction':
-        case 'video_play':
-        case 'video_mute_toggle':
-          // ViewContent - video interactions and sound toggles
-          rdt('track','ViewContent', (function(){
-            var o = {};
-            var s = data.section || data.video_id || 'video_interaction';
-            if (s) o.section = s;
-            return o;
-          })());
-          break;
-          
-        case 'live_chat_opened':
-        case 'instant_callback_requested':
-        case 'exit_intent_shown':
-          // Custom events for other meaningful interactions
-          rdt('track','Custom', { 
-            customEventName: eventName,
-            lead_id: leadId,
-            context: data.section || 'engagement'
-          });
-          break;
-      }
       
       // Console log for debugging (remove in production)
       if(window.AE_DEBUG) {
@@ -1056,6 +1087,17 @@
       fd.set('opt_in', optIn);
       try { await fetch('/', { method:'POST', body: fd }); } catch(_){ }
 
+      // Track Reddit Lead and GA4 generate_lead for lead capture
+      const utm = getUtmState();
+      if (!sessionStorage.getItem('lead_sent_'+leadId)) {
+        fireReddit('Lead', { lead_id: leadId, ...utm });
+        fireGA4Lead(leadId, utm);
+        sessionStorage.setItem('lead_sent_'+leadId, '1');
+        // Push to GTM for unified triggers
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event:'lead', lead_id: leadId, ...utm });
+      }
+      
       // Track + show outcome
       aeEvt('lead_captured', { value:500, currency:'USD', lead_id: leadId });
       
@@ -1104,13 +1146,20 @@
           url: 'https://calendly.com/davide-admiralenergy/batterysolar-intro?hide_event_type_details=1&hide_gdpr_banner=1' +
                (firstName?`&name=${encodeURIComponent(firstName)}`:'') +
                (email?`&email=${encodeURIComponent(email)}`:'')}); 
+        // Track Reddit InitiateCheckout for Calendly opening
+        const utm = getUtmState();
+        fireReddit('InitiateCheckout', utm);
+        
         aeEvt('calendly_opened', { value:750, currency:'USD', lead_id: leadId });
         
         // Listen for Calendly completion events
         window.addEventListener('message', function(e) {
           if (e.data.event && e.data.event.indexOf('calendly') === 0) {
             if (e.data.event === 'calendly.event_scheduled') {
-              // Track Reddit Pixel Purchase event
+              // Track Reddit Purchase for Calendly booking
+              const utm = getUtmState();
+              fireReddit('Purchase', { value: 0, currency: 'USD', ...utm });
+              
               aeEvt('calendly_booking_completed', { 
                 value: 1000, 
                 currency: 'USD', 
@@ -1154,6 +1203,15 @@
         });
       }
     };
+    // Add Calendly InitiateCheckout tracking for any Calendly buttons
+    document.addEventListener('click', (e) => {
+      const calendlyButton = e.target.closest('[data-calendly-open], #bookCall');
+      if (calendlyButton) {
+        const utm = getUtmState();
+        fireReddit('InitiateCheckout', utm);
+      }
+    });
+    
     $('#bookCall').addEventListener('click', ()=>{
       const s = loadState();
       openCalendlyPrefilled(s?.firstName||'', s?.email||'');
@@ -1292,6 +1350,17 @@
         aeEvt('file_upload', { type:'duke_bill', lead_id: leadId });
         const fd=new FormData(form);
         try{ await fetch('/', { method:'POST', body:fd }); }catch(_){}
+        // Track Reddit Lead and GA4 generate_lead for bill upload
+        const utm = getUtmState();
+        const lead_id = window.leadId || window.formId || (Date.now()+'-'+Math.random().toString(16).slice(2));
+        if (!sessionStorage.getItem('lead_sent_'+lead_id)) {
+          fireReddit('Lead', { lead_id, ...utm });
+          fireGA4Lead(lead_id, utm);
+          sessionStorage.setItem('lead_sent_'+lead_id, '1');
+          // Push to GTM for unified triggers
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event:'lead', lead_id, ...utm });
+        }
         aeEvt('bill_uploaded', { value:1000, currency:'USD', lead_id: leadId });
         showToast("Bill received — we'll build your quote and follow up.");
         close();

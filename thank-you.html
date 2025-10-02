@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="supported-color-schemes" content="light" />
+  <meta name="theme-color" content="#f7f5f2" />
+
+  <title>Thank You - Admiral Energy</title>
+
+  <!-- Favicon set -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png?v=2" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=2" />
+
+  <!-- GTM -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PDPNZ37H');
+  </script>
+
+  <!-- Reddit Pixel -->
+  <script>
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){
+    p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};
+    p.callQueue=[];var t=d.createElement("script");
+    t.src="https://www.redditstatic.com/ads/pixel.js";t.async=!0;
+    var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}
+    (window,document);
+    rdt('init','a2_hpzbegj1w700');
+    rdt('track','PageVisit');
+  </script>
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-RX78MRB03L', {
+      send_page_view: true
+    });
+
+    // UTM capture and persistence system
+    window.getUtmState = function() {
+      // Get UTMs from URL or localStorage
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmParams = {};
+      
+      // UTM parameters to track
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      
+      // First check URL
+      utmKeys.forEach(key => {
+        const urlValue = urlParams.get(key);
+        if (urlValue) {
+          utmParams[key] = urlValue;
+          localStorage.setItem(key, urlValue);
+        } else {
+          // Fallback to localStorage
+          const storedValue = localStorage.getItem(key);
+          if (storedValue) {
+            utmParams[key] = storedValue;
+          }
+        }
+      });
+      
+      return utmParams;
+    };
+    
+    // Initialize UTMs
+    getUtmState();
+    
+    // Track page view with UTMs for context
+    gtag('event', 'page_view', {
+      page_title: 'Thank You Page',
+      page_location: window.location.href,
+      ...getUtmState()
+    });
+
+    // Check if we should fire Lead event (only if not already sent in this session)
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const leadId = urlParams.get('lead_id');
+      
+      if (leadId) {
+        const dedupeKey = 'lead_sent_' + leadId;
+        if (!sessionStorage.getItem(dedupeKey)) {
+          // This page was accessed directly without going through the lead form
+          // Don't fire Lead event to avoid duplicates
+        }
+      }
+    })();
+  </script>
+
+  <style>
+    :root{
+      --primary-navy:#0c2f4a; --accent-gold:#c9a648; --dark-gold:#9b7b2d; --bone-white:#f7f5f2; --text-gray:#4a5568;
+    }
+    *{box-sizing:border-box} 
+    html,body{margin:0;padding:0;font-family:"Rubik",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:var(--bone-white);color:#1f2937}
+    
+    .container{max-width:800px;margin:0 auto;padding:2rem 1rem}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(12,47,74,.06);padding:2rem}
+    .btn{padding:1rem 1.5rem;border-radius:12px;border:none;font-weight:700;cursor:pointer;transition:all .2s ease;text-decoration:none;display:inline-block;text-align:center}
+    .btn-primary{background:linear-gradient(135deg,var(--accent-gold),var(--dark-gold));color:#fff}
+    .btn-primary:hover{background:linear-gradient(135deg,var(--dark-gold),var(--accent-gold));transform:translateY(-1px)}
+    
+    .success-icon{font-size:4rem;text-align:center;margin-bottom:1rem}
+    .next-steps{display:grid;gap:1rem;margin-top:2rem}
+    .step{padding:1rem;background:rgba(201,166,72,.05);border-radius:12px;border-left:4px solid var(--accent-gold)}
+    
+    @media (max-width:768px) {
+      .container{padding:1rem}
+      .card{padding:1.5rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- GTM (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPNZ37H" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <div class="container">
+    <div class="card">
+      <div class="success-icon">✅</div>
+      <h1 style="text-align:center;color:var(--primary-navy);margin:0 0 1rem">Thank You!</h1>
+      <p style="text-align:center;font-size:1.1rem;color:var(--text-gray);margin:0 0 2rem">Your information has been received. We'll be in touch with your personalized solar assessment and Duke PowerPair eligibility within 24 hours.</p>
+      
+      <div style="background:linear-gradient(135deg,rgba(201,166,72,.1),rgba(201,166,72,.05));padding:1.5rem;border-radius:12px;margin:1.5rem 0">
+        <h3 style="margin:0 0 1rem;color:var(--primary-navy)">What Happens Next?</h3>
+        <div class="next-steps">
+          <div class="step">
+            <strong>Step 1:</strong> Our team reviews your information and runs preliminary calculations
+          </div>
+          <div class="step">
+            <strong>Step 2:</strong> We'll email your personalized savings estimate within 24 hours
+          </div>
+          <div class="step">
+            <strong>Step 3:</strong> Schedule your free consultation to discuss Duke PowerPair rebates (up to $9,000!)
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align:center;margin-top:2rem">
+        <p style="margin:0 0 1rem;color:var(--text-gray)">Questions in the meantime?</p>
+        <a href="/" class="btn btn-primary">← Back to Homepage</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center;padding:2rem;color:#6b7280">
+    © <span id="year">2024</span> Admiral Energy — Charlotte, NC • Licensed & Insured
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Track time spent on thank you page
+    const startTime = Date.now();
+    window.addEventListener('beforeunload', () => {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+      gtag('event', 'page_engagement', {
+        page_title: 'Thank You Page',
+        engagement_time_msec: timeSpent * 1000
+      });
+    });
+  </script>
+</body>
+</html>
