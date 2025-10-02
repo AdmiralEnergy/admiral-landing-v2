@@ -325,17 +325,101 @@
     /* Better button spacing */
     .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem}
     
+    /* Enhanced mobile optimization */
     @media (max-width:880px){
-      .hero{grid-template-columns:1fr}
-      .actions{display:grid;grid-template-columns:1fr;gap:.5rem}
-      .actions .btn{flex:1 1 100%;min-width:0;margin:0;padding:1rem;font-size:16px}
-      video{width:100%;height:auto}
-      .urgency-banner{font-size:.8rem;padding:.4rem .6rem}
-      .savings-preview{padding:.5rem}
-      .next-steps{grid-template-columns:1fr;gap:1rem}
+      /* Container and spacing improvements */
+      .container{padding:1rem}
+      
+      /* Header optimizations */
+      header{padding:.5rem 0}
+      .hero{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem 0}
+      .hero > div:first-child{order:1}
+      .hero > div:last-child{order:2}
+      
+      /* Typography scaling for mobile */
+      .hero h1{font-size:1.8rem !important;line-height:1.2 !important;margin-bottom:.5rem !important}
+      .hero p{font-size:.95rem;line-height:1.4;margin:.4rem 0 .75rem !important}
+      
+      /* Urgency banner mobile optimization */
+      .urgency-banner{font-size:.85rem !important;padding:.6rem !important;margin-bottom:1rem !important;line-height:1.3}
+      
+      /* Badge row mobile optimization */
+      .badgeRow{gap:.4rem;justify-content:center;margin:.75rem 0 1rem}
+      .badgeRow span{font-size:.75rem;padding:.3rem .5rem}
+      
+      /* Form optimizations */
+      .cta{flex-direction:column;gap:.75rem}
+      .cta input, .cta select{padding:1rem;font-size:16px;border-radius:8px}
+      .cta button{padding:1rem;font-size:16px;border-radius:8px;font-weight:700}
+      
+      /* Card padding adjustments */
+      .cardPad{padding:.75rem}
+      
+      /* Video container mobile optimization */
+      .video-container{margin:0;border-radius:12px}
+      video{width:100%;height:auto;border-radius:12px}
+      
+      /* Actions/buttons mobile optimization */
+      .actions{display:grid;grid-template-columns:1fr;gap:.75rem;margin-top:1rem}
+      .actions .btn{flex:1 1 100%;min-width:0;margin:0;padding:1rem;font-size:16px;text-align:center;border-radius:8px}
+      
+      /* Quiz optimizations */
+      .quiz h3{font-size:1.3rem;margin-bottom:.75rem}
+      .bill-display{font-size:1.6rem;margin:.5rem 0}
+      .savings-preview{padding:.75rem;margin:.75rem 0;border-radius:8px}
+      .savings-preview p{font-size:.85rem;margin:.25rem 0}
+      
+      /* Lead form mobile optimization */
+      .lead-form > div{grid-template-columns:1fr !important;gap:.75rem}
+      .lead-form input{padding:1rem;font-size:16px;border-radius:8px}
+      
+      /* Options grid mobile */
+      .options-grid{grid-template-columns:1fr;gap:.75rem}
+      .option-card{padding:1rem;font-size:.9rem;border-radius:8px}
+      
+      /* Outcome section mobile */
+      .outcome-card{padding:1.5rem;border-radius:16px}
+      .outcome-card h2{font-size:1.4rem;margin:.25rem 0 .5rem}
+      .savings-highlight{font-size:2rem !important}
+      
+      /* Next steps mobile layout */
+      .next-steps{grid-template-columns:1fr;gap:1.5rem}
+      
+      /* Trust section mobile */
+      .trust{padding:2rem 0}
+      .trust h2{font-size:1.6rem;margin-bottom:1.5rem}
+      .badges{gap:1rem;margin-bottom:1.5rem}
+      .badge{text-align:center}
+      .badge span{font-size:.8rem}
+      
+      /* Testimonials mobile */
+      .card[style*="grid-template-columns"]{display:block !important}
+      .card blockquote{margin-bottom:1rem !important}
+      .card blockquote:last-child{margin-bottom:0 !important}
+      
+      /* Touch controls */
       .touch-controls{display:flex}
-      .options-grid{grid-template-columns:1fr;gap:.5rem}
-      .option-card{padding:.75rem;font-size:.9rem}
+      
+      /* Modal optimizations */
+      .modal{padding:.5rem}
+      .modal .box{margin:1rem auto;padding:1rem;border-radius:16px}
+      
+      /* Upload zone mobile */
+      .upload-zone{padding:1.5rem;border-radius:8px;font-size:.9rem}
+      
+      /* Bill slider mobile */
+      #billSlider{width:100%;margin:.75rem 0}
+    }
+    
+    /* Additional mobile breakpoint for very small screens */
+    @media (max-width:480px){
+      .container{padding:.75rem}
+      .hero{padding:1rem 0}
+      .hero h1{font-size:1.6rem !important}
+      .cardPad{padding:.5rem}
+      .outcome-card{padding:1rem}
+      .savings-highlight{font-size:1.8rem !important}
+      .badges{flex-direction:column;align-items:center;gap:.75rem}
     }
   </style>
 </head>
