@@ -127,7 +127,8 @@ exports.handler = async (event, context) => {
     });
 
     // Call our SMS send function
-    const smsResponse = await fetch(`${context.functionUrl}/sms-send`, {
+    const functionBaseUrl = process.env.URL || 'http://localhost:8888';
+    const smsResponse = await fetch(`${functionBaseUrl}/.netlify/functions/sms-send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(smsPayload)

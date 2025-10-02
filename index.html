@@ -118,6 +118,12 @@
       const utms = getUtmState();
       const finalPayload = { ...payload, ...utms };
       
+      // Debug mode: log but don't send
+      if (window.AE_DEBUG) {
+        console.log('[Reddit Debug]', eventName, finalPayload);
+        return;
+      }
+      
       try {
         rdt('track', eventName, finalPayload);
         
@@ -161,6 +167,11 @@
       const dedupeKey = 'lead_sent_' + lead_id;
       if (sessionStorage.getItem(dedupeKey)) {
         return; // Already sent
+      }
+      
+      // Debug mode: log but still send to GA4 (GA4 has its own debug view)
+      if (window.AE_DEBUG) {
+        console.log('[GA4 Debug] generate_lead', { lead_id, ...utms });
       }
       
       try {

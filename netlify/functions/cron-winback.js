@@ -50,7 +50,8 @@ exports.handler = async (event, context) => {
           console.log(`Triggering winback for lead: ${lead.leadId}`);
 
           // Call SMS triggers function
-          const triggerResponse = await fetch(`${context.functionUrl}/sms-triggers`, {
+          const functionBaseUrl = process.env.URL || 'http://localhost:8888';
+          const triggerResponse = await fetch(`${functionBaseUrl}/.netlify/functions/sms-triggers`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(triggerPayload)
