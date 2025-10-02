@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=2">
+    <link rel="icon" href="/assets/favicon.ico?v=2" sizes="any">
+    <link rel="shortcut icon" href="/assets/favicon.ico?v=2">
+
     <!-- Google Tag Manager -->
     <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -19,33 +27,21 @@
     <!-- Ensure browser UI (address bar/status bar) uses our light palette -->
     <meta name="theme-color" content="#f7f5f2">
 
-<!-- Display & status bar -->
-<meta name="color-scheme" content="light">
-<meta name="supported-color-schemes" content="light">
-<meta name="theme-color" content="#f7f5f2">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-48.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-48.png">
-<link rel="apple-touch-icon" href="assets/favicon-48.png">
-<link rel="shortcut icon" href="assets/favicon-48.png">
-<meta name="msapplication-TileImage" content="assets/favicon-48.png">
+    <!-- Open Graph (social share) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
+    <meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
+    <meta property="og:image" content="assets/share-image.png">
+    <meta property="og:url" content="https://admiralenergy.netlify.app">
+    <meta property="og:site_name" content="Admiral Energy">
 
-<!-- Open Graph (social share) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
-<meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-<meta property="og:image" content="assets/share-image.png">
-<meta property="og:url" content="https://admiralenergy.netlify.app">
-<meta property="og:site_name" content="Admiral Energy">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
-<meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-<meta name="twitter:image" content="assets/share-image.png">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
+    <meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
+    <meta name="twitter:image" content="assets/share-image.png">
 
     <title>Admiral Energy - Lower Bills. Quiet Backup. Solar That Fits your home.</title>
     
@@ -242,6 +238,7 @@
         .savings-highlight { background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3rem; font-weight: 900; margin: 1rem 0; }
         .outcome-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
         .outcome-btn-primary { padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .outcome-btn-primary[disabled] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
         .outcome-btn-secondary { padding: 1rem 2rem; background: transparent; color: var(--primary-navy); border: 2px solid var(--primary-navy); border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
 
         /* Bill Upload Modal */
@@ -250,6 +247,7 @@
         .upload-zone { border: 2px dashed var(--accent-gold); border-radius: 10px; padding: 3rem; text-align: center; background: rgba(201,166,72,0.05); cursor: pointer; transition: all 0.3s ease; margin: 2rem 0; }
         .upload-zone:hover { background: rgba(201,166,72,0.1); border-color: var(--dark-gold); }
         .upload-zone.dragover { background: rgba(201,166,72,0.15); transform: scale(1.02); }
+        #bu_drop.dragover { outline: 2px dashed currentColor; filter: brightness(1.05); }
         .file-preview { margin: 2rem 0; padding: 1rem; background: var(--bone-white); border-radius: 10px; }
         .file-preview[hidden] { display: none; }
         .file-preview img { max-width: 100%; max-height: 200px; border-radius: 5px; }
@@ -589,6 +587,8 @@
                 <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse — PDF, JPG, PNG, HEIC • Max 10 MB</p>
               </div>
 
+              <button type="button" class="outcome-btn-secondary" id="bu_attach_btn" style="width:100%; margin-top:0.75rem;">📎 Attach bill</button>
+
               <input type="file" id="dukeBillInput" name="duke_bill" accept=".pdf,.jpg,.jpeg,.png,.heic,image/*,application/pdf" style="display:none;">
 
               <div class="file-preview" id="bu_preview" hidden>
@@ -601,7 +601,7 @@
                      style="width:100%; padding:.75rem; border:1px solid #d7d3cb; border-radius:10px; background:#fff;">
 
               <div class="bu-actions" style="display:flex; gap:.75rem; margin-top:1rem; justify-content:center;">
-                <button type="submit" class="outcome-btn-primary">Submit & Book My Review Call</button>
+                <button type="submit" class="outcome-btn-primary" disabled>Submit & Book My Review Call</button>
                 <button type="button" class="outcome-btn-secondary" id="bu_skip">Skip — Book without upload</button>
               </div>
             </form>
@@ -1115,6 +1115,8 @@
   const previewWrap = document.getElementById('bu_preview');
   const preview = document.getElementById('bu_preview_content');
   const skipBtn = document.getElementById('bu_skip');
+  const attachBtn = document.getElementById('bu_attach_btn');
+  let picking = false;
   if(!form || !drop || !input) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -1146,9 +1148,6 @@
 
   }
   syncHidden();
-
-  // --- open picker exactly once per action ---
-  let picking = false;
 
   function openPickerOnce() {
     if (picking) return;
@@ -1197,40 +1196,60 @@
 
 
   form.addEventListener('submit', async function(e){
-    const inputEl = document.getElementById('dukeBillInput');
-    const file = inputEl?.files?.[0];
+    const file = input?.files?.[0];
 
     if (!file) {
       e.preventDefault();
-      try { showToast?.('Please attach your bill or tap “Skip — Book without upload”.'); } catch(_) {
-        alert('Please attach your bill or tap “Skip — Book without upload”.');
-      }
-      document.getElementById('bu_drop')?.focus();
+
+      try { showToast?.('Attach your bill to continue (PDF/JPG/PNG/HEIC, up to 10 MB).'); } catch (_) {}
+
+      try { input.value = ''; } catch (_) {}
+      updateSubmitState();
+
+      try {
+        drop?.classList?.add('dragover');
+        setTimeout(() => drop?.classList?.remove('dragover'), 800);
+      } catch (_) {}
+
+      picking = false;
+      input.click();
       return;
     }
 
     e.preventDefault();
-    syncHidden();
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      syncHidden();
 
-    try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-    aeEvt('Lead', { lead_id: window.leadId || '' });
+      try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
+      aeEvt('Lead', { lead_id: window.leadId || '' });
 
-    const fd = new FormData(form);
-    if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
-    try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
-    if (window.AE_DEBUG) {
-      console.debug('[AE][DEBUG] bill-upload POSTed');
-      aeDebugSetCheck('billPosted', true);
-      try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
-      aeDebugRefresh('billUploadSubmit');
+      const fd = new FormData(form);
+      if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
+      try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
+      if (window.AE_DEBUG) {
+        console.debug('[AE][DEBUG] bill-upload POSTed');
+        aeDebugSetCheck('billPosted', true);
+        try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
+        aeDebugRefresh('billUploadSubmit');
+      }
+
+      showToast("Bill received — we'll build your quote and follow up.");
+      try { gtag('event','bill_uploaded'); } catch(e){}
+      aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
+
+      closeBillUpload?.();
+      openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
+  });
 
-    showToast("Bill received — we'll build your quote and follow up.");
-    try { gtag('event','bill_uploaded'); } catch(e){}
-    aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
-
-    closeBillUpload?.();
-    openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
+  attachBtn?.addEventListener('click', () => {
+    picking = false;
+    try { input.value = ''; } catch (_) {}
+    updateSubmitState();
+    input.click();
   });
 
   skipBtn?.addEventListener('click', function(){

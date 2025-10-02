@@ -1,0 +1,10 @@
+# generated favicons
+/assets/apple-touch-icon.png
+/assets/favicon-16.png
+/assets/favicon-32.png
+/assets/favicon-48.png
+/assets/favicon.ico
+# optional: other heavy assets we don't want in Git
+/assets/*.mp4
+/assets/*.mov
+/assets/*.heic

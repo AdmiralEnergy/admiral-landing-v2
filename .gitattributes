@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Do not show diffs for binary assets that may be generated locally
+*.png -diff
+*.ico -diff

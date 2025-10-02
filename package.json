@@ -1,0 +1,8 @@
+{
+  "name": "admiral-landpage",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "favicons": "node scripts/gen-favicons.js"
+  }
+}
