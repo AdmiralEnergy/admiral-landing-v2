@@ -8,3 +8,6 @@
 /assets/*.mp4
 /assets/*.mov
 /assets/*.heic
+
+# Local Netlify folder
+.netlify

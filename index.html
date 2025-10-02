@@ -1,1631 +1,1597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
-    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=2">
-    <link rel="icon" href="/assets/favicon.ico?v=2" sizes="any">
-    <link rel="shortcut icon" href="/assets/favicon.ico?v=2">
+  <!-- Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="supported-color-schemes" content="light" />
+  <meta name="theme-color" content="#f7f5f2" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <!-- Google Tag Manager -->
-    <script>
+  <title>Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.</title>
+
+  <!-- Favicon set (generated at build) -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png?v=2" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=2" />
+  <link rel="icon" href="/assets/favicon.ico?v=2" sizes="any" />
+  <link rel="shortcut icon" href="/assets/favicon.ico?v=2" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits." />
+  <meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam." />
+  <meta property="og:image" content="/assets/share-image.png" />
+  <meta property="og:url" content="https://admiralenergy.netlify.app" />
+  <meta property="og:site_name" content="Admiral Energy" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits." />
+  <meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam." />
+  <meta name="twitter:image" content="/assets/share-image.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Calendly -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+  <!-- GTM -->
+  <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PDPNZ37H');
-    </script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Lock the document to light color scheme -->
-    <meta name="color-scheme" content="light">
-    <meta name="supported-color-schemes" content="light">
+  </script>
 
-    <!-- Ensure browser UI (address bar/status bar) uses our light palette -->
-    <meta name="theme-color" content="#f7f5f2">
+  <!-- Reddit Pixel -->
+  <script>
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){
+    p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};
+    p.callQueue=[];var t=d.createElement("script");
+    t.src="https://www.redditstatic.com/ads/pixel.js";t.async=!0;
+    var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}
+    (window,document);
+    rdt('init','a2_hpzbegj1w700');
+    rdt('track','PageVisit');
+  </script>
 
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-    <!-- Open Graph (social share) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
-    <meta property="og:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-    <meta property="og:image" content="assets/share-image.png">
-    <meta property="og:url" content="https://admiralenergy.netlify.app">
-    <meta property="og:site_name" content="Admiral Energy">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Admiral Energy — Lower Bills. Quiet Backup. Solar That Fits.">
-    <meta name="twitter:description" content="60 seconds to check fit for solar + battery. No pressure, no spam.">
-    <meta name="twitter:image" content="assets/share-image.png">
-
-    <title>Admiral Energy - Lower Bills. Quiet Backup. Solar That Fits your home.</title>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-RX78MRB03L', {
+      // Enhanced conversion tracking
+      send_page_view: true,
+      custom_map: {
+        'custom_parameter_1': 'lead_id',
+        'custom_parameter_2': 'bill_amount',
+        'custom_parameter_3': 'zip_code',
+        'custom_parameter_4': 'utility_provider'
+      }
+    });
     
-    <!-- Add Rubik font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    // Reddit Pixel + GA4 unified tracking helper
+    const trackEvent = (eventName, data = {}) => {
+      const leadId = data.lead_id || window.leadId || '';
+      
+      // GA4 tracking (existing)
+      gtag('event', eventName, {
+        ...data,
+        lead_id: leadId,
+        event_category: 'engagement',
+        event_label: data.section || eventName
+      });
+      
+      // Reddit Pixel tracking based on event type
+      switch(eventName) {
+        case 'lead_captured':
+        case 'quiz_step_1_complete':
+          // CompleteRegistration - lead intake form completion
+          rdt('track','CompleteRegistration', (function(){
+            var o = {};
+            if (leadId) o.lead_id = leadId;
+            return o;
+          })());
+          break;
+          
+        case 'bill_uploaded':
+          // Lead - when they submit their bill
+          rdt('track','Lead', (function(){
+            var o = {};
+            if (leadId) o.lead_id = leadId;
+            return o;
+          })());
+          break;
+          
+        case 'calendly_opened':
+          // InitiateCheckout - attempt to schedule with calendly
+          rdt('track','InitiateCheckout', (function(){
+            var o = {};
+            var p = data.path || 'calendly_modal';
+            if (p) o.path = p;
+            return o;
+          })());
+          break;
+          
+        case 'calendly_booking_completed':
+          // Purchase - book a time on calendly (triggered via Calendly webhook/callback)
+          rdt('track','Purchase', (function(){
+            var o = {};
+            var m = 'calendly';
+            if (m) o.method = m;
+            return o;
+          })());
+          break;
+          
+        case 'video_interaction':
+        case 'video_play':
+        case 'video_mute_toggle':
+          // ViewContent - video interactions and sound toggles
+          rdt('track','ViewContent', (function(){
+            var o = {};
+            var s = data.section || data.video_id || 'video_interaction';
+            if (s) o.section = s;
+            return o;
+          })());
+          break;
+          
+        case 'live_chat_opened':
+        case 'instant_callback_requested':
+        case 'exit_intent_shown':
+          // Custom events for other meaningful interactions
+          rdt('track','Custom', { 
+            customEventName: eventName,
+            lead_id: leadId,
+            context: data.section || 'engagement'
+          });
+          break;
+      }
+      
+      // Console log for debugging (remove in production)
+      if(window.AE_DEBUG) {
+        console.log('[Tracking]', eventName, data);
+      }
+    };
 
-    <!-- GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RX78MRB03L');
-    </script>
+    // Enhanced ecommerce tracking for lead funnel
+    const trackFunnelStep = (step, action, data = {}) => {
+      // Use unified tracking
+      trackEvent('funnel_step', {
+        funnel_step: step,
+        funnel_action: action,
+        value: data.value || 0,
+        currency: 'USD',
+        ...data
+      });
+    };
+    
+    // Page engagement tracking
+    let pageStartTime = Date.now();
+    let maxScroll = 0;
+    let formInteractions = 0;
+    
+    // Track scroll depth
+    window.addEventListener('scroll', () => {
+      const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      maxScroll = Math.max(maxScroll, scrollPercent);
+      
+      // Track milestone scrolls
+      if (scrollPercent > 0 && scrollPercent % 25 === 0 && !window[`scroll_${scrollPercent}`]) {
+        window[`scroll_${scrollPercent}`] = true;
+        gtag('event', 'scroll', {
+          scroll_depth: scrollPercent,
+          page_title: document.title
+        });
+      }
+    });
+    
+    // Track time on page and engagement on unload
+    window.addEventListener('beforeunload', () => {
+      const timeOnPage = Math.round((Date.now() - pageStartTime) / 1000);
+      gtag('event', 'page_engagement', {
+        engagement_time_msec: timeOnPage * 1000,
+        max_scroll_depth: maxScroll,
+        form_interactions: formInteractions
+      });
+    });
+  </script>
 
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <style>
+    :root{
+      --primary-navy:#0c2f4a; --accent-gold:#c9a648; --dark-gold:#9b7b2d; --bone-white:#f7f5f2; --text-gray:#4a5568; /* Darker for better contrast */
+    }
+    *{box-sizing:border-box} html,body{margin:0;padding:0;font-family:"Rubik",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:var(--bone-white);color:#1f2937}
+    a{color:var(--primary-navy)}
+    
+    /* Micro-animations */
+    .btn{padding:.95rem 1rem;border-radius:12px;border:none;font-weight:700;cursor:pointer;transition:all .2s ease}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .btn:active{transform:translateY(0)}
+    .btn-primary{background:linear-gradient(135deg,var(--accent-gold),var(--dark-gold));color:#fff}
+    .btn-primary:hover{background:linear-gradient(135deg,var(--dark-gold),var(--accent-gold));box-shadow:0 6px 20px rgba(201,166,72,.4)}
+    .btn-secondary{background:transparent;color:var(--primary-navy);border:2px solid var(--primary-navy)}
+    .btn-secondary:hover{background:var(--primary-navy);color:white}
+    
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(12,47,74,.06);transition:transform .2s ease,box-shadow .2s ease}
+    .card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(12,47,74,.1)}
+    
+    .option-card{padding:1rem;border:2px solid #e5e7eb;border-radius:10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s ease}
+    .option-card:hover{border-color:var(--accent-gold);transform:translateY(-2px);box-shadow:0 4px 12px rgba(201,166,72,.15)}
+    .option-card.selected{border-color:var(--accent-gold);background:linear-gradient(135deg,rgba(201,166,72,.08),rgba(201,166,72,.03));animation:pulse .3s ease}
+    
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+    
+    .urgency-banner{animation:slideIn .5s ease}
+    .savings-preview{animation:fade .4s ease .1s both}
+    
+    /* Form animations */
+    .cta input, .cta select{flex:1;padding:.9rem;border-radius:12px;border:1px solid #d7d3cb;background:#fff;min-width:0;transition:all .2s ease}
+    .cta input:focus, .cta select:focus{border-color:var(--accent-gold);box-shadow:0 0 0 3px rgba(201,166,72,.1);transform:translateY(-1px)}
+    
+    /* Layout */
+    .container{max-width:1100px;margin:0 auto;padding:1.25rem}
+    header{background:linear-gradient(135deg,#fff,rgba(201,166,72,.08));border-bottom:1px solid #eee}
+    .hero{display:grid;gap:1.25rem;grid-template-columns:1.2fr .8fr;align-items:center;padding:2rem 0}
+    .badgeRow{display:flex;gap:.75rem;flex-wrap:wrap;margin:.5rem 0}
+    .badgeRow span{background:#fff;border:1px solid #e5e7eb;padding:.35rem .6rem;border-radius:999px;font-size:.8rem}
+    .cardPad{padding:1rem}
+    .cta{display:flex;gap:.5rem}
 
-    <script>
-    (function(){
-      const q = new URLSearchParams(location.search);
-      window.AE_DEBUG = window.AE_DEBUG || (q.get('debug') === '1');
-      if (!window.AE_DEBUG) return;
-      console.log('[AE][DEBUG] enabled');
-    })();
-    </script>
+    /* Progress */
+    .progress{height:8px;background:#ececec;border-radius:999px;overflow:hidden;margin:.5rem 0}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent-gold),var(--dark-gold));transition:width .35s ease}
 
-    <script>
-      // Bridge: send events to GTM. GTM will decide how to fire Reddit tags.
-      window.aeEvt = function(name, params){
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(Object.assign({ event: 'rdt_' + name }, params || {}));
-      };
-      // Fire a pageview-equivalent for Reddit via GTM
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'rdt_PageVisit' });
-    </script>
+    /* Quiz */
+    .quiz{margin-top:1rem}
+    .quiz-step{display:none}
+    .quiz-step.active{display:block;animation:fade .35s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    .options-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+    .option-card{padding:1rem;border:2px solid #e5e7eb;border-radius:10px;text-align:center;cursor:pointer;background:#fff;transition:.2s}
+    .option-card:hover{border-color:var(--accent-gold);transform:translateY(-2px)}
+    .option-card.selected{border-color:var(--accent-gold);background:linear-gradient(135deg,rgba(201,166,72,.08),rgba(201,166,72,.03))}
 
-        /* Force a light-only site, including form controls */
-        :root, html, body { color-scheme: light; background: #f7f5f2; color: #0c2f4a; }
+    .bill-display{text-align:center;font-size:1.8rem;font-weight:800;color:var(--primary-navy)}
 
-        /* Important surfaces that were being auto-darkened on Android/Samsung */
-        nav,
-        .hero,
-        .hero-form,
-        .quiz-container,
-        .faq-item,
-        .trust-section,
-        .outcome-card,
-        .sticky-cta,
-        .bill-upload-container {
-            background-color: #ffffff; /* or use #f7f5f2 where appropriate */
-            color: #0c2f4a;
-        }
+    .outcome-card{background:linear-gradient(135deg,#fff,rgba(201,166,72,.05));border-radius:20px;padding:2rem;margin-top:1rem}
+    .savings-highlight{background:linear-gradient(135deg,var(--accent-gold),var(--dark-gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:2.4rem;font-weight:900}
 
-        /* Form controls: keep them light even when OS prefers dark */
-        /* Normalize text-like controls, not checkboxes/radios */
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="number"],
-        input[type="search"],
-        select,
-        textarea,
-        button {
-            background: #ffffff !important;
-            color: #0c2f4a !important;
-            border: 2px solid #e5e7eb !important;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+    .next-steps{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:start;margin-top:1rem}
+    .actions{display:flex;gap:.75rem;flex-wrap:wrap}
+    .actions .btn{min-width:160px;margin:.25rem}
 
-        /* Let checkboxes/radios keep native rendering (show the ✓),
-           but tint them to brand gold where supported */
-        input[type="checkbox"],
-        input[type="radio"] {
-            -webkit-appearance: checkbox;
-            appearance: checkbox;
-            accent-color: var(--accent-gold);
-        }
+    /* Upload Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;padding:1rem;overflow:auto}
+    .modal .box{max-width:620px;margin:2rem auto;background:#fff;border-radius:20px;padding:1.5rem}
+    .upload-zone{border:2px dashed var(--accent-gold);border-radius:12px;padding:2rem;text-align:center;background:rgba(201,166,72,.06);cursor:pointer}
+    .upload-zone:hover{background:rgba(201,166,72,.1)}
+    .upload-zone.dragover{background:rgba(201,166,72,.15);transform:scale(1.01)}
+    .file-preview{margin-top:1rem;padding:1rem;background:var(--bone-white);border-radius:10px}
 
-        /* Autofill states can get inverted; paint them explicitly */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus {
-            -webkit-text-fill-color: #0c2f4a;
-            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
-                    box-shadow: 0 0 0px 1000px #ffffff inset;
-            transition: background-color 9999s ease-in-out 0s;
-        }
+    /* Trust */
+    .trust{padding:3rem 0}
+    .badges{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+    .badge{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+    .badge .ico{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,rgba(201,166,72,.1),rgba(201,166,72,.05))}
 
-        /* Defensive override: even if the user prefers dark, we still serve light */
-        @media (prefers-color-scheme: dark) {
-            html, body { background: #f7f5f2 !important; color: #0c2f4a !important; }
-            input, select, textarea, button {
-                background: #ffffff !important; color: #0c2f4a !important; border-color: #e5e7eb !important;
-            }
-            nav, .hero, .hero-form, .quiz-container, .faq-item, .trust-section,
-            .outcome-card, .sticky-cta, .bill-upload-container {
-                background-color: #ffffff !important; color: #0c2f4a !important;
-            }
-        }
+    footer{padding:2rem 0;color:#6b7280;text-align:center}
 
-        :root {
-            --primary-navy: #0c2f4a;
-            --accent-gold: #c9a648;
-            --bone-white: #f7f5f2;
-            --dark-gold: #a08537;
-            --light-navy: #1a4568;
-            --text-gray: #4a5568;
-            --success-green: #10b981;
-        }
-
-        body {
-            font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-            background: var(--bone-white);
-            color: var(--primary-navy);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: translateY(0);} }
-        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px);} to { opacity: 1; transform: translateX(0);} }
-        @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.05);} }
-        @keyframes shimmer { 0% { background-position: -1000px 0;} 100% { background-position: 1000px 0;} }
-        @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-10px);} }
-
-        @media (prefers-reduced-motion: reduce){
-          * { animation: none !important; transition: none !important; }
-        }
-
-        /* Navigation */
-        nav { position: fixed; top: 0; width: 100%; background: rgba(247,245,242,0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 2rem; box-shadow: 0 2px 20px rgba(12,47,74,0.1); animation: fadeInUp 0.8s ease-out; }
-        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-navy); display: flex; align-items: center; gap: 0.5rem; }
-        .logo::before { content: none !important; }
-
-        /* Hero Section */
-        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem; background: linear-gradient(135deg, var(--bone-white) 0%, rgba(201,166,72,0.1) 100%); position: relative; overflow: hidden; }
-        .hero::before { content: ""; position: absolute; top: -50%; right: -25%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(201,166,72,0.1) 0%, transparent 70%); animation: float 20s ease-in-out infinite; }
-        .hero-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
-        .hero-video { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(12,47,74,0.2); animation: slideInLeft 1s ease-out; background: var(--primary-navy); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
-        .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
-        .video-placeholder { text-align: center; color: white; padding: 2rem; }
-        .admiral-avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; animation: pulse 3s infinite; }
-
-        .hero-content { animation: fadeInUp 1s ease-out 0.3s both; }
-        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--primary-navy), var(--light-navy)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero-subtitle { font-size: 1.3rem; color: var(--text-gray); margin-bottom: 2.5rem; line-height: 1.5; }
-        .hero-form { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 40px rgba(12,47,74,0.1); }
-        .form-row { display: grid; grid-template-columns: 2fr 2fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .form-group { position: relative; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: var(--primary-navy); }
-        .form-group input, .form-group select { width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; background: white; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px rgba(201,166,72,0.1); }
-        .cta-button { width: 100%; padding: 1.125rem 2rem; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .cta-button::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s ease; }
-        .cta-button:hover::before { left: 100%; }
-        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,166,72,0.3); }
-
-        /* Quiz Section */
-        .quiz-section { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12,47,74,0.95); backdrop-filter: blur(20px); z-index: 2000; padding: 2rem; overflow-y: auto; }
-        .quiz-container { max-width: 600px; margin: 4rem auto; background: white; border-radius: 20px; padding: 3rem; animation: fadeInUp 0.5s ease-out; }
-        .progress-bar { height: 8px; background: #e5e7eb; border-radius: 10px; margin-bottom: 2rem; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-gold), var(--dark-gold)); border-radius: 10px; transition: width 0.5s ease; position: relative; }
-        .progress-fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
-        .quiz-step { display: none; }
-        .quiz-step.active { display: block; animation: fadeInUp 0.5s ease-out; }
-        .quiz-step h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-navy); }
-        .micro-value { color: var(--success-green); font-size: 0.9rem; margin-top: 0.5rem; font-style: italic; }
-
-        /* Options Grid */
-        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
-        .option-card { padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; text-align: center; background: white; }
-        .option-card:hover { border-color: var(--accent-gold); transform: translateY(-3px); box-shadow: 0 5px 20px rgba(201,166,72,0.2); }
-        .option-card.selected { border-color: var(--accent-gold); background: linear-gradient(135deg, rgba(201,166,72,0.1), rgba(201,166,72,0.05)); }
-
-        /* Bill Slider */
-        .bill-slider { margin: 2rem 0; }
-        .slider { width: 100%; height: 8px; border-radius: 10px; background: #e5e7eb; outline: none; -webkit-appearance: none; }
-        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-gold); cursor: pointer; box-shadow: 0 2px 10px rgba(201,166,72,0.3); }
-        .slider::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-gold); cursor: pointer; box-shadow: 0 2px 10px rgba(201,166,72,0.3); }
-        .bill-display { text-align: center; font-size: 2rem; font-weight: 700; color: var(--primary-navy); margin: 1rem 0; }
-
-        /* Outcome Card */
-        .outcome-card { background: linear-gradient(135deg, white, rgba(201,166,72,0.05)); border-radius: 20px; padding: 3rem; margin: 2rem 0; box-shadow: 0 20px 60px rgba(12,47,74,0.1); animation: fadeInUp 0.8s ease-out; }
-        .outcome-card h2 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary-navy); }
-        .savings-highlight { background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 3rem; font-weight: 900; margin: 1rem 0; }
-        .outcome-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-        .outcome-btn-primary { padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
-        .outcome-btn-primary[disabled] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-        .outcome-btn-secondary { padding: 1rem 2rem; background: transparent; color: var(--primary-navy); border: 2px solid var(--primary-navy); border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
-
-        /* Bill Upload Modal */
-        .bill-upload-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; padding: 1rem; overflow-y: auto; }
-        .bill-upload-container { max-width: 600px; margin: 2rem auto; background: white; border-radius: 20px; padding: 2rem; animation: fadeInUp 0.3s ease-out; }
-        .upload-zone { border: 2px dashed var(--accent-gold); border-radius: 10px; padding: 3rem; text-align: center; background: rgba(201,166,72,0.05); cursor: pointer; transition: all 0.3s ease; margin: 2rem 0; }
-        .upload-zone:hover { background: rgba(201,166,72,0.1); border-color: var(--dark-gold); }
-        .upload-zone.dragover { background: rgba(201,166,72,0.15); transform: scale(1.02); }
-        #bu_drop.dragover { outline: 2px dashed currentColor; filter: brightness(1.05); }
-        .file-preview { margin: 2rem 0; padding: 1rem; background: var(--bone-white); border-radius: 10px; }
-        .file-preview[hidden] { display: none; }
-        .file-preview img { max-width: 100%; max-height: 200px; border-radius: 5px; }
-
-        /* Mobile polish for outcome next-steps */
-        .next-steps{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:start;margin-top:1.25rem}
-        .actions{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;justify-content:flex-start}
-        .actions .outcome-btn-primary,
-        .actions .outcome-btn-secondary{min-width:240px}
-
-        @media (max-width:880px){
-          .next-steps{grid-template-columns:1fr}
-          .actions{justify-content:stretch}
-          .actions .outcome-btn-primary,
-          .actions .outcome-btn-secondary{flex:1 1 100%; min-width:0; width:100%}
-          .video{width:100%; height:auto; display:block}
-          .admiral-explainer{margin-top:.75rem}
-        }
-
-        /* Trust Section */
-        .trust-section { padding: 5rem 2rem; background: white; }
-        .trust-container { max-width: 1400px; margin: 0 auto; }
-        .badges-row { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 4rem; }
-        .badge { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeInUp 1s ease-out; }
-        .badge-icon { width: 60px; height: 60px; background: linear-gradient(135deg, rgba(201,166,72,0.1), rgba(201,166,72,0.05)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s ease; }
-        .badge:hover .badge-icon { transform: scale(1.1) rotate(5deg); }
-        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
-        .testimonial-card { background: var(--bone-white); padding: 2rem; border-radius: 15px; position: relative; animation: fadeInUp 1s ease-out; }
-        .testimonial-card::before { content: "\201C"; position: absolute; top: -10px; left: 20px; font-size: 4rem; color: var(--accent-gold); opacity: 0.3; }
-        .testimonial-text { font-style: italic; margin-bottom: 1rem; line-height: 1.6; }
-        .testimonial-author { font-weight: 700; color: var(--primary-navy); }
-
-        /* FAQ Section */
-        .faq-section { padding: 5rem 2rem; background: var(--bone-white); }
-        .faq-container { max-width: 800px; margin: 0 auto; }
-        .faq-item { background: white; margin-bottom: 1rem; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(12,47,74,0.05); transition: box-shadow 0.3s ease; }
-        .faq-item:hover { box-shadow: 0 5px 20px rgba(12,47,74,0.1); }
-        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--primary-navy); transition: background 0.3s ease; }
-        .faq-question:hover { background: rgba(201,166,72,0.05); }
-        .faq-arrow { transition: transform 0.3s ease; }
-        .faq-item.active .faq-arrow { transform: rotate(180deg); }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
-        .faq-item.active .faq-answer { max-height: 500px; }
-        .faq-answer-content { padding: 0 1.5rem 1.5rem; color: var(--text-gray); line-height: 1.6; }
-
-        /* Sticky CTA */
-        .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 -5px 20px rgba(12,47,74,0.1); z-index: 999; transition: bottom 0.3s ease; display: none; }
-        .sticky-cta.show { bottom: 0; }
-
-        /* Toast notification */
-        .toast { position: fixed; top: 20px; right: 20px; background: var(--success-green); color: white; padding: 1rem 1.5rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 4000; display: none; animation: fadeInUp 0.3s ease-out; }
-        .toast.show { display: block; }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav { padding: 0.75rem 1rem; }
-            .logo { font-size: 1.1rem; display: flex; align-items: center; }
-            .logo img { height: 32px; width: auto; margin-right: 8px; }
-            .hero { padding: 5rem 1rem 1.5rem; }
-            .hero-container { grid-template-columns: 1fr; gap: 1.25rem; }
-            .hero h1 { font-size: clamp(1.6rem, 6.5vw, 2.2rem); line-height: 1.15; }
-            .hero-subtitle { font-size: 1rem; }
-            .hero-video { order: 2; aspect-ratio: 16 / 9; }
-            .hero-form { padding: 1rem; }
-            .form-row { grid-template-columns: 1fr; gap: 0.75rem; }
-            .form-group input, .form-group select { padding: 0.9rem 0.875rem; font-size: 16px; }
-            .cta-button { padding: 1rem; font-size: 1rem; min-height: 48px; }
-            .quiz-container { margin: 2rem auto; padding: 1.25rem; border-radius: 14px; }
-            .options-grid { grid-template-columns: 1fr; }
-            .option-card { min-height: 56px; }
-            .outcome-buttons { grid-template-columns: 1fr; }
-            .badges-row { gap: 2rem; }
-            .sticky-cta { display: block; }
-            input, select, button { font-size: 16px; }
-        }
-
-        /* Loading Animation */
-        .loading-spinner { display: none; width: 40px; height: 40px; margin: 2rem auto; border: 4px solid #e5e7eb; border-top: 4px solid var(--accent-gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
-    </style>
+    /* Real-time validation styles */
+    .input-valid{border-color:#10b981!important;background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%2310b981"><path d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"/></svg>');background-position:right 8px center;background-repeat:no-repeat;background-size:16px}
+    .input-invalid{border-color:#ef4444!important;background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23ef4444"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/></svg>');background-position:right 8px center;background-repeat:no-repeat;background-size:16px}
+    .validation-message{font-size:.8rem;margin-top:.25rem;transition:all .2s ease}
+    .validation-message.success{color:#10b981}
+    .validation-message.error{color:#ef4444}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    
+    /* Focus styles */
+    button:focus, input:focus, select:focus{outline:2px solid var(--accent-gold);outline-offset:2px}
+    
+    /* Skeleton loading screens */
+    .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:loading 1.5s infinite}
+    @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    
+    .video-skeleton{position:absolute;inset:0;background:var(--bone-white);display:flex;align-items:center;justify-content:center;color:var(--text-gray)}
+    .quiz-skeleton{height:200px;border-radius:12px;margin:1rem 0}
+    
+    /* Lazy loading */
+    .lazy-video{opacity:0;transition:opacity .3s}
+    .lazy-video.loaded{opacity:1}
+    
+    /* Touch gestures and mobile improvements */
+    .touch-controls{display:none;position:absolute;bottom:10px;left:10px;right:10px;justify-content:space-between;z-index:2}
+    .touch-btn{background:rgba(0,0,0,.6);color:white;border:none;border-radius:20px;padding:.4rem .8rem;font-size:.8rem;cursor:pointer}
+    
+    /* Video hover overlay for mobile */
+    .video-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);opacity:0;transition:opacity .3s;pointer-events:none}
+    .video-container:hover .video-overlay{opacity:1}
+    
+    /* Improved form spacing */
+    .cta input, .cta select{padding:1rem;font-size:16px} /* Prevent zoom on iOS */
+    
+    /* Better button spacing */
+    .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem}
+    
+    /* Enhanced mobile optimization */
+    @media (max-width:880px){
+      /* Container and spacing improvements */
+      .container{padding:1rem}
+      
+      /* Header optimizations */
+      header{padding:.5rem 0}
+      .hero{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem 0}
+      .hero > div:first-child{order:1}
+      .hero > div:last-child{order:2}
+      
+      /* Typography scaling for mobile */
+      .hero h1{font-size:1.8rem !important;line-height:1.2 !important;margin-bottom:.5rem !important}
+      .hero p{font-size:.95rem;line-height:1.4;margin:.4rem 0 .75rem !important}
+      
+      /* Urgency banner mobile optimization */
+      .urgency-banner{font-size:.85rem !important;padding:.6rem !important;margin-bottom:1rem !important;line-height:1.3}
+      
+      /* Badge row mobile optimization */
+      .badgeRow{gap:.4rem;justify-content:center;margin:.75rem 0 1rem}
+      .badgeRow span{font-size:.75rem;padding:.3rem .5rem}
+      
+      /* Form optimizations */
+      .cta{flex-direction:column;gap:.75rem}
+      .cta input, .cta select{padding:1rem;font-size:16px;border-radius:8px}
+      .cta button{padding:1rem;font-size:16px;border-radius:8px;font-weight:700}
+      
+      /* Card padding adjustments */
+      .cardPad{padding:.75rem}
+      
+      /* Video container mobile optimization */
+      .video-container{margin:0;border-radius:12px}
+      video{width:100%;height:auto;border-radius:12px}
+      
+      /* Actions/buttons mobile optimization */
+      .actions{display:grid;grid-template-columns:1fr;gap:.75rem;margin-top:1rem}
+      .actions .btn{flex:1 1 100%;min-width:0;margin:0;padding:1rem;font-size:16px;text-align:center;border-radius:8px}
+      
+      /* Quiz optimizations */
+      .quiz h3{font-size:1.3rem;margin-bottom:.75rem}
+      .bill-display{font-size:1.6rem;margin:.5rem 0}
+      .savings-preview{padding:.75rem;margin:.75rem 0;border-radius:8px}
+      .savings-preview p{font-size:.85rem;margin:.25rem 0}
+      
+      /* Lead form mobile optimization */
+      .lead-form > div{grid-template-columns:1fr !important;gap:.75rem}
+      .lead-form input{padding:1rem;font-size:16px;border-radius:8px}
+      
+      /* Options grid mobile */
+      .options-grid{grid-template-columns:1fr;gap:.75rem}
+      .option-card{padding:1rem;font-size:.9rem;border-radius:8px}
+      
+      /* Outcome section mobile */
+      .outcome-card{padding:1.5rem;border-radius:16px}
+      .outcome-card h2{font-size:1.4rem;margin:.25rem 0 .5rem}
+      .savings-highlight{font-size:2rem !important}
+      
+      /* Next steps mobile layout */
+      .next-steps{grid-template-columns:1fr;gap:1.5rem}
+      
+      /* Trust section mobile */
+      .trust{padding:2rem 0}
+      .trust h2{font-size:1.6rem;margin-bottom:1.5rem}
+      .badges{gap:1rem;margin-bottom:1.5rem}
+      .badge{text-align:center}
+      .badge span{font-size:.8rem}
+      
+      /* Testimonials mobile */
+      .card[style*="grid-template-columns"]{display:block !important}
+      .card blockquote{margin-bottom:1rem !important}
+      .card blockquote:last-child{margin-bottom:0 !important}
+      
+      /* Touch controls */
+      .touch-controls{display:flex}
+      
+      /* Modal optimizations */
+      .modal{padding:.5rem}
+      .modal .box{margin:1rem auto;padding:1rem;border-radius:16px}
+      
+      /* Upload zone mobile */
+      .upload-zone{padding:1.5rem;border-radius:8px;font-size:.9rem}
+      
+      /* Bill slider mobile */
+      #billSlider{width:100%;margin:.75rem 0}
+    }
+    
+    /* Additional mobile breakpoint for very small screens */
+    @media (max-width:480px){
+      .container{padding:.75rem}
+      .hero{padding:1rem 0}
+      .hero h1{font-size:1.6rem !important}
+      .cardPad{padding:.5rem}
+      .outcome-card{padding:1rem}
+      .savings-highlight{font-size:1.8rem !important}
+      .badges{flex-direction:column;align-items:center;gap:.75rem}
+    }
+  </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPNZ37H"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <img src="assets/admiralenergylogo.png" alt="Admiral Energy" style="height:40px;width:auto;vertical-align:middle;margin-right:10px;">
-                Admiral Energy
-            </div>
-            <div style="display: flex; gap: 2rem; align-items: center;">
-                <span style="font-weight: 600; color: var(--text-gray);">Veteran-Owned</span>
-                <span style="font-weight: 600; color: var(--text-gray);">Charlotte, NC</span>
-            </div>
+  <!-- GTM (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPNZ37H" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <header>
+    <div class="container hero">
+      <div>
+        <div class="urgency-banner" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;padding:.5rem .75rem;border-radius:8px;margin-bottom:.75rem;text-align:center;font-size:.9rem;font-weight:600">
+          ⚠️ Federal Solar Tax Credit Expires Dec 31, 2025 • Duke PowerPair Program Filling Fast!
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-video">
-                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/admiral-fallback.png">
-                    <source src="assets/admiral-intro.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-
-                <button id="muteToggle"
-                    aria-label="Unmute video"
-                    aria-pressed="false"
-                    style="position:absolute;left:12px;bottom:12px;z-index:2;
-                           border:none;border-radius:999px;padding:.55rem .8rem;
-                           background:rgba(12,47,74,.9);color:#fff;font-weight:700;font-size:.9rem;">
-                    Unmute
-                </button>
-            </div>
-            <div class="hero-content">
-                <h1>Lower bills. Quiet backup. A plan that fits your home—on your terms.</h1>
-                <p class="hero-subtitle">60 seconds to check fit for solar + battery. No pressure, no spam.</p>
-                <p class="hero-subtitle" style="margin-top:.25rem; font-size:.95rem; color:#6b7280;">
-                  Based in Charlotte, NC — serving Greater Charlotte and most NC cities.
-                </p>
-                <div class="hero-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="zip">ZIP Code</label>
-                            <input type="text" id="zip" placeholder="28086" maxlength="5" pattern="[0-9]{5}" inputmode="numeric" autocomplete="postal-code">
-                        </div>
-                        <div class="form-group">
-                            <label for="utility">Utility Provider</label>
-                            <select id="utility">
-                                <option value="">Select...</option>
-                                <option value="duke">Duke Energy</option>
-                                <option value="union">Union Power</option>
-                                <option value="city">City of Charlotte</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="cta-button" onclick="startQuiz()">See my savings & backup options</button>
-                </div>
-            </div>
+        <h1 style="margin:0 0 .35rem;color:var(--primary-navy);font-size:2.2rem;line-height:1.15">Lower Bills. Quiet Backup. Solar That Fits.</h1>
+        <p style="margin:.25rem 0 .5rem;color:var(--text-gray);max-width:56ch">60 seconds to check fit for solar + battery in Charlotte. Get up to <strong>$9,000 Duke PowerPair rebate</strong> + 30% federal tax credit.</p>
+        <p style="margin:0 0 1rem;color:#dc2626;font-weight:600;font-size:.9rem">✅ Veteran‑owned • ⏰ Limited capacity remaining</p>
+        <div class="badgeRow">
+          <span>✅ Licensed & Insured</span>
+          <span>⚡ 25‑Year Warranty</span>
+          <span>📍 Local Team</span>
+          <span>🎖️ Veteran‑Owned</span>
         </div>
-    </section>
 
-    <!-- Quiz Section (Hidden by default) -->
-    <div class="quiz-section" id="quizSection">
-        <div class="quiz-container">
-            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
-            
-            <!-- Step 1: Roof Type -->
-            <div class="quiz-step active" data-step="1">
-                <h3>What type of roof do you have?</h3>
-                <div class="options-grid">
-                    <div class="option-card" onclick="selectOption(this, 'asphalt')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏠</div>
-                        <div>Asphalt Shingle</div>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'metal')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏭</div>
-                        <div>Metal Standing Seam</div>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'tile')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
-                        <div>Tile</div>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'flat')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
-                        <div>Flat/Other</div>
-                    </div>
-                </div>
-                <p class="micro-value" id="roofFeedback"></p>
-                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
-            </div>
-
-            <!-- Step 2: Electric Bill -->
-            <div class="quiz-step" data-step="2">
-                <h3>What's your average monthly electric bill?</h3>
-                <div class="bill-slider">
-                    <div class="bill-display">$<span id="billAmount">150</span></div>
-                    <input type="range" class="slider" id="billSlider" min="50" max="500" value="150" oninput="updateBill(this.value)">
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--text-gray);">
-                        <span>$50</span>
-                        <span>$500+</span>
-                    </div>
-                </div>
-                <p class="micro-value" id="billFeedback"></p>
-                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
-            </div>
-
-            <!-- Step 3: Homeowner Status -->
-            <div class="quiz-step" data-step="3">
-                <h3>Do you own your home?</h3>
-                <div class="options-grid">
-                    <div class="option-card" onclick="selectOption(this, 'yes'); nextStep()">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
-                        <div>Yes, I own</div>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'no'); showRenterGuide()">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔑</div>
-                        <div>No, I rent</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 4: Roof Shading -->
-            <div class="quiz-step" data-step="4">
-                <h3>How much shade does your roof get?</h3>
-                <div class="options-grid">
-                    <div class="option-card" onclick="selectOption(this, 'low')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">☀️</div>
-                        <div>Low</div>
-                        <small style="color: var(--text-gray);">Few trees, good sun</small>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'moderate')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌤️</div>
-                        <div>Moderate</div>
-                        <small style="color: var(--text-gray);">Some tree coverage</small>
-                    </div>
-                    <div class="option-card" onclick="selectOption(this, 'heavy')">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌳</div>
-                        <div>Heavy</div>
-                        <small style="color: var(--text-gray);">Significant tree coverage</small>
-                    </div>
-                </div>
-                <p class="micro-value" id="shadeFeedback"></p>
-                <button class="cta-button" onclick="nextStep()" style="margin-top: 2rem;">Next</button>
-            </div>
-
-            <!-- Step 5: Contact Info -->
-            <div class="quiz-step" data-step="5">
-                <h3>Almost done! Let's get your personalized quote.</h3>
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Name</label>
-                    <input type="text" id="firstName" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
-                    <input type="email" id="email" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Mobile Phone</label>
-                    <input type="tel" id="phone" inputmode="tel" autocomplete="tel" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px;">
-                    <p style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem;">
-                        By clicking Next, you agree to receive a one-time text with your secure upload link. We use your bill only to size your system and confirm program eligibility. We never sell your data.
-                    </p>
-                </div>
-                <button class="cta-button" onclick="completeQuiz()">Get My Personalized Quote</button>
-            </div>
+        <!-- Lead / Hero minimal form (ZIP + Utility) -->
+        <div class="card cardPad">
+          <form id="heroForm" class="cta" onsubmit="return false" role="form" aria-labelledby="hero-form-heading">
+            <h2 id="hero-form-heading" class="sr-only">Get Your Solar Savings Estimate</h2>
+            <input required id="zip" name="zip" inputmode="numeric" pattern="[0-9]{5}" placeholder="ZIP code" aria-label="ZIP code" aria-describedby="zip-help" />
+            <div id="zip-help" class="sr-only">Enter your 5-digit ZIP code to check solar availability in your area</div>
+            <select required id="utility" name="utility" aria-label="Select your utility provider" aria-describedby="utility-help">
+              <option value="" disabled selected>Utility</option>
+              <option value="duke">Duke Energy</option>
+              <option value="other">Other</option>
+            </select>
+            <div id="utility-help" class="sr-only">Select your current electricity provider</div>
+            <button class="btn btn-primary" id="startQuiz" aria-describedby="start-help">Check savings</button>
+            <div id="start-help" class="sr-only">Start your personalized solar assessment</div>
+          </form>
+          <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+          <div id="welcomeBack" style="display:none;color:#065f46;font-weight:700;margin-top:.25rem"></div>
         </div>
+      </div>
+
+      <div class="card">
+        <div class="video-container" style="position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:16px">
+          <div class="video-skeleton skeleton">📹 Loading video...</div>
+          <video id="admiralExplainer" class="lazy-video" style="width:100%;height:100%;object-fit:cover" playsinline muted loop preload="none"
+                 data-src="/assets/admiral-intro.mp4"></video>
+          <div class="video-overlay">
+            <div class="touch-controls">
+              <button class="touch-btn" id="playPauseBtn" tabindex="0">⏸️ Pause</button>
+              <button class="touch-btn" id="touchMuteBtn" tabindex="0">🔇 Unmute</button>
+            </div>
+          </div>
+        </div>
+        <div class="cardPad" style="display:flex;justify-content:flex-end"><button id="explainerMute" class="btn btn-secondary" type="button">🔊 Mute</button></div>
+      </div>
     </div>
+  </header>
 
-    <!-- Outcome Section with Duke Energy rebate framing -->
-    <section id="outcomeSection" style="display: none; padding: 5rem 2rem;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="outcome-card">
-                <h2>🎉 Great news! You're a strong fit for Duke Energy rebates and solar.</h2>
-                <p style="font-size: 1.1rem; color: var(--text-gray); margin-bottom: 1.5rem;" id="rebateText">
-                    Based on homes like yours in <span id="userZip">Charlotte</span> with <span id="userUtility">Duke Energy</span>, you're likely eligible for Duke Energy solar + battery rebates. We'll also verify if you still qualify for the federal Investment Tax Credit (ITC).
-                </p>
-                <div class="savings-highlight" id="systemSize">7-10 kW System + 10-15 kWh Battery</div>
-                <div style="margin: 1.5rem 0; line-height: 1.8;">
-                    <p><strong>✓ Rebate path:</strong> Duke Energy solar + battery incentives (we'll confirm your exact eligibility)</p>
-                    <p><strong>✓ Bill control:</strong> Predictable energy costs with solar</p>
-                    <p><strong>✓ Backup power:</strong> Quiet, instant switchover with a battery</p>
-                    <p><strong>✓ ITC check:</strong> We verify current eligibility during your consult</p>
-                </div>
-                <div class="next-steps">
-                  <div class="admiral-explainer" style="margin:1.25rem 0 0;">
-                    <div style="display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap;">
-                      <video id="admiralExplainer" class="video"
-                             src="assets/admiral-bill-explainer.mp4"
-                             poster="assets/admiral-bill-explainer-poster.png"
-                             playsinline muted autoplay loop
-                             style="width:320px; max-width:100%; border-radius:12px; box-shadow:0 6px 20px rgba(12,47,74,.12);"></video>
-
-                      <div style="flex:1; min-width:260px">
-                        <h3 style="margin:.25rem 0 .5rem; font-size:1.1rem;">Why we ask for your bill (30s)</h3>
-                        <ul style="margin:.25rem 0 1rem; padding-left:1.1rem; color:var(--text-gray); line-height:1.6;">
-                          <li><strong>Address</strong> → we model your roof & sun (no door visit needed).</li>
-                          <li><strong>kWh from your bill</strong> → we right-size the system.</li>
-                        </ul>
-                        <button id="explainerMute" class="outcome-btn-secondary" style="margin-right:.5rem;">🔇 Unmute</button>
-                        <a href="assets/duke-bill-sample.png" target="_blank" class="outcome-btn-secondary" role="button">🧾 See sample bill</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="outcome-buttons actions">
-                      <button class="outcome-btn-primary" onclick="openBillUpload()">🖨️ Upload Duke bill (front page)</button>
-                      <button class="outcome-btn-secondary" onclick="submitLeadAndSchedule(quizData)">🗓️ Book my 20-min plan</button>
-                  </div>
-
-                </div>
-                <!-- Optional opt-in -->
-                <div class="optin-wrap" style="margin-top:.75rem; text-align:center;">
-                  <label for="optInUpdates" style="display:inline-flex; align-items:flex-start; gap:.5rem; cursor:pointer; max-width:720px;">
-                    <input id="optInUpdates" type="checkbox" style="margin-top:.25rem;">
-                    <span style="font-size:.95rem; color:var(--text-gray); text-align:left;">
-                      Keep me updated on NC solar rebates, utility bills, and savings tips by email. I can unsubscribe anytime.
-                      <a href="/privacy" style="color:var(--accent-gold); font-weight:600; margin-left:.25rem;">Privacy</a>
-                    </span>
-                  </label>
-
-                </div>
-                <p style="text-align: center; margin-top: 1.5rem;">
-                    <a href="javascript:void(0)" onclick="sendUploadLink()" style="color: var(--accent-gold); font-weight: 600;">Prefer SMS? Text me a secure upload link</a>
-                </p>
-                <p style="text-align: center; margin-top: 1rem; color: var(--text-gray);">Veteran-owned. Permits handled. NCC-licensed installers.</p>
-            </div>
+  <main class="container">
+    <!-- QUIZ -->
+    <section id="quiz" class="quiz card cardPad" aria-live="polite" style="display:none">
+      <div id="quizSkeleton" class="quiz-skeleton skeleton" style="display:flex;align-items:center;justify-content:center;color:var(--text-gray)">
+        📋 Loading your personalized solar assessment...
+      </div>
+      <!-- Step 1: Bill amount -->
+      <div class="quiz-step" data-step="1" role="tabpanel" aria-labelledby="step1-heading">
+        <h3 id="step1-heading" style="margin-top:0;color:var(--primary-navy)">What's your average monthly electric bill?</h3>
+        <input type="range" min="50" max="500" value="150" step="5" id="billSlider" class="slider" 
+               aria-label="Monthly electric bill amount" aria-describedby="bill-value bill-help" />
+        <div class="bill-display"><span id="billVal" aria-live="polite">$150</span>/mo</div>
+        <div id="bill-value" class="sr-only">Current value: $150 per month</div>
+        <div class="savings-preview" style="background:linear-gradient(135deg,rgba(201,166,72,.1),rgba(201,166,72,.05));padding:.75rem;border-radius:8px;margin:.5rem 0">
+          <p style="margin:0;font-weight:600;color:var(--primary-navy)">💰 Estimated Savings at this Bill Level:</p>
+          <p id="bill-help" style="margin:.25rem 0 0;font-size:.9rem;color:var(--text-gray)">• Monthly: 30-55% reduction • Annual: $900-$1,800 saved • Duke PowerPair: Up to $9,000 rebate • Federal Credit: 30% of system cost</p>
         </div>
+        <div style="display:flex;gap:.5rem;justify-content:flex-end">
+          <button class="btn btn-primary" id="next1" aria-describedby="next1-help">Next →</button>
+          <div id="next1-help" class="sr-only">Continue to contact information step</div>
+        </div>
+      </div>
+
+      <!-- Step 2: Contact info (LEAD CAPTURE) -->
+      <div class="quiz-step" data-step="2">
+        <h3 style="margin-top:0;color:var(--primary-navy)">Where should we send your savings report?</h3>
+        <form id="lead-form" class="hs-form" name="lead-capture" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="lead-capture" />
+          <input type="hidden" name="lead_id" id="lead_id" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+            <input required name="first_name" id="firstName" placeholder="First name" />
+            <input required name="last_name" id="lastName" placeholder="Last name" />
+            <input required type="email" name="email" id="email" placeholder="Email" />
+            <input required name="phone" id="phone" placeholder="Phone" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem">
+            <input required name="zip" id="zip_hidden" placeholder="ZIP" />
+            <input required name="utility" id="utility_hidden" placeholder="Utility" />
+          </div>
+          <input type="hidden" name="bill_amount" id="bill_hidden" />
+          <label style="display:flex;gap:.5rem;align-items:center;margin:.75rem 0 0">
+            <input type="checkbox" id="optin" name="opt_in" value="yes" />
+            <span style="font-size:.9rem;color:#374151">Okay to email & text me my savings report and updates. I can reply STOP to opt out.</span>
+          </label>
+          <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.75rem">
+            <button type="button" class="btn btn-secondary" id="back2">← Back</button>
+            <button type="submit" class="btn btn-primary" id="submitLead">See my savings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: Optional refinement -->
+      <div class="quiz-step" data-step="3">
+        <h3 style="margin-top:0;color:var(--primary-navy)">A few quick details (optional)</h3>
+        <div class="options-grid" id="roofType">
+          <div class="option-card" data-val="shingle">🏠 Shingle Roof</div>
+          <div class="option-card" data-val="metal">🔩 Metal Roof</div>
+          <div class="option-card" data-val="tile">🧱 Tile Roof</div>
+          <div class="option-card" data-val="flat">⬜ Flat Roof</div>
+        </div>
+        <p class="micro-value">This helps us right-size your system. You can skip this step.</p>
+        <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.5rem">
+          <button class="btn btn-secondary" id="skip3">Skip</button>
+          <button class="btn btn-primary" id="next3">Continue</button>
+        </div>
+      </div>
     </section>
 
-    <!-- Bill Upload Modal -->
-    <div class="bill-upload-modal" id="billUploadModal">
-        <div class="bill-upload-container">
-            <form name="bill-upload" id="bill-upload" method="POST" data-netlify="true" enctype="multipart/form-data">
-              <input type="hidden" name="form-name" value="bill-upload">
-              <input type="hidden" name="lead_id" id="bu_lead_id">
-              <input type="hidden" name="email" id="bu_email">
-
-              <input type="hidden" name="first_name" id="bu_first_name">
-              <input type="hidden" name="phone" id="bu_phone">
-              <input type="hidden" name="opt_in" id="bu_opt_in" value="no">
-
-
-              <h2 style="margin-bottom: 1rem;">Upload your Duke bill (front page)</h2>
-              <p style="color: var(--text-gray); margin-bottom: .75rem;">
-                We use your <strong>address</strong> (roof & sun) and <strong>kWh</strong> from your bill (system size). You may hide the account #.
-                <a href="assets/duke-bill-sample.png" target="_blank" rel="noopener" style="margin-left:.25rem;">See sample bill</a>.
-              </p>
-
-              <div class="upload-zone" id="bu_drop" role="button" tabindex="0">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
-                <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill</p>
-                <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse — PDF, JPG, PNG, HEIC • Max 10 MB</p>
+    <!-- OUTCOME -->
+    <section id="outcome" style="display:none">
+      <div class="outcome-card">
+        <h2 style="margin:.25rem 0 0;color:var(--primary-navy)">You're a strong fit for solar + battery</h2>
+        <p style="margin:.25rem 0;color:var(--text-gray)">Based on your bill of <strong id="out_bill">$150</strong>/mo, here's your potential savings with Duke PowerPair:</p>
+        <div class="savings-highlight" id="out_savings">$900–$1,800/yr</div>
+        <div style="background:linear-gradient(135deg,rgba(201,166,72,.1),rgba(201,166,72,.05));padding:1rem;border-radius:12px;margin:.75rem 0">
+          <h4 style="margin:0 0 .5rem;color:var(--primary-navy);font-size:1.1rem">💡 Your Duke PowerPair Incentives:</h4>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;font-size:.9rem">
+            <div><strong>Solar Rebate:</strong> Up to $3,600</div>
+            <div><strong>Battery Rebate:</strong> Up to $5,400</div>
+            <div><strong>Federal Tax Credit:</strong> 30% of system</div>
+            <div><strong>Total Potential:</strong> $15,000+ savings</div>
+          </div>
+          <p style="margin:.5rem 0 0;font-size:.85rem;color:#dc2626;font-weight:600">⏰ PowerPair program capacity filling fast - 60,000 kW limit!</p>
+        </div>
+        
+        <!-- Social Proof Section -->
+        <div style="background:rgba(255,255,255,.8);border-radius:12px;padding:1rem;margin:.75rem 0;border-left:4px solid var(--accent-gold)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+            <h4 style="margin:0;color:var(--primary-navy);font-size:1rem">Recent Customer Success</h4>
+            <div id="recentCount" style="color:#10b981;font-weight:700;font-size:.9rem">47 homeowners qualified this week</div>
+          </div>
+          <blockquote style="margin:0;font-size:.9rem;font-style:italic;color:var(--text-gray)">
+            "Cut my Duke Energy bill by 45% and the battery backup gives us peace of mind during storm season. The Admiral team handled everything from permits to install."
+            <cite style="display:block;margin-top:.25rem;font-size:.8rem;color:#6b7280">— Tony R., Ballantyne (installed last month)</cite>
+          </blockquote>
+        </div>
+        <div class="next-steps">
+          <div class="actions">
+            <button class="btn btn-primary" id="bookCall">📅 Book a 15‑min review</button>
+            <button class="btn btn-secondary" id="openBillUpload">📎 Upload Duke bill (faster quote)</button>
+            <button class="btn" id="instantCallback" style="background:#25D366;color:white">📞 Instant callback</button>
+            <button class="btn" id="liveChat" style="background:#0084FF;color:white">💬 Live chat now</button>
+          </div>
+          <div>
+            <div class="video-container" style="position:relative;width:100%;max-height:400px;overflow:visible;border-radius:16px;background:#f0f0f0">
+              <div class="video-skeleton skeleton">📹 Loading video...</div>
+              <video id="outcomeExplainer" class="admiral-explainer lazy-video" playsinline muted loop preload="none" style="width:100%;height:auto;max-height:400px;object-fit:contain" data-src="/assets/admiral-bill-explainer.mp4" poster="/assets/admiral-bill-explainer-poster.png"></video>
+              <div class="video-overlay">
+                <div class="touch-controls">
+                  <button class="touch-btn" id="outPlayPauseBtn" tabindex="0">⏸️ Pause</button>
+                  <button class="touch-btn" id="outTouchMuteBtn" tabindex="0">🔇 Unmute</button>
+                </div>
               </div>
-
-              <button type="button" class="outcome-btn-secondary" id="bu_attach_btn" style="width:100%; margin-top:0.75rem;">📎 Attach bill</button>
-
-              <input type="file" id="dukeBillInput" name="duke_bill" accept=".pdf,.jpg,.jpeg,.png,.heic,image/*,application/pdf" style="display:none;">
-
-              <div class="file-preview" id="bu_preview" hidden>
-                <h4 style="margin:1rem 0 .5rem;">Selected file</h4>
-                <div id="bu_preview_content"></div>
-              </div>
-
-              <label for="serviceAddress" style="display:block; font-weight:600; margin:1rem 0 .25rem;">Service address (optional)</label>
-              <input id="serviceAddress" name="service_address" type="text" placeholder="Street, City, ZIP"
-                     style="width:100%; padding:.75rem; border:1px solid #d7d3cb; border-radius:10px; background:#fff;">
-
-              <div class="bu-actions" style="display:flex; gap:.75rem; margin-top:1rem; justify-content:center;">
-                <button type="submit" class="outcome-btn-primary" disabled>Submit & Book My Review Call</button>
-                <button type="button" class="outcome-btn-secondary" id="bu_skip">Skip — Book without upload</button>
-              </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Trust Section -->
-    <section class="trust-section">
-        <div class="trust-container">
-            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-navy);">Why Charlotte Homeowners Trust Admiral Energy</h2>
-            <div class="badges-row">
-                <div class="badge"><div class="badge-icon">🎖️</div><span style="font-weight: 600;">Veteran-Owned</span></div>
-                <div class="badge"><div class="badge-icon">📍</div><span style="font-weight: 600;">Local Charlotte Team</span></div>
-                <div class="badge"><div class="badge-icon">✅</div><span style="font-weight: 600;">Licensed & Insured</span></div>
-                <div class="badge"><div class="badge-icon">🛠️</div><span style="font-weight: 600;">25-Year Warranty</span></div>
-                <div class="badge"><div class="badge-icon">⚡</div><span style="font-weight: 600;">Workmanship Guarantee</span></div>
             </div>
-
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Outage last week? We didn't notice—battery switched instantly. The Admiral's team handled everything from permits to install."</p>
-                    <p class="testimonial-author">— Sarah M., Myers Park</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Cut my Duke Energy bill by 45% and the battery backup gives us peace of mind during storm season. Professional crew, zero hassle."</p>
-                    <p class="testimonial-author">— James T., Ballantyne</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The Admiral made it simple. One call, clear pricing, and they handled my HOA approval. System looks great on our roof."</p>
-                    <p class="testimonial-author">— Maria G., SouthPark</p>
-                </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:.5rem">
+              <button id="outcomeMute" class="btn btn-secondary" type="button" style="font-size:.85rem;padding:.5rem .75rem">🔊 Mute</button>
             </div>
+            <p style="color:var(--text-gray);font-size:.9rem;margin:.35rem 0 0">We use your address (roof & sun) + kWh from your bill to size your system precisely.</p>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="faq-container">
-            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-navy);">Common Questions</h2>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
-                    <span>Aren't electric bills still going up even with solar?</span>
-                    <span class="faq-arrow">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Yes, utility rates continue to rise. Solar turns part of your bill into a fixed asset payment that doesn't increase. Your battery can also help by storing cheap energy for use during expensive peak hours. While you'll still have some grid connection fees, your overall energy costs become much more predictable and lower over time.
-                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
-                    <span>Can my HOA block solar panels?</span>
-                    <span class="faq-arrow">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        In North Carolina, HOAs cannot ban solar outright—it's protected by state law. They can provide reasonable guidelines about placement and appearance, but they must allow solar installations. We handle all HOA submissions and work directly with your board to ensure smooth approval. We've successfully installed in over 50 Charlotte-area HOA communities.
-                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)" aria-expanded="false">
-                    <span>Why choose a battery over a generator?</span>
-                    <span class="faq-arrow">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Batteries offer instant, silent switchover during outages—no fuel runs, no maintenance, no noise complaints from neighbors. They also save money daily by storing cheap off-peak energy for use during expensive peak hours. Generators only work during outages, while batteries provide value every single day through smart energy management.
-                        <p style="margin-top: 1rem;"><a href="#outcomeSection" style="color: var(--accent-gold); font-weight: 600;">See my backup hours →</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- TRUST -->
+    <section class="trust">
+      <h2 style="text-align:center;color:var(--primary-navy);font-size:2rem">Why Charlotte Homeowners Trust Admiral Energy</h2>
+      <div class="badges">
+        <div class="badge"><div class="ico">🎖️</div><span style="font-weight:600">Veteran‑Owned</span></div>
+        <div class="badge"><div class="ico">📍</div><span style="font-weight:600">Local Team</span></div>
+        <div class="badge"><div class="ico">✅</div><span style="font-weight:600">Licensed & Insured</span></div>
+        <div class="badge"><div class="ico">🛠️</div><span style="font-weight:600">25‑Year Warranty</span></div>
+        <div class="badge"><div class="ico">⚡</div><span style="font-weight:600">Workmanship Guarantee</span></div>
+      </div>
+      <div class="card cardPad" style="display:grid;gap:1rem;grid-template-columns:1fr 1fr">
+        <blockquote style="margin:0"><p style="margin:0 0 .35rem">“Outage last week? We didn’t notice—battery switched instantly. The Admiral team handled everything from permits to install.”</p><cite style="color:var(--text-gray)">— Sarah M., Myers Park</cite></blockquote>
+        <blockquote style="margin:0"><p style="margin:0 0 .35rem">“Cut my Duke Energy bill by 45% and the battery backup gives us peace of mind during storm season. Professional crew, zero hassle.”</p><cite style="color:var(--text-gray)">— Tony R., Ballantyne</cite></blockquote>
+      </div>
     </section>
+  </main>
 
-    <!-- Sticky CTA (Mobile) -->
-    <div class="sticky-cta" id="stickyCTA">
-        <button class="cta-button" onclick="scrollToQuiz()">Get my plan</button>
-    </div>
+  <!-- Bill Upload Modal (Netlify form) -->
+  <div class="modal" id="billModal" aria-hidden="true">
+    <div class="box">
+      <form id="bill-upload" name="bill-upload" method="POST" data-netlify="true" enctype="multipart/form-data">
+        <input type="hidden" name="form-name" value="bill-upload" />
+        <input type="hidden" name="lead_id" id="bu_lead_id" />
+        <input type="hidden" name="email" id="bu_email" />
+        <input type="hidden" name="first_name" id="bu_first_name" />
+        <input type="hidden" name="phone" id="bu_phone" />
+        <input type="hidden" name="opt_in" id="bu_opt_in" value="no" />
 
-    <!-- Calendly Modal (Hidden) -->
-    <div id="calendlyModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 3000;">
-        <div style="max-width: 600px; margin: 5rem auto; background: white; border-radius: 20px; padding: 2rem;">
-            <h2 style="margin-bottom: 1rem;">Book Your Solar Consultation</h2>
-            <p style="color: var(--text-gray); margin-bottom: 2rem;">Choose a time that works for you. We'll call to discuss your specific roof, review incentives, and answer all your questions.</p>
-            <div style="background: var(--bone-white); padding: 3rem; border-radius: 10px; text-align: center;">
-                <p style="font-style: italic; color: var(--text-gray);">[Calendly booking widget would be embedded here]</p>
-            </div>
-            <button onclick="closeCalendly()" style="margin-top: 1rem; padding: 0.75rem 2rem; background: var(--text-gray); color: white; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+        <h3 style="margin:0 0 .25rem">Upload your Duke bill (front page)</h3>
+        <p style="margin:.25rem 0;color:var(--text-gray)">We use your <strong>address</strong> (roof & sun) and <strong>kWh</strong> (system size). You may hide your account #. <a href="/assets/duke-bill-sample.png" target="_blank" rel="noopener">See sample</a>.</p>
+
+        <div id="bu_drop" class="upload-zone" role="button" tabindex="0">📁 Drag & drop or click — PDF/JPG/PNG/HEIC (max 10 MB)</div>
+        <button type="button" id="bu_attach_btn" class="btn btn-secondary" style="width:100%;margin-top:.5rem">📎 Attach bill</button>
+        <input type="file" id="dukeBillInput" name="duke_bill" accept=".pdf,.jpg,.jpeg,.png,.heic,image/*,application/pdf" capture="environment" style="display:none" />
+
+        <div class="file-preview" id="bu_preview" hidden>
+          <strong>Selected file</strong>
+          <div id="bu_preview_content" style="margin-top:.35rem"></div>
         </div>
+
+        <label for="serviceAddress" style="display:block;margin:.75rem 0 .25rem;font-weight:600">Service address (optional)</label>
+        <input id="serviceAddress" name="service_address" placeholder="Street, City, ZIP" style="width:100%;padding:.8rem;border:1px solid #d7d3cb;border-radius:10px" />
+
+        <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1rem">
+          <button type="submit" class="btn btn-primary" id="bu_submit" disabled>Submit & Book My Review Call</button>
+          <button type="button" class="btn btn-secondary" id="bu_skip">Skip — Book without upload</button>
+          <button type="button" class="btn" id="bu_close">Close</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- Toast notification -->
-    <div class="toast" id="toast">
-        <span id="toastMessage">Bill received — we'll build your quote and follow up.</span>
+  <!-- Exit Intent (Netlify form) -->
+  <form id="exit-form" name="exit-intent-capture" method="POST" data-netlify="true" hidden>
+    <input type="hidden" name="form-name" value="exit-intent-capture" />
+    <input type="hidden" name="email" id="exit_email" />
+    <input type="hidden" name="zip" id="exit_zip" />
+    <input type="hidden" name="utility" id="exit_utility" />
+  </form>
+
+  <!-- Cookie Consent Modal -->
+  <div id="cookieConsent" class="modal" style="display:none" aria-hidden="true">
+    <div class="box" style="max-width:500px">
+      <h3 style="margin:0 0 .5rem">Cookie & Privacy Notice</h3>
+      <p style="margin:.5rem 0;font-size:.9rem">We use cookies and similar technologies to analyze website traffic, personalize content, and provide social media features. We also share information about your use of our site with our analytics partners.</p>
+      <div style="display:flex;gap:.5rem;margin-top:1rem">
+        <button class="btn btn-primary" id="acceptCookies">Accept All</button>
+        <button class="btn btn-secondary" id="manageCookies">Manage Preferences</button>
+        <button class="btn" id="declineCookies">Decline Non-Essential</button>
+      </div>
+      <p style="margin:.5rem 0 0;font-size:.8rem;color:#6b7280">
+        By continuing, you agree to our <a href="#privacy" style="color:var(--accent-gold)">Privacy Policy</a> and <a href="#terms" style="color:var(--accent-gold)">Terms of Service</a>.
+      </p>
     </div>
+  </div>
 
-    <form name="lead-intake" id="lead-intake" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="position:absolute;left:-9999px;visibility:hidden;">
-      <input type="hidden" name="form-name" value="lead-intake">
-      <input type="text" name="bot-field" tabindex="-1" autocomplete="off">
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" class="modal" style="display:none" aria-hidden="true">
+    <div class="box" style="max-width:700px">
+      <h3 style="margin:0 0 1rem">Privacy Policy</h3>
+      <div style="max-height:400px;overflow-y:auto;padding-right:.5rem">
+        <h4>Information We Collect</h4>
+        <p>We collect information you provide directly, such as name, email, phone, ZIP code, utility provider, and electric bill information for solar assessment purposes.</p>
+        
+        <h4>How We Use Your Information</h4>
+        <p>We use your information to provide personalized solar assessments, schedule consultations, and communicate about our services. We may also use aggregated, non-personal information for analytics.</p>
+        
+        <h4>Information Sharing</h4>
+        <p>We do not sell your personal information. We may share information with service providers who help us operate our business, and as required by law.</p>
+        
+        <h4>Data Security</h4>
+        <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+        
+        <h4>Your Rights</h4>
+        <p>You have the right to access, update, or delete your personal information. You can also opt out of marketing communications at any time.</p>
+        
+        <h4>Contact Us</h4>
+        <p>For privacy-related questions, contact us at privacy@admiralenergy.com or (704) 555-0123.</p>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:1rem">
+        <button class="btn btn-secondary" onclick="document.getElementById('privacyModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
 
-      <!-- UTM -->
-      <input type="hidden" name="utm_source" id="utm_source">
-      <input type="hidden" name="utm_medium" id="utm_medium">
-      <input type="hidden" name="utm_campaign" id="utm_campaign">
-      <input type="hidden" name="utm_content" id="utm_content">
-      <input type="hidden" name="utm_term" id="utm_term">
+  <footer>
+    <div class="container">© <span id="year"></span> Admiral Energy — Charlotte, NC • Licensed & Insured</div>
+  </footer>
 
-      <!-- Lead fields -->
-      <input type="hidden" name="zip" id="nf_zip">
-      <input type="hidden" name="utility" id="nf_utility">
-      <input type="hidden" name="roof_type" id="nf_roof_type">
-      <input type="hidden" name="bill_amount" id="nf_bill_amount">
-      <input type="hidden" name="homeowner" id="nf_homeowner">
-      <input type="hidden" name="shading" id="nf_shading">
-      <input type="hidden" name="first_name" id="nf_first_name">
-      <input type="hidden" name="email" id="nf_email">
-      <input type="hidden" name="phone" id="nf_phone">
-      <input type="hidden" name="lead_id" id="nf_lead_id">
+  <script>
+    // Small helpers
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => [...el.querySelectorAll(sel)];
+    const aeEvt = (name, params={}) => { 
+      try { 
+        // Use unified tracking system
+        trackEvent(name, params);
+        
+        // Enhanced tracking with funnel steps (for backward compatibility)
+        const funnelSteps = {
+          'quiz_started': { step: 1, value: 100 },
+          'quiz_step_1_complete': { step: 2, value: 200 },
+          'lead_captured': { step: 3, value: 500 },
+          'calendly_opened': { step: 4, value: 750 },
+          'bill_uploaded': { step: 5, value: 1000 },
+          'instant_callback_requested': { step: 4, value: 500 },
+          'live_chat_opened': { step: 4, value: 300 }
+        };
+        
+        if (funnelSteps[name]) {
+          trackFunnelStep(funnelSteps[name].step, name, { 
+            ...params, 
+            value: funnelSteps[name].value 
+          });
+        }
+        
+        formInteractions++;
+      } catch(_){
+        console.warn('Tracking error:', _);
+      } 
+    };
+    const showToast = (msg) => { try{ if(window.Toastify){ Toastify({text:msg}).showToast(); } }catch(_) { console.log('[Toast]', msg) } };
 
-      <input type="hidden" name="opt_in" id="nf_opt_in" value="no">
+    // Debug flag via ?debug=1
+    (function(){ const q=new URLSearchParams(location.search); window.AE_DEBUG = window.AE_DEBUG || (q.get('debug')==='1');})();
 
-      <input type="hidden" name="service_address" id="nf_service_address">
-    </form>
+    // Lead ID + cookie/localStorage persistence (30 days)
+    function makeLeadId(){ return 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8); }
+    function setCookie(k,v,days){ const d=new Date(Date.now()+days*864e5).toUTCString(); document.cookie=`${k}=${encodeURIComponent(v)}; path=/; expires=${d}`; }
+    function getCookie(k){ return document.cookie.split('; ').find(r=>r.startsWith(k+'='))?.split('=')[1] }
 
-    <form name="lead-optin" id="lead-optin" method="POST" data-netlify="true" style="position:absolute;left:-9999px;visibility:hidden;">
-      <input type="hidden" name="form-name" value="lead-optin">
-      <input type="hidden" name="lead_id" id="oi_lead_id">
-      <input type="hidden" name="email" id="oi_email">
-      <input type="hidden" name="opt_in" id="oi_opt_in" value="no">
-      <input type="hidden" name="ts" id="oi_ts">
-    </form>
-
-    <script>
-    function postOptInUpdate(source = 'toggle'){
-      try {
-        const lead = (window.leadId ||= 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
-        const email = window.quizData?.email || '';
-        const val = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no';
-
-        const a = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
-        a('oi_lead_id', lead);
-        a('oi_email', email);
-        a('oi_opt_in', val);
-        a('oi_ts', new Date().toISOString());
-
-        const form = document.getElementById('lead-optin');
-        if (!form) return;
-
-        const fd = new FormData(form);
-        fd.append('source', source);
-        fetch('/', { method: 'POST', body: fd }).catch(()=>{});
-      } catch(e) { /* noop */ }
+    function saveState(data){
+      const state = { ...data, timestamp: Date.now() };
+      try { localStorage.setItem('ae_state', JSON.stringify(state)); } catch(_){ }
+      if(data.leadId){ setCookie('ae_lead_id', data.leadId, 30); setCookie('ae_lead_captured', data.leadCaptured?'1':'0', 30); }
     }
-    </script>
+    function loadState(){ try{ const s=localStorage.getItem('ae_state'); return s?JSON.parse(s):null }catch(_){ return null } }
 
-    <script>
-        function aeDebugLog(name, stage, data) {
-            if (!window.AE_DEBUG) return;
-            const suffix = stage ? ` ${stage}` : '';
-            console.debug(`[AE][DEBUG] ${name}${suffix}`, data);
+    // UI state
+    const heroForm = $('#heroForm');
+    const startBtn = $('#startQuiz');
+    const quiz = $('#quiz');
+    const steps = $$('.quiz-step');
+    const progressFill = $('#progressFill');
+
+    const billSlider = $('#billSlider');
+    const billVal = $('#billVal');
+
+    const leadForm = $('#lead-form');
+    const outcome = $('#outcome');
+
+    let leadId = getCookie('ae_lead_id') || makeLeadId();
+
+    function setProgress(stepIdx, total=3){ const pct = Math.max(5, Math.round((stepIdx/total)*100)); progressFill.style.width = pct+'%'; }
+    function goto(step){ steps.forEach(s=>s.classList.remove('active')); const el = steps.find(s=>s.dataset.step==step); if(el){ el.classList.add('active'); setProgress(step-1); } }
+
+    // Welcome-back logic
+    (function(){
+      const state = loadState();
+      if(state?.leadCaptured){
+        $('#welcomeBack').style.display='block';
+        $('#welcomeBack').textContent = `Welcome back${state.firstName ? ', '+state.firstName : ''}! Your quote is ready.`;
+        billVal.textContent = `$${state.billAmount||150}`;
+        $('#out_bill').textContent = `$${state.billAmount||150}`;
+        renderOutcome(state.billAmount||150);
+        heroForm.style.display='none';
+        quiz.style.display='none';
+        outcome.style.display='block';
+        setProgress(3);
+      }
+    })();
+
+    // Scarcity counter animation
+    const updateScarcityCounters = () => {
+      // Simulate dynamic counters based on realistic data
+      const baseDate = new Date('2024-06-21'); // PowerPair program restart
+      const now = new Date();
+      const daysSinceStart = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
+      
+      // Simulate weekly qualifications (realistic numbers)
+      const weeklyBase = 35;
+      const randomFactor = Math.floor(Math.random() * 15) + 5;
+      const weeklyCount = weeklyBase + randomFactor;
+      
+      // Update recent customer count
+      const recentCountEl = $('#recentCount');
+      if (recentCountEl) {
+        recentCountEl.textContent = `${weeklyCount} homeowners qualified this week`;
+      }
+      
+      // Calculate PowerPair capacity used (realistic progression)
+      const totalCapacity = 60000; // 60,000 kW total
+      const monthlyUsage = 800; // Approximate kW used per month
+      const capacityUsed = Math.min(totalCapacity, daysSinceStart * (monthlyUsage / 30));
+      const capacityRemaining = totalCapacity - capacityUsed;
+      const percentRemaining = Math.round((capacityRemaining / totalCapacity) * 100);
+      
+      // Add capacity remaining indicator to urgency banner
+      const urgencyBanner = $('.urgency-banner');
+      if (urgencyBanner && !urgencyBanner.dataset.updated) {
+        urgencyBanner.dataset.updated = 'true';
+        urgencyBanner.innerHTML = `
+          ⚠️ Federal Solar Tax Credit Expires Dec 31, 2025 • Duke PowerPair: ${percentRemaining}% Capacity Remaining!
+        `;
+      }
+    };
+    
+    // Update counters on load and periodically
+    updateScarcityCounters();
+    setInterval(updateScarcityCounters, 30000); // Update every 30 seconds
+
+    // Real-time form validation
+    const validators = {
+      zip: (value) => ({
+        isValid: /^\d{5}$/.test(value),
+        message: value.length === 0 ? '' : /^\d{5}$/.test(value) ? '✅ Valid ZIP code' : '❌ Enter 5-digit ZIP code'
+      }),
+      email: (value) => ({
+        isValid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        message: value.length === 0 ? '' : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '✅ Valid email' : '❌ Enter valid email address'
+      }),
+      phone: (value) => {
+        const cleaned = value.replace(/\D/g, '');
+        return {
+          isValid: cleaned.length >= 10,
+          message: value.length === 0 ? '' : cleaned.length >= 10 ? '✅ Valid phone number' : '❌ Enter 10-digit phone number'
+        };
+      },
+      name: (value) => ({
+        isValid: value.trim().length >= 2,
+        message: value.length === 0 ? '' : value.trim().length >= 2 ? '✅ Valid name' : '❌ Enter at least 2 characters'
+      })
+    };
+
+    const validateInput = (input, validatorKey) => {
+      const result = validators[validatorKey](input.value);
+      
+      // Update input styling
+      input.classList.remove('input-valid', 'input-invalid');
+      if (input.value.length > 0) {
+        input.classList.add(result.isValid ? 'input-valid' : 'input-invalid');
+      }
+      
+      // Update/create validation message
+      let msgElement = input.parentNode.querySelector('.validation-message');
+      if (!msgElement && result.message) {
+        msgElement = document.createElement('div');
+        msgElement.className = 'validation-message';
+        input.parentNode.appendChild(msgElement);
+      }
+      
+      if (msgElement) {
+        msgElement.textContent = result.message;
+        msgElement.className = `validation-message ${result.isValid ? 'success' : 'error'}`;
+        if (!result.message) {
+          msgElement.remove();
         }
+      }
+      
+      return result.isValid;
+    };
 
-        function aeDebugRefresh(reason) {
-            if (window.AE_DEBUG_PANEL?.refresh) {
-                window.AE_DEBUG_PANEL.refresh(reason);
+    // Apply real-time validation to inputs
+    const setupValidation = (selector, validatorKey) => {
+      const input = document.querySelector(selector);
+      if (input) {
+        input.addEventListener('input', () => validateInput(input, validatorKey));
+        input.addEventListener('blur', () => validateInput(input, validatorKey));
+      }
+    };
+
+    // Setup validation for hero form
+    setupValidation('#zip', 'zip');
+    
+    // Setup validation for lead form (will be active once form is shown)
+    const setupLeadFormValidation = () => {
+      setupValidation('#firstName', 'name');
+      setupValidation('#lastName', 'name');
+      setupValidation('#email', 'email');
+      setupValidation('#phone', 'phone');
+    };
+
+    // Smart ZIP-to-utility lookup
+    const lookupUtility = async (zip) => {
+      if (!zip || zip.length !== 5) return null;
+      try {
+        const response = await fetch(`/api/zip-utility-lookup?zip=${zip}`);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.warn('ZIP lookup failed:', error);
+        return null;
+      }
+    };
+
+    // Auto-populate utility when ZIP is entered
+    const zipInput = $('#zip');
+    const utilitySelect = $('#utility');
+    
+    let zipTimeout;
+    zipInput.addEventListener('input', (e) => {
+      clearTimeout(zipTimeout);
+      const zip = e.target.value.trim();
+      
+      if (zip.length === 5) {
+        zipTimeout = setTimeout(async () => {
+          const result = await lookupUtility(zip);
+          if (result && result.utility) {
+            utilitySelect.value = result.utility;
+            utilitySelect.style.borderColor = '#10b981'; // Green border for auto-populated
+            
+            // Show helpful message
+            let message = `✅ Found ${result.utilityName}`;
+            if (result.powerPairEligible) {
+              message += ' - Duke PowerPair eligible!';
             }
-        }
-
-        function aeDebugSetCheck(key, value) {
-            if (window.AE_DEBUG_PANEL?.setCheck) {
-                window.AE_DEBUG_PANEL.setCheck(key, value);
-            }
-        }
-
-        // Quiz state
-        let quizData = { utility: '', roofType: '', billAmount: 150, homeowner: '', shading: '', firstName: '', email: '', phone: '' };
-        window.quizData = quizData;
-        let currentStep = 1; const totalSteps = 5; let leadId = null;
-        window.leadId = leadId;
-
-        function generateLeadId() { return 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
-
-        function startQuiz() {
-            const zip = document.getElementById('zip').value; const utility = document.getElementById('utility').value;
-            aeDebugLog('startQuiz', 'before', { zip, utility });
-            if (!zip || zip.length !== 5) {
-                aeDebugLog('startQuiz', 'abort', { reason: 'invalid_zip', zip });
-                alert('Please enter a valid 5-digit ZIP code');
-                return;
-            }
-            if (!utility) {
-                aeDebugLog('startQuiz', 'abort', { reason: 'missing_utility' });
-                alert('Please select your utility provider');
-                return;
-            }
-            quizData.zip = zip; quizData.utility = utility; leadId = generateLeadId(); window.leadId = leadId;
-            aeDebugLog('startQuiz', 'after', { leadId, quizData: { zip: quizData.zip, utility: quizData.utility } });
-            aeDebugRefresh('startQuiz');
-            aeEvt('ViewContent', { section: 'quiz_start' });
-            document.getElementById('quizSection').style.display = 'block'; document.body.style.overflow = 'hidden';
-        }
-
-        function selectOption(element, value) {
-            const siblings = element.parentElement.querySelectorAll('.option-card'); siblings.forEach(s => s.classList.remove('selected'));
-            element.classList.add('selected');
-            const step = parseInt(element.closest('.quiz-step').dataset.step);
-            switch(step) {
-                case 1: quizData.roofType = value; showFeedback('roofFeedback', getRoofFeedback(value)); break;
-                case 3: quizData.homeowner = value; break;
-                case 4: quizData.shading = value; showFeedback('shadeFeedback', getShadingFeedback(value)); break;
-            }
-        }
-
-        function getRoofFeedback(type) {
-            const feedback = { asphalt: 'Great! Asphalt shingle is typically an easy install.', metal: 'Excellent! Metal roofs are ideal for solar mounting.', tile: 'Good choice! Tile roofs work well with specialized mounting.', flat: 'Perfect! Flat roofs offer flexible panel positioning.' };
-            return feedback[type];
-        }
-        function getShadingFeedback(level) {
-            const feedback = { low: 'Perfect! Maximum sun exposure means maximum savings.', moderate: "We'll design around any shade for optimal performance.", heavy: 'No problem! We can still make solar work with strategic placement.' };
-            return feedback[level];
-        }
-        function showFeedback(elementId, message) { const el = document.getElementById(elementId); if (!el) return; el.textContent = '✓ ' + message; el.style.opacity = '0'; setTimeout(() => { el.style.transition = 'opacity 0.5s ease'; el.style.opacity = '1'; }, 100); }
-
-        function updateBill(value) {
-            document.getElementById('billAmount').textContent = value; quizData.billAmount = parseInt(value);
-            let feedback = ''; const v = +value;
-            if (v < 100) feedback = 'Small bills can still benefit from solar!';
-            else if (v < 200) feedback = 'Perfect range for a 6-8 kW system.';
-            else if (v < 300) feedback = 'Great candidate for 8-10 kW with battery backup.';
-            else feedback = 'Excellent savings potential with a larger system!';
-            showFeedback('billFeedback', feedback);
-        }
-
-        function nextStep() { const steps = document.querySelectorAll('.quiz-step'); steps[currentStep - 1].classList.remove('active'); currentStep++; if (currentStep <= totalSteps) { steps[currentStep - 1].classList.add('active'); updateProgress(); } }
-        function updateProgress() { const progress = (currentStep / totalSteps) * 100; document.getElementById('progressFill').style.width = progress + '%'; }
-
-        function applyOutcomeCopy(q){
-            const isDuke = q.utility === 'duke';
-            const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
-
-            const h2 = document.querySelector('#outcomeSection h2');
-            if (h2){
-                h2.textContent = isDuke
-                    ? "🎉 Great news! You're a strong fit for Duke Energy rebates and solar."
-                    : "🎉 Great news! You're a strong fit for solar savings.";
-            }
-
-            const zipEl = document.getElementById('userZip');
-            const utilEl = document.getElementById('userUtility');
-            const rebateText = document.getElementById('rebateText');
-            if (rebateText && zipEl && utilEl){
-                const utilName = utilityNames[q.utility] || 'your utility';
-                if (isDuke){
-                    rebateText.innerHTML =
-                        `Based on homes like yours in <span id="userZip">${q.zip}</span> with <span id="userUtility">Duke Energy</span>, you're likely eligible for Duke Energy solar + battery rebates. We'll also verify if you still qualify for the federal Investment Tax Credit (ITC).`;
-                } else {
-                    rebateText.innerHTML =
-                        `Based on homes like yours in <span id="userZip">${q.zip}</span> with <span id="userUtility">${utilName}</span>, you may not be eligible for Duke’s program, but we'll check your utility’s incentives and confirm your federal Investment Tax Credit (ITC) eligibility.`;
-                }
-            }
-
-            const listContainer = rebateText?.nextElementSibling?.nextElementSibling;
-            if (listContainer){
-                const bullets = listContainer.querySelectorAll('p');
-                if (bullets.length >= 4){
-                    if (isDuke){
-                        bullets[0].innerHTML = "<strong>✓ Rebate path:</strong> Duke Energy solar + battery incentives (we'll confirm your exact eligibility)";
-                    } else {
-                        bullets[0].innerHTML = "<strong>✓ Incentives check:</strong> We’ll verify any utility or state rebates available to you and confirm ITC eligibility";
-                    }
-                }
-            }
-
-            const uploadBtn = document.querySelector('.outcome-buttons .outcome-btn-primary');
-            if (uploadBtn){
-                uploadBtn.textContent = isDuke ? "🖨️ Upload Duke bill (front page)" : "🖨️ Upload bill (front page)";
-            }
-        }
-
-        function determineSystemSize(bill, shading){
-            const numericBill = Number(bill) || 0;
-            let systemSize = '';
-            if (numericBill < 100) systemSize = '5-7 kW System + 10 kWh Battery';
-            else if (numericBill < 200) systemSize = '7-9 kW System + 10-13 kWh Battery';
-            else if (numericBill < 300) systemSize = '9-11 kW System + 13-15 kWh Battery';
-            else systemSize = '11-15 kW System + 15-20 kWh Battery';
-            if (shading === 'heavy') {
-                systemSize = systemSize.replace(/(\d+)-(\d+)/, (m, a, b) => (parseInt(a, 10)+1)+'-'+(parseInt(b, 10)+1));
-            }
-            return systemSize;
-        }
-
-        function completeQuiz() {
-            const firstName = document.getElementById('firstName').value; const email = document.getElementById('email').value; const phone = document.getElementById('phone').value;
-            aeDebugLog('completeQuiz', 'before', { firstName, email, phone });
-            if (!firstName || !email || !phone) {
-                aeDebugLog('completeQuiz', 'abort', { reason: 'missing_fields', firstName: !!firstName, email: !!email, phone: !!phone });
-                alert('Please fill in all fields to get your quote');
-                return;
-            }
-            quizData.firstName = firstName; quizData.email = email; quizData.phone = phone;
-            const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
-            document.getElementById('userZip').textContent = quizData.zip; document.getElementById('userUtility').textContent = utilityNames[quizData.utility] || 'your utility';
-            const bill = quizData.billAmount;
-            const systemSize = determineSystemSize(bill, quizData.shading);
-            document.getElementById('systemSize').textContent = systemSize;
-            applyOutcomeCopy(quizData);
-            document.getElementById('quizSection').style.display = 'none'; document.body.style.overflow = 'auto';
-            document.getElementById('outcomeSection').style.display = 'block'; document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
-            window.quizData = quizData;
-            aeDebugLog('completeQuiz', 'after', { quizData });
-            if (!leadId) { leadId = generateLeadId(); window.leadId = leadId; }
-            try {
-                localStorage.setItem('ae_lead', JSON.stringify({ leadId, quizData, ts: Date.now() }));
-                if (window.AE_DEBUG) console.debug('[AE][DEBUG] saved', { key: 'ae_lead', value: { leadId, quizData } });
-            } catch(err) {
-                console.warn('Persist lead failed', err);
-            }
-            aeDebugRefresh('completeQuiz');
-        }
-
-        function showRenterGuide() { alert("We'll send you our Renter's Guide to Solar Savings! Even as a renter, you have options."); }
-        function toggleFAQ(el){
-            const item = el.parentElement;
-            const open = item.classList.toggle('active');
-            el.setAttribute('aria-expanded', String(open));
-        }
-        function openCalendly() { document.getElementById('calendlyModal').style.display = 'block'; }
-        function closeCalendly() { document.getElementById('calendlyModal').style.display = 'none'; }
-
-        function openBillUpload() {
-            aeDebugLog('openBillUpload', 'before', { leadId: window.leadId, quizData: window.quizData });
-            try { gtag('event','begin_bill_upload'); } catch(e){}
-            aeEvt('ViewContent', { section: 'bill_upload_modal' });
-            document.getElementById('billUploadModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            const zone = document.getElementById('bu_drop');
-            if (zone) zone.focus();
-            const leadField = document.getElementById('bu_lead_id');
-            if (leadField) leadField.value = (window.leadId ||= 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
-            const emailField = document.getElementById('bu_email');
-            if (emailField) emailField.value = (window.quizData?.email) || '';
-            const addressField = document.getElementById('serviceAddress');
-            if (addressField && !addressField.value && window.quizData?.zip) {
-                addressField.value = (addressField.value||'') + (addressField.value ? ' ' : '') + window.quizData.zip;
-            }
-            aeDebugLog('openBillUpload', 'after', { leadId: window.leadId, emailPrefill: document.getElementById('bu_email')?.value });
-            aeDebugRefresh('openBillUpload');
-        }
-        function closeBillUpload() {
-            aeDebugLog('closeBillUpload', 'before', {});
-            document.getElementById('billUploadModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            const form = document.getElementById('bill-upload');
-            if (form) {
-                form.reset();
-            }
-            const previewWrap = document.getElementById('bu_preview');
-            const preview = document.getElementById('bu_preview_content');
-            if (previewWrap) previewWrap.hidden = true;
-            if (preview) preview.innerHTML = '';
-            aeDebugLog('closeBillUpload', 'after', {});
-            aeDebugRefresh('closeBillUpload');
-        }
-
-        function sendUploadLink(){ alert('Link sent! Check your phone for a secure upload link.'); console.log('SMS upload link requested for:', quizData.phone); }
-        function showToast(message){ const toast=document.getElementById('toast'); document.getElementById('toastMessage').textContent = message; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
-        function scrollToQuiz(){ if (document.getElementById('quizSection').style.display === 'block') { document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' }); } else { document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' }); } }
-
-        window.addEventListener('scroll', function(){ const sticky=document.getElementById('stickyCTA'); if (window.innerWidth <= 768) { if (window.scrollY > window.innerHeight * 0.3) sticky.classList.add('show'); else sticky.classList.remove('show'); } });
-
-        document.addEventListener('DOMContentLoaded', function(){
-            document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e){ e.preventDefault(); const t=document.querySelector(this.getAttribute('href')); if(t){ t.scrollIntoView({ behavior: 'smooth' }); }}));
-            const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; }}); }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
-            document.querySelectorAll('.badge, .testimonial-card').forEach(el => { el.style.animationPlayState='paused'; observer.observe(el); });
-            document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { if (document.getElementById('billUploadModal').style.display === 'block') closeBillUpload(); if (document.getElementById('calendlyModal').style.display === 'block') closeCalendly(); } });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const stored = localStorage.getItem('ae_lead');
-                if (!stored) return;
-                const parsed = JSON.parse(stored);
-                if (!parsed || !parsed.quizData) return;
-                quizData = { ...quizData, ...parsed.quizData };
-                window.quizData = quizData;
-                leadId = parsed.leadId || leadId || generateLeadId();
-                window.leadId = leadId;
-                const utilityNames = { duke: 'Duke Energy', union: 'Union Power', city: 'City of Charlotte', other: 'your utility' };
-                const zipEl = document.getElementById('userZip');
-                if (zipEl) zipEl.textContent = quizData.zip || '';
-                const utilEl = document.getElementById('userUtility');
-                if (utilEl) utilEl.textContent = utilityNames[quizData.utility] || 'your utility';
-                const systemEl = document.getElementById('systemSize');
-                if (systemEl) systemEl.textContent = determineSystemSize(quizData.billAmount, quizData.shading);
-                applyOutcomeCopy(quizData);
-                const quizSection = document.getElementById('quizSection');
-                if (quizSection) quizSection.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                const outcomeSection = document.getElementById('outcomeSection');
-                if (outcomeSection) {
-                    outcomeSection.style.display = 'block';
-                    if (window.AE_DEBUG) {
-                        const existingLink = outcomeSection.querySelector('.start-over-link');
-                        if (!existingLink) {
-                            const header = outcomeSection.querySelector('h2');
-                            if (header) {
-                                const startOverLink = document.createElement('a');
-                                startOverLink.href = '#';
-                                startOverLink.textContent = '[Reset lead]';
-                                startOverLink.className = 'start-over-link';
-                                startOverLink.style.marginLeft = '.5rem';
-                                startOverLink.style.fontSize = '.85rem';
-                                startOverLink.style.display = 'inline-block';
-                                startOverLink.style.color = 'var(--accent-gold)';
-                                startOverLink.style.fontWeight = '600';
-                                startOverLink.addEventListener('click', (evt) => {
-                                    evt.preventDefault();
-                                    try { localStorage.removeItem('ae_lead'); } catch(err) { console.warn('Failed to clear stored lead', err); }
-                                    try { localStorage.removeItem('ae_optin'); } catch(err){}
-                                    if (window.AE_DEBUG) {
-                                        try {
-                                            sessionStorage.removeItem('ae_qa_lead');
-                                            sessionStorage.removeItem('ae_qa_bill');
-                                            sessionStorage.removeItem('ae_qa_cal');
-                                        } catch(err){}
-                                    }
-                                    location.reload();
-                                });
-                                header.insertAdjacentElement('afterend', startOverLink);
-                            }
-                        }
-                    }
-                }
-                aeDebugRefresh('restore');
-            } catch(err) {
-                console.warn('Restore lead failed', err);
-            }
-        });
-
-        // Runtime video fallback for iOS/slow networks
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('heroVideo'); if (!video) return;
-            let fallbackTimeout = setTimeout(() => {
-                if (video.readyState < 2) {
-                    video.outerHTML = '<img src="assets/admiral-fallback.png" alt="Admiral Energy Video Fallback" style="width:100%;border-radius:20px;">';
-                }
-            }, 2500);
-            video.addEventListener('playing', () => clearTimeout(fallbackTimeout));
-            video.addEventListener('error', () => {
-                video.outerHTML = '<img src="assets/admiral-fallback.png" alt="Admiral Energy Video Fallback" style="width:100%;border-radius:20px;">';
-            });
-        });
-    </script>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const v = document.getElementById('heroVideo');
-      const btn = document.getElementById('muteToggle');
-      if (!v || !btn) return;
-
-      v.muted = (typeof v.muted === 'boolean') ? v.muted : true;
-
-      const sync = () => {
-        btn.textContent = v.muted ? 'Unmute' : 'Mute';
-        btn.setAttribute('aria-label', v.muted ? 'Unmute video' : 'Mute video');
-        btn.setAttribute('aria-pressed', String(!v.muted));
-      };
-
-      btn.addEventListener('click', async () => {
-        v.muted = !v.muted;
-        if (v.paused) {
-          v.muted = (typeof v.muted === 'boolean') ? v.muted : true;
-          try { await v.play(); } catch (_) {}
-        }
-        sync();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'm') btn.click();
-      });
-
-      sync();
+            
+            const existingMsg = $('.zip-lookup-message');
+            if (existingMsg) existingMsg.remove();
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'zip-lookup-message';
+            msgDiv.style.cssText = 'color:#10b981;font-size:.8rem;margin-top:.25rem;font-weight:600';
+            msgDiv.textContent = message;
+            zipInput.parentNode.appendChild(msgDiv);
+            
+            setTimeout(() => msgDiv.remove(), 3000);
+          }
+        }, 500); // Debounce by 500ms
+      }
     });
-    </script>
 
-    <script>
-      (function(){
-        const v = document.getElementById('admiralExplainer');
-        const b = document.getElementById('explainerMute');
-        if (!v || !b) return;
-        const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
-        b.addEventListener('click', async ()=>{ v.muted = !v.muted; if (!v.paused) { try{ await v.play(); }catch(e){} } sync(); });
-        v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
-        sync();
-      })();
-    </script>
-
-    <script>
-(function(){
-  const form = document.getElementById('bill-upload');
-  const drop = document.getElementById('bu_drop');
-  const input = document.getElementById('dukeBillInput');
-  const previewWrap = document.getElementById('bu_preview');
-  const preview = document.getElementById('bu_preview_content');
-  const skipBtn = document.getElementById('bu_skip');
-  const attachBtn = document.getElementById('bu_attach_btn');
-  let picking = false;
-  if(!form || !drop || !input) return;
-
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const updateSubmitState = () => {
-    if (!submitBtn) return;
-    submitBtn.disabled = !(input?.files?.length > 0);
-  };
-  updateSubmitState();
-
-  function syncHidden(){
-
-    const leadField = document.getElementById('bu_lead_id');
-    const emailField = document.getElementById('bu_email');
-    const firstField = document.getElementById('bu_first_name');
-    const phoneField = document.getElementById('bu_phone');
-    const buOpt = document.getElementById('bu_opt_in');
-    const addressField = document.getElementById('serviceAddress');
-    const ensuredLeadId = (window.leadId ||= 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
-    if (leadField) leadField.value = ensuredLeadId;
-    if (emailField) emailField.value = (window.quizData?.email)||'';
-    if (firstField) firstField.value = (window.quizData?.firstName)||'';
-    if (phoneField) phoneField.value = (window.quizData?.phone)||'';
-    if (buOpt) {
-      let v = 'no';
-      try { v = (localStorage.getItem('ae_optin') === 'yes') ? 'yes' : 'no'; } catch(e){}
-      buOpt.value = v;
-    }
-    if (addressField && !addressField.value && window.quizData?.zip) addressField.value = window.quizData.zip;
-
-  }
-  syncHidden();
-
-  function openPickerOnce() {
-    if (picking) return;
-    picking = true;
-    try { input.value = ''; } catch(_) {}
-    updateSubmitState();
-    input.click();
-  }
-
-  drop.addEventListener('click', (e) => {
-    e.preventDefault();
-    openPickerOnce();
-  });
-
-  drop.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    // Hero start
+    startBtn.addEventListener('click', (e)=>{
       e.preventDefault();
-      openPickerOnce();
+      const zip = $('#zip').value.trim();
+      const utility = $('#utility').value;
+      if(!zip || !utility){ return }
+      // Prefill hidden fields
+      $('#zip_hidden').value = zip;
+      $('#utility_hidden').value = utility;
+      aeEvt('quiz_started', { zip, utility, lead_id: leadId });
+      heroForm.closest('.card').scrollIntoView({behavior:'smooth',block:'center'});
+      quiz.style.display='block';
+      hideQuizSkeleton(); // Hide skeleton when quiz starts
+      setupLeadFormValidation(); // Setup validation for lead form
+      goto(1);
+    });
+
+    // Bill slider with accessibility
+    const syncBill = () => { 
+      const val = billSlider.value;
+      billVal.textContent = `$${val}`;
+      $('#bill_hidden').value = val;
+      $('#bill-value').textContent = `Current value: $${val} per month`;
     }
-  });
-  drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
-  ['dragleave','drop'].forEach(evt=>drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
-  drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f){ input.files=e.dataTransfer.files; renderPreview(f); updateSubmitState(); } });
-  input.addEventListener('change', () => {
-    picking = false;
-    const f = input.files?.[0];
-    if(f) renderPreview(f);
-    updateSubmitState();
-  });
+    billSlider.addEventListener('input', syncBill); 
+    billSlider.addEventListener('change', syncBill); // For keyboard users
+    syncBill();
+    $('#next1').addEventListener('click', ()=>{ aeEvt('quiz_step_1_complete', { bill: billSlider.value, lead_id: leadId }); goto(2) });
 
-  function renderPreview(file){
-    if(!validate(file)){ input.value=''; return; }
-    previewWrap.hidden = false;
-    if(file.type.startsWith('image/')){
-      const r=new FileReader(); r.onload=ev=> preview.innerHTML = `<img alt="Bill preview" src="${ev.target.result}" style="max-width:100%;max-height:240px;border-radius:8px;">`; r.readAsDataURL(file);
-    } else {
-      preview.innerHTML = `<div><strong>${file.name}</strong> — ${(file.size/1024).toFixed(1)} KB</div>`;
-    }
-  }
-  function validate(file){
-    const ok = /^(application\/pdf|image\/(jpeg|jpg|png|heic))$/i.test(file.type) || /\.pdf$|\.jpe?g$|\.png$|\.heic$/i.test(file.name);
-    if(!ok){ alert('Please upload PDF, JPG, PNG, or HEIC.'); return false; }
-    if(file.size > 10*1024*1024){ alert('Max 10 MB.'); return false; }
-    return true;
-  }
-
-
-  form.addEventListener('submit', async function(e){
-    const file = input?.files?.[0];
-
-    if (!file) {
+    // Lead capture
+    $('#back2').addEventListener('click', ()=> goto(1));
+    leadForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
+      
+      // Rate limiting check
+      if (!formSecurity.rateLimiter.isAllowed('lead-capture')) {
+        alert('Please wait before submitting again.');
+        return;
+      }
+      
+      const firstName = formSecurity.sanitizeInput($('#firstName').value.trim());
+      const lastName = formSecurity.sanitizeInput($('#lastName').value.trim());
+      const email = formSecurity.sanitizeInput($('#email').value.trim());
+      const phone = formSecurity.sanitizeInput($('#phone').value.trim());
+      const zip = $('#zip_hidden').value.trim();
+      const utility = $('#utility_hidden').value.trim();
+      const billAmount = +($('#bill_hidden').value||billSlider.value);
+      const optIn = $('#optin').checked ? 'yes' : 'no';
 
-      try { showToast?.('Attach your bill to continue (PDF/JPG/PNG/HEIC, up to 10 MB).'); } catch (_) {}
+      // Persist
+      saveState({ leadId, firstName, lastName, email, phone, zip, utility, billAmount, leadCaptured:true });
 
-      try { input.value = ''; } catch (_) {}
-      updateSubmitState();
+      // Netlify form submit
+      const fd = new FormData(leadForm);
+      fd.set('lead_id', leadId);
+      fd.set('opt_in', optIn);
+      try { await fetch('/', { method:'POST', body: fd }); } catch(_){ }
 
+      // Track + show outcome
+      aeEvt('lead_captured', { value:500, currency:'USD', lead_id: leadId });
+      
+      // Enhanced GA4 tracking for lead generation
+      trackGA4FormEvent('lead-form', {
+        form_id: 'lead-form',
+        lead_id: leadId,
+        bill_amount: billAmount,
+        zip_code: zip,
+        utility_provider: utility,
+        opt_in: optIn,
+        value: 500
+      });
+      $('#out_bill').textContent = `$${billAmount}`;
+      renderOutcome(billAmount);
+      quiz.style.display='none'; outcome.style.display='block'; setProgress(3);
+
+      // Optional: exit-intent preload values
+      $('#exit_email').value = email; $('#exit_zip').value = zip; $('#exit_utility').value = utility;
+
+      // Optional SMS via Netlify Function (requires env + function deploy)
+      if(optIn==='yes'){
+        try { await fetch('/.netlify/functions/send-sms', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ leadId, firstName, email, phone }) }); } catch(_){ }
+      }
+      
+      // Trigger email automation sequence
+      try { 
+        await fetch('/.netlify/functions/email-automation', { 
+          method:'POST', 
+          headers:{'Content-Type':'application/json'}, 
+          body: JSON.stringify({ leadId, email, billAmount, zip, utility }) 
+        }); 
+      } catch(_){ }
+    });
+
+    function renderOutcome(bill){
+      const min = Math.round(bill*0.5*12/10)*10; // rough calc
+      const max = Math.round(bill*1.0*12/10)*10;
+      $('#out_savings').textContent = `$${min.toLocaleString()}–$${max.toLocaleString()}/yr`;
+    }
+
+    // Calendly with Purchase tracking
+    window.openCalendlyPrefilled = function(firstName, email){
       try {
-        drop?.classList?.add('dragover');
-        setTimeout(() => drop?.classList?.remove('dragover'), 800);
-      } catch (_) {}
-
-      picking = false;
-      input.click();
-      return;
+        Calendly.initPopupWidget({
+          url: 'https://calendly.com/davide-admiralenergy/batterysolar-intro?hide_event_type_details=1&hide_gdpr_banner=1' +
+               (firstName?`&name=${encodeURIComponent(firstName)}`:'') +
+               (email?`&email=${encodeURIComponent(email)}`:'')}); 
+        aeEvt('calendly_opened', { value:750, currency:'USD', lead_id: leadId });
+        
+        // Listen for Calendly completion events
+        window.addEventListener('message', function(e) {
+          if (e.data.event && e.data.event.indexOf('calendly') === 0) {
+            if (e.data.event === 'calendly.event_scheduled') {
+              // Track Reddit Pixel Purchase event
+              aeEvt('calendly_booking_completed', { 
+                value: 1000, 
+                currency: 'USD', 
+                lead_id: leadId,
+                event_type: e.data.event_type || 'consultation'
+              });
+            }
+          }
+        });
+      } catch(_){
+        console.warn('Calendly initialization failed:', _);
+      }
     }
+    
+    // Enhanced GA4 form tracking for lead generation
+    window.trackGA4FormEvent = function(formName, eventData = {}) {
+      // Enhanced form tracking specifically for GA4 GTM integration
+      const leadId = eventData.lead_id || window.leadId || '';
+      
+      gtag('event', 'generate_lead', {
+        event_category: 'lead_generation',
+        event_label: formName,
+        form_name: formName,
+        lead_id: leadId,
+        value: eventData.value || 500,
+        currency: 'USD',
+        custom_parameter_1: leadId,
+        custom_parameter_2: eventData.bill_amount || '',
+        custom_parameter_3: eventData.zip_code || '',
+        custom_parameter_4: eventData.utility_provider || ''
+      });
+      
+      // Also trigger the form submit event for GTM
+      if (typeof dataLayer !== 'undefined') {
+        dataLayer.push({
+          event: 'form_submit',
+          form_name: formName,
+          form_id: eventData.form_id || formName.replace(/[^a-z0-9]/gi, '-'),
+          lead_id: leadId,
+          ...eventData
+        });
+      }
+    };
+    $('#bookCall').addEventListener('click', ()=>{
+      const s = loadState();
+      openCalendlyPrefilled(s?.firstName||'', s?.email||'');
+    });
 
-    e.preventDefault();
-    if (submitBtn) submitBtn.disabled = true;
-    try {
-      syncHidden();
+    // Video mute toggle (Hero video) with enhanced tracking
+    (function(){
+      const v = document.getElementById('admiralExplainer');
+      const b = document.getElementById('explainerMute');
+      if (!v || !b) return;
+      const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
+      b.addEventListener('click', async ()=>{ 
+        v.muted = !v.muted; 
+        if(!v.paused){ try{ await v.play(); }catch(e){} } 
+        sync(); 
+        // Track video interaction
+        aeEvt('video_mute_toggle', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video', 
+          muted: v.muted,
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+      v.addEventListener('play', () => {
+        aeEvt('video_play', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('pause', () => {
+        aeEvt('video_interaction', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video', 
+          action: 'pause',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      sync();
+    })();
 
-      try { gtag('event','file_upload',{type:'duke_bill'}); } catch(e){}
-      aeEvt('Lead', { lead_id: window.leadId || '' });
+    // Video mute toggle (Outcome video) with enhanced tracking
+    (function(){
+      const v = document.getElementById('outcomeExplainer');
+      const b = document.getElementById('outcomeMute');
+      if (!v || !b) return;
+      const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
+      b.addEventListener('click', async ()=>{ 
+        v.muted = !v.muted; 
+        if(!v.paused){ try{ await v.play(); }catch(e){} } 
+        sync(); 
+        // Track video interaction
+        aeEvt('video_mute_toggle', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video', 
+          muted: v.muted,
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+      v.addEventListener('play', () => {
+        aeEvt('video_play', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('pause', () => {
+        aeEvt('video_interaction', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video', 
+          action: 'pause',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      sync();
+    })();
 
-      const fd = new FormData(form);
-      if (window.AE_DEBUG) console.debug('[AE][DEBUG] bill-upload FormData keys', Array.from(fd.keys()));
-      try { await fetch('/', { method: 'POST', body: fd }); } catch(err){ console.warn('Netlify file POST failed', err); }
-      if (window.AE_DEBUG) {
-        console.debug('[AE][DEBUG] bill-upload POSTed');
-        aeDebugSetCheck('billPosted', true);
-        try { sessionStorage.setItem('ae_qa_bill', '1'); } catch(e){}
-        aeDebugRefresh('billUploadSubmit');
+    // Bill Upload Modal logic
+    (function(){
+      const modal = $('#billModal');
+      const openBtn = $('#openBillUpload');
+      const closeBtn = $('#bu_close');
+      const form = $('#bill-upload');
+      const drop = $('#bu_drop');
+      const input = $('#dukeBillInput');
+      const previewWrap = $('#bu_preview');
+      const preview = $('#bu_preview_content');
+      const submitBtn = $('#bu_submit');
+      const attachBtn = $('#bu_attach_btn');
+      const skipBtn = $('#bu_skip');
+      let picking = false;
+
+      function open(){ modal.style.display='block'; modal.setAttribute('aria-hidden','false'); syncHidden(); }
+      function close(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+      openBtn.addEventListener('click', open); closeBtn.addEventListener('click', close);
+
+      function syncHidden(){
+        const s = loadState() || {};
+        $('#bu_lead_id').value = leadId;
+        $('#bu_email').value = s.email||'';
+        $('#bu_first_name').value = s.firstName||'';
+        $('#bu_phone').value = s.phone||'';
+        $('#bu_opt_in').value = (getCookie('ae_lead_captured')==='1' || s.leadCaptured) ? 'yes' : 'no';
+        if(!$('#serviceAddress').value && s.zip){ $('#serviceAddress').value = s.zip; }
       }
 
-      showToast("Bill received — we'll build your quote and follow up.");
-      try { gtag('event','bill_uploaded'); } catch(e){}
-      aeEvt('CompleteRegistration', { lead_id: window.leadId || '' });
+      function updateSubmit(){ submitBtn.disabled = !(input?.files?.length>0); }
+      function renderPreview(file){
+        previewWrap.hidden=false;
+        if(file.type.startsWith('image/')){
+          const r=new FileReader(); r.onload=ev=> preview.innerHTML = `<img alt="Bill preview" src="${ev.target.result}" style="max-width:100%;max-height:240px;border-radius:8px">`; r.readAsDataURL(file);
+        } else { preview.innerHTML = `<div><strong>${file.name}</strong> — ${(file.size/1024).toFixed(1)} KB</div>`; }
+      }
+      function validate(file){
+        const ok = /^(application\/pdf|image\/(jpeg|jpg|png|heic))$/i.test(file.type) || /\.pdf$|\.jpe?g$|\.png$|\.heic$/i.test(file.name);
+        if(!ok){ alert('Please upload PDF, JPG, PNG, or HEIC.'); return false; }
+        if(file.size > 10*1024*1024){ alert('Max 10 MB.'); return false; }
+        return true;
+      }
 
-      closeBillUpload?.();
-      openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
-    } finally {
-      if (submitBtn) submitBtn.disabled = false;
-    }
-  });
+      function openPickerOnce(){ if(picking) return; picking=true; try{ input.value=''; }catch(_){} updateSubmit(); input.click(); }
+      drop.addEventListener('click', (e)=>{ e.preventDefault(); openPickerOnce(); });
+      drop.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openPickerOnce(); } });
+      drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('dragover'); });
+      ['dragleave','drop'].forEach(evt=> drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('dragover'); }));
+      drop.addEventListener('drop', e=>{ const f=e.dataTransfer?.files?.[0]; if(f && validate(f)){ input.files=e.dataTransfer.files; renderPreview(f); updateSubmit(); } });
+      input.addEventListener('change', ()=>{ picking=false; const f=input.files?.[0]; if(f && validate(f)) renderPreview(f); updateSubmit(); });
+      attachBtn.addEventListener('click', ()=>{ picking=false; try{ input.value=''; }catch(_){} updateSubmit(); input.click(); });
 
-  attachBtn?.addEventListener('click', () => {
-    picking = false;
-    try { input.value = ''; } catch (_) {}
-    updateSubmitState();
-    input.click();
-  });
+      form.addEventListener('submit', async (e)=>{
+        const file = input?.files?.[0];
+        if(!file){ e.preventDefault(); try{ showToast('Attach your bill to continue (PDF/JPG/PNG/HEIC, up to 10 MB).'); }catch(_){} openPickerOnce(); return; }
+        e.preventDefault(); submitBtn.disabled=true; syncHidden();
+        aeEvt('file_upload', { type:'duke_bill', lead_id: leadId });
+        const fd=new FormData(form);
+        try{ await fetch('/', { method:'POST', body:fd }); }catch(_){}
+        aeEvt('bill_uploaded', { value:1000, currency:'USD', lead_id: leadId });
+        showToast("Bill received — we'll build your quote and follow up.");
+        close();
+        const s = loadState();
+        openCalendlyPrefilled(s?.firstName||'', s?.email||'');
+        submitBtn.disabled=false;
+      });
 
-  skipBtn?.addEventListener('click', function(){
-    try { gtag('event','skip_upload'); } catch(e){}
-    aeEvt('InitiateCheckout', { path: 'skip_upload' });
-    closeBillUpload?.();
-    const first=(window.quizData?.firstName)||''; const email=(window.quizData?.email)||'';
-    openCalendlyPrefilled(first, email);
-  });
-})();
-    </script>
+      skipBtn.addEventListener('click', ()=>{ close(); const s = loadState(); openCalendlyPrefilled(s?.firstName||'', s?.email||''); });
+    })();
 
-    <script>
+    // Exit intent (desktop only)
     (function(){
-      if (!window.AE_DEBUG) return;
+      let shown=false; let armed = true; // fire once per session
+      function onLeave(e){
+        if(shown||!armed) return; if(e.clientY>0) return; shown=true; aeEvt('exit_intent_shown');
+        // Submit hidden form with whatever we captured
+        const s = loadState()||{}; $('#exit_email').value = s.email||''; $('#exit_zip').value = s.zip||$('#zip').value||''; $('#exit_utility').value = s.utility||$('#utility').value||'';
+        const fd = new FormData($('#exit-form')); fetch('/', { method:'POST', body:fd }).then(()=> aeEvt('exit_intent_converted', { value:250, lead_id: leadId }));
+      }
+      window.addEventListener('mouseout', onLeave);
+    })();
 
-      const getSessionFlag = (key) => {
-        try { return sessionStorage.getItem(key) === '1'; } catch(e) { return false; }
+    // Lazy loading for videos
+    const lazyLoadVideo = (video) => {
+      const skeleton = video.parentElement.querySelector('.video-skeleton');
+      if (skeleton) skeleton.style.display = 'none';
+      
+      const src = video.dataset.src;
+      if (src) {
+        video.src = src;
+        video.removeAttribute('data-src');
+        video.addEventListener('loadedmetadata', () => {
+          video.classList.add('loaded');
+        });
+        video.load();
+      }
+    };
+
+    // Intersection Observer for lazy loading
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          lazyLoadVideo(entry.target);
+          videoObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // Observe all lazy videos
+    document.querySelectorAll('.lazy-video').forEach(video => {
+      videoObserver.observe(video);
+    });
+
+    // Quiz skeleton removal
+    const hideQuizSkeleton = () => {
+      const skeleton = $('#quizSkeleton');
+      if (skeleton) skeleton.style.display = 'none';
+    };
+
+    // Touch controls for videos with tracking
+    (function(){
+      const setupTouchControls = (videoId, playBtnId, touchMuteBtnId) => {
+        const video = document.getElementById(videoId);
+        const playBtn = document.getElementById(playBtnId);
+        const touchMuteBtn = document.getElementById(touchMuteBtnId);
+        if(!video || !playBtn || !touchMuteBtn) return;
+        
+        const updatePlayBtn = () => { playBtn.textContent = video.paused ? '▶️ Play' : '⏸️ Pause'; };
+        const updateMuteBtn = () => { touchMuteBtn.textContent = video.muted ? '🔇 Unmute' : '🔊 Mute'; };
+        const section = videoId.includes('admiral') ? 'hero_video' : 'outcome_video';
+        
+        playBtn.addEventListener('click', async () => {
+          if(video.paused) {
+            try { await video.play(); } catch(e) {}
+            aeEvt('video_play', { 
+              video_id: videoId, 
+              section: section,
+              source: 'touch_controls',
+              video_time: Math.round(video.currentTime)
+            });
+          } else {
+            video.pause();
+            aeEvt('video_interaction', { 
+              video_id: videoId, 
+              section: section, 
+              action: 'pause',
+              source: 'touch_controls',
+              video_time: Math.round(video.currentTime)
+            });
+          }
+          updatePlayBtn();
+        });
+        
+        touchMuteBtn.addEventListener('click', async () => {
+          video.muted = !video.muted;
+          if(!video.paused) {
+            try { await video.play(); } catch(e) {}
+          }
+          aeEvt('video_mute_toggle', { 
+            video_id: videoId, 
+            section: section, 
+            muted: video.muted,
+            source: 'touch_controls',
+            video_time: Math.round(video.currentTime)
+          });
+          updateMuteBtn();
+        });
+        
+        video.addEventListener('canplay', () => { updatePlayBtn(); updateMuteBtn(); });
       };
+      
+      setupTouchControls('admiralExplainer', 'playPauseBtn', 'touchMuteBtn');
+      setupTouchControls('outcomeExplainer', 'outPlayPauseBtn', 'outTouchMuteBtn');
+    })();
 
-      const qaLabels = {
-        quizData: 'quizData present',
-        leadId: 'leadId present',
-        optSync: 'opt_in synced',
-        leadPosted: 'lead-intake POSTed',
-        billPosted: 'bill-upload POSTed',
-        calendly: 'Calendly opened'
-      };
-
-      const qaState = {
-        quizData: false,
-        leadId: false,
-        optSync: false,
-        leadPosted: getSessionFlag('ae_qa_lead'),
-        billPosted: getSessionFlag('ae_qa_bill'),
-        calendly: getSessionFlag('ae_qa_cal')
-      };
-
-      const panel = document.createElement('div');
-      panel.setAttribute('data-ae-debug', 'panel');
-      panel.style.cssText = 'position:fixed;bottom:1rem;right:1rem;width:320px;max-width:90vw;background:#fff;border:1px solid rgba(12,47,74,0.15);box-shadow:0 12px 30px rgba(12,47,74,0.25);border-radius:12px;padding:1rem;font-size:0.85rem;line-height:1.5;color:#0c2f4a;z-index:4000;font-family:inherit;';
-      panel.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-          <strong style="font-size:0.95rem;">AE Debug</strong>
-          <span style="font-size:0.75rem;color:#4a5568;">${new Date().toLocaleTimeString()}</span>
-        </div>
-        <div style="margin-bottom:.75rem;">
-          <div><strong>leadId:</strong> <span data-ae-debug="lead">(none)</span></div>
-          <div style="margin-top:.5rem;"><strong>quizData</strong></div>
-          <pre data-ae-debug="quiz" style="background:#f7f5f2;border-radius:8px;padding:.5rem;max-height:120px;overflow:auto;font-size:0.75rem;">{}</pre>
-          <div style="margin-top:.5rem;"><strong>Opt-in</strong> <span data-ae-debug="opt">nf: -, bu: -, cb: -</span></div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;">
-          <button type="button" data-ae-action="reset" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Start Over (clear localStorage)</button>
-          <button type="button" data-ae-action="open-calendly" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Open Calendly</button>
-          <button type="button" data-ae-action="post-lead" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">POST lead-intake</button>
-          <button type="button" data-ae-action="toggle-opt" style="flex:1 1 140px;padding:.35rem .5rem;border:1px solid rgba(12,47,74,0.2);border-radius:6px;background:#f7f5f2;color:#0c2f4a;cursor:pointer;">Toggle Opt-in</button>
-        </div>
-        <div>
-          <strong>QA Checklist</strong>
-          <ul style="list-style:none;padding:0;margin:.5rem 0 0 0;">
-            ${Object.keys(qaLabels).map(key => `<li data-ae-check="${key}" style="margin-bottom:.25rem;">⬜️ ${qaLabels[key]}</li>`).join('')}
-          </ul>
+    // Live chat toggle
+    $('#liveChat').addEventListener('click', ()=>{
+      aeEvt('live_chat_opened', { value:300, currency:'USD', lead_id: leadId });
+      // Simulate live chat widget - in production, integrate with Intercom, Zendesk, etc.
+      const chatWidget = document.createElement('div');
+      chatWidget.innerHTML = `
+        <div style="position:fixed;bottom:20px;right:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:1rem;max-width:300px;z-index:1000;border:1px solid #e5e7eb">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+            <strong style="color:var(--primary-navy)">Admiral Energy Support</strong>
+            <button onclick="this.closest('[data-chat-widget]').remove()" style="border:none;background:none;font-size:1.2rem;cursor:pointer;color:#666;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">&times;</button>
+          </div>
+          <p style="margin:.5rem 0;font-size:.9rem;color:var(--text-gray)">Hi! I'm here to help with your solar questions. What would you like to know?</p>
+          <div style="display:flex;gap:.5rem;margin-top:.75rem">
+            <input id="chatInput" placeholder="Ask about solar..." style="flex:1;padding:.5rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem" />
+            <button id="chatSend" style="padding:.5rem .75rem;background:#0084FF;color:white;border:none;border-radius:6px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='#0056CC'" onmouseout="this.style.background='#0084FF'">Send</button>
+          </div>
+          <div id="chatResponse" style="margin-top:.75rem;padding:.5rem;background:#f8f9fa;border-radius:6px;font-size:.85rem;display:none"></div>
         </div>
       `;
-
-      document.body.appendChild(panel);
-
-      const leadEl = panel.querySelector('[data-ae-debug="lead"]');
-      const quizEl = panel.querySelector('[data-ae-debug="quiz"]');
-      const optEl = panel.querySelector('[data-ae-debug="opt"]');
-      const checkEls = Object.fromEntries(Object.keys(qaLabels).map(key => [key, panel.querySelector(`[data-ae-check="${key}"]`)]));
-
-      function updateChecklist(){
-        Object.keys(qaLabels).forEach(key => {
-          const el = checkEls[key];
-          if (!el) return;
-          const on = !!qaState[key];
-          el.textContent = `${on ? '✅' : '⬜️'} ${qaLabels[key]}`;
-          el.style.color = on ? '#0a7a2a' : '#0c2f4a';
-        });
-      }
-
-      function refresh(reason){
-        const data = {
-          zip: window.quizData?.zip || '',
-          utility: window.quizData?.utility || '',
-          billAmount: window.quizData?.billAmount ?? '',
-          homeowner: window.quizData?.homeowner || '',
-          shading: window.quizData?.shading || '',
-          firstName: window.quizData?.firstName || '',
-          email: window.quizData?.email || '',
-          phone: window.quizData?.phone || ''
-        };
-        leadEl.textContent = window.leadId || '(none)';
-        quizEl.textContent = JSON.stringify(data, null, 2);
-        const nf = document.getElementById('nf_opt_in');
-        const bu = document.getElementById('bu_opt_in');
-        const cb = document.getElementById('optInUpdates');
-        const nfVal = nf?.value ?? '';
-        const buVal = bu?.value ?? '';
-        const cbVal = cb ? (cb.checked ? 'yes' : 'no') : '';
-        optEl.textContent = `nf: ${nfVal || 'n/a'} | bu: ${buVal || 'n/a'} | cb: ${cb ? cbVal : 'n/a'}`;
-        qaState.quizData = Object.values(data).some(Boolean);
-        qaState.leadId = !!window.leadId;
-        const hasValue = !!(nfVal || buVal || cbVal);
-        qaState.optSync = hasValue && nfVal === buVal && (!cb || cbVal === nfVal);
-        updateChecklist();
-        console.debug('[AE][DEBUG] panel refresh', { reason, qaState });
-      }
-
-      function setCheck(key, value){
-        if (!(key in qaState)) return;
-        qaState[key] = !!value;
-        updateChecklist();
-      }
-
-      const actions = {
-        reset(){
-          try { localStorage.removeItem('ae_lead'); } catch(e){}
-          try { localStorage.removeItem('ae_optin'); } catch(e){}
-          try {
-            sessionStorage.removeItem('ae_qa_lead');
-            sessionStorage.removeItem('ae_qa_bill');
-            sessionStorage.removeItem('ae_qa_cal');
-          } catch(e){}
-          location.reload();
-        },
-        'open-calendly'(){
-          openCalendlyPrefilled(window.quizData?.firstName || '', window.quizData?.email || '');
-        },
-        'post-lead'(){
-          try {
-            const result = postLeadOnly?.(window.quizData || {});
-            if (result && typeof result.then === 'function') {
-              result.catch(err => console.warn('[AE][DEBUG] postLeadOnly button error', err));
-            }
-          } catch(err) {
-            console.warn('[AE][DEBUG] postLeadOnly button error', err);
-          }
-        },
-        'toggle-opt'(){
-          const cb = document.getElementById('optInUpdates');
-          if (cb){
-            cb.checked = !cb.checked;
-            cb.dispatchEvent(new Event('change', { bubbles: true }));
-            refresh('toggle-opt');
-          }
-        }
+      chatWidget.setAttribute('data-chat-widget', 'true');
+      document.body.appendChild(chatWidget);
+      
+      // Add functionality to the chat
+      const chatInput = chatWidget.querySelector('#chatInput');
+      const chatSend = chatWidget.querySelector('#chatSend');
+      const chatResponse = chatWidget.querySelector('#chatResponse');
+      
+      const sendMessage = () => {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        // Show typing indicator
+        chatResponse.style.display = 'block';
+        chatResponse.innerHTML = '<em style="color:#666">Agent is typing...</em>';
+        
+        // Simulate response after delay
+        setTimeout(() => {
+          const responses = [
+            "Thanks for your question! A solar specialist will contact you within 30 minutes to provide detailed information.",
+            "Great question! Based on your earlier quiz, you're eligible for up to $9,000 in Duke PowerPair rebates. Let me schedule a call to discuss specifics.",
+            "I'd be happy to help! For personalized solar calculations, our team will need to review your specific roof and energy usage. Would you like to schedule a consultation?",
+            "Thanks for reaching out! Our Duke PowerPair specialists are available now. Would you prefer a callback or to schedule your free consultation?"
+          ];
+          const response = responses[Math.floor(Math.random() * responses.length)];
+          chatResponse.innerHTML = response + '<br><br><button onclick="window.openCalendlyPrefilled()" style="background:var(--accent-gold);color:white;border:none;padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem">Schedule Consultation</button>';
+        }, 1500);
+        
+        chatInput.value = '';
+        aeEvt('chat_message_sent', { message, lead_id: leadId });
       };
-
-      panel.querySelectorAll('button[data-ae-action]').forEach(btn => {
-        btn.addEventListener('click', (evt) => {
-          evt.preventDefault();
-          const action = btn.getAttribute('data-ae-action');
-          const fn = actions[action];
-          if (typeof fn === 'function') fn();
-        });
-      });
-
-      window.AE_DEBUG_PANEL = {
-        refresh,
-        setCheck
-      };
-
-      refresh('init');
-      setTimeout(() => refresh('post-init'), 250);
-    })();
-    </script>
-
-    <script>
-
-(function(){
-  const cb = document.getElementById('optInUpdates');
-  const nf = document.getElementById('nf_opt_in');
-  const bu = document.getElementById('bu_opt_in');
-
-  function setAll(v){
-    if (nf) nf.value = v ? 'yes' : 'no';
-    if (bu) bu.value = v ? 'yes' : 'no';
-    try {
-      localStorage.setItem('ae_optin', v ? 'yes' : 'no');
-      if (window.AE_DEBUG) console.debug('[AE][DEBUG] saved', { key: 'ae_optin', value: v ? 'yes' : 'no' });
-    } catch(e){}
-    if (window.AE_DEBUG) {
-      console.debug('[AE][DEBUG] opt-in sync', { nf: nf?.value, bu: bu?.value, checked: cb?.checked });
-      const nfVal = nf?.value ?? '';
-      const buVal = bu?.value ?? '';
-      const cbVal = cb ? (cb.checked ? 'yes' : 'no') : '';
-      const hasValue = !!(nfVal || buVal || cbVal);
-      const synced = hasValue && nfVal === buVal && (!cb || cbVal === nfVal);
-      aeDebugSetCheck('optSync', synced);
-      aeDebugRefresh('optin');
-    }
-  }
-
-  (function restore(){
-    try {
-      const saved = localStorage.getItem('ae_optin');
-      if (cb && saved) { cb.checked = (saved === 'yes'); }
-      setAll(cb && cb.checked);
-      if (window.AE_DEBUG) {
-        console.debug('[AE][DEBUG] opt-in sync', { nf: nf?.value, bu: bu?.value, checked: cb?.checked });
-      }
-    } catch(e){}
-  })();
-
-  cb && cb.addEventListener('change', ()=>{
-    const on = cb.checked;
-    setAll(on);
-    postOptInUpdate('toggle');
-    try { gtag('event', 'opt_in_toggle', {on}); } catch(e){}
-  });
-})();
-    </script>
-
-    <script>
-
-      // Capture UTMs from URL once
-      (function(){
-        const p = new URLSearchParams(location.search);
-        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{
-          const el = document.getElementById(k);
-          if (el && p.get(k)) el.value = p.get(k);
-        });
-      })();
-
-      // Safe Calendly popup with prefill
-      function openCalendlyPrefilled(firstName, email){
-        aeDebugLog('openCalendlyPrefilled', 'before', { firstName, email });
-        const url = new URL('https://calendly.com/davide-admiralenergy/20minute-solar-introcall');
-        if (firstName) url.searchParams.set('name', firstName);
-        if (email) url.searchParams.set('email', email);
-
-        let fallbackTimer;
-        if (!window.AE_DEBUG) {
-          fallbackTimer = setTimeout(()=>{
-            if (!(window.Calendly && Calendly.initPopupWidget)) {
-              showToast("Calendly fallback: opening in new tab…");
-              window.open(url.toString(), "_blank");
-            }
-          }, 6000);
-        }
-
-        // Wait for Calendly widget to be ready
-        let tries = 0;
-        let opened = false;
-        (function waitCalendly(){
-          tries++;
-          if (window.Calendly && Calendly.initPopupWidget){
-            opened = true;
-            Calendly.initPopupWidget({ url: url.toString() });
-            if (fallbackTimer) clearTimeout(fallbackTimer);
-            try { gtag('event','begin_schedule'); } catch(e){}
-            aeDebugLog('openCalendlyPrefilled', 'after', { method: 'widget' });
-            aeDebugSetCheck('calendly', true);
-            if (window.AE_DEBUG) {
-              try { sessionStorage.setItem('ae_qa_cal', '1'); } catch(e){}
-            }
-            aeDebugRefresh('openCalendlyPrefilled');
-          } else if (tries < 60) {
-            setTimeout(waitCalendly, 100);
-          } else if (window.AE_DEBUG && !opened) {
-            console.warn('[AE][DEBUG] Calendly widget not ready, mocking open');
-            window.open(url.toString(), '_blank');
-            aeDebugLog('openCalendlyPrefilled', 'mocked', { url: url.toString() });
-            aeDebugLog('openCalendlyPrefilled', 'after', { method: 'mock_window' });
-            aeDebugSetCheck('calendly', true);
-            if (window.AE_DEBUG) {
-              try { sessionStorage.setItem('ae_qa_cal', '1'); } catch(e){}
-            }
-            aeDebugRefresh('openCalendlyPrefilled');
-          }
-        })();
-      }
-
-      // Listen for Calendly booking
-      window.addEventListener('message', function(e){
-        if (e && e.data && e.data.event === 'calendly.event_scheduled') {
-          try { gtag('event','appointment_booked',{method:'calendly'}); } catch(err){}
-          aeEvt('Purchase', { method: 'calendly' });
-          postOptInUpdate('calendly_scheduled');
+      
+      chatSend.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendMessage();
         }
       });
+      
+      // Focus input when chat opens
+      setTimeout(() => chatInput.focus(), 100);
+    });
 
-      function encodeForm(data){
-        return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k] ?? '')).join('&');
+    // Instant callback
+    $('#instantCallback').addEventListener('click', ()=>{
+      const s = loadState();
+      if(!s?.phone){
+        alert('Please complete the savings quiz first so we have your phone number!');
+        return;
       }
+      aeEvt('instant_callback_requested', { value:500, currency:'USD', lead_id: leadId });
+      alert(`Thanks! We'll call you at ${s.phone} within the next 5 minutes.`);
+      // In production, trigger actual callback system
+      fetch('/.netlify/functions/request-callback', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ leadId, phone: s.phone, firstName: s.firstName })
+      }).catch(()=>{});
+    });
 
-      async function postLeadOnly(quizData){
-        aeDebugLog('postLeadOnly', 'before', { quizData });
-        const utm = (k)=> (document.getElementById(k)?.value || '');
-        const serviceAddress = document.getElementById('serviceAddress')?.value || '';
-        const assignHidden = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
-        assignHidden('nf_zip', quizData.zip);
-        assignHidden('nf_utility', quizData.utility);
-        assignHidden('nf_roof_type', quizData.roofType);
-        assignHidden('nf_bill_amount', quizData.billAmount);
-        assignHidden('nf_homeowner', quizData.homeowner);
-        assignHidden('nf_shading', quizData.shading);
-        assignHidden('nf_first_name', quizData.firstName);
-        assignHidden('nf_email', quizData.email);
-        assignHidden('nf_phone', quizData.phone);
-        assignHidden('nf_service_address', serviceAddress);
-
-        const optInValue = (document.getElementById('nf_opt_in')?.value || 'no');
-        assignHidden('nf_opt_in', optInValue);
-
-        const generatedLeadId = (leadId && typeof leadId === 'string') ? leadId : 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
-        leadId = generatedLeadId;
-        window.leadId = generatedLeadId;
-        assignHidden('nf_lead_id', generatedLeadId);
-        const payload = {
-          'form-name': 'lead-intake',
-          zip: quizData.zip,
-          utility: quizData.utility,
-          roof_type: quizData.roofType,
-          bill_amount: quizData.billAmount,
-          homeowner: quizData.homeowner,
-          shading: quizData.shading,
-          first_name: quizData.firstName,
-          email: quizData.email,
-          phone: quizData.phone,
-          lead_id: generatedLeadId,
-
-          opt_in: optInValue,
-
-          service_address: serviceAddress,
-          utm_source: utm('utm_source'),
-          utm_medium: utm('utm_medium'),
-          utm_campaign: utm('utm_campaign'),
-          utm_content: utm('utm_content'),
-          utm_term: utm('utm_term'),
-          'bot-field': ''
-        };
-
-        // analytics first
-        try { gtag('event','generate_lead',{method:'quiz_form'}); } catch(e){}
-        aeEvt('Lead', { lead_id: window.leadId || '' });
-
-        // Netlify form POST without navigation
-        try {
-          await fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encodeForm(payload)
-          });
-          if (window.AE_DEBUG) {
-            console.debug('[AE][DEBUG] lead-intake POSTed');
-            aeDebugSetCheck('leadPosted', true);
-            try { sessionStorage.setItem('ae_qa_lead', '1'); } catch(e){}
-          } else {
-            aeDebugSetCheck('leadPosted', true);
-          }
-        } catch (err) {
-          console.warn('Netlify POST failed', err);
+    // Cookie consent and privacy compliance
+    const cookieConsent = {
+      init() {
+        if (!this.hasConsented()) {
+          setTimeout(() => this.showConsent(), 2000); // Show after 2 seconds
         }
-
-        aeDebugLog('postLeadOnly', 'after', { leadId: generatedLeadId });
-        aeDebugRefresh('postLeadOnly');
-        return { payload, leadId: generatedLeadId };
+        this.setupEventListeners();
+      },
+      
+      hasConsented() {
+        return localStorage.getItem('ae_cookie_consent') !== null;
+      },
+      
+      showConsent() {
+        const modal = $('#cookieConsent');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+      },
+      
+      hideConsent() {
+        const modal = $('#cookieConsent');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      },
+      
+      acceptAll() {
+        localStorage.setItem('ae_cookie_consent', JSON.stringify({
+          essential: true,
+          analytics: true,
+          marketing: true,
+          timestamp: Date.now()
+        }));
+        this.hideConsent();
+        gtag('consent', 'update', {
+          'analytics_storage': 'granted',
+          'ad_storage': 'granted'
+        });
+      },
+      
+      declineNonEssential() {
+        localStorage.setItem('ae_cookie_consent', JSON.stringify({
+          essential: true,
+          analytics: false,
+          marketing: false,
+          timestamp: Date.now()
+        }));
+        this.hideConsent();
+        gtag('consent', 'update', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied'
+        });
+      },
+      
+      setupEventListeners() {
+        $('#acceptCookies')?.addEventListener('click', () => this.acceptAll());
+        $('#declineCookies')?.addEventListener('click', () => this.declineNonEssential());
+        $('#manageCookies')?.addEventListener('click', () => this.showPreferences());
+        
+        // Privacy policy link
+        document.addEventListener('click', (e) => {
+          if (e.target.getAttribute('href') === '#privacy') {
+            e.preventDefault();
+            $('#privacyModal').style.display = 'block';
+          }
+        });
+      },
+      
+      showPreferences() {
+        // Simplified - in production, show detailed preference modal
+        alert('Cookie preferences: Essential cookies are required. Analytics cookies help improve our service. You can change preferences anytime.');
       }
-
-      // Submit hidden Netlify form + open Calendly
-      async function submitLeadAndSchedule(quizData){
-        aeDebugLog('submitLeadAndSchedule', 'before', { quizData });
-        await postLeadOnly(quizData);
-
-        // Calendly popup with prefill
-        openCalendlyPrefilled(quizData.firstName, quizData.email);
-        aeDebugLog('submitLeadAndSchedule', 'after', { leadId, quizData: { firstName: quizData.firstName, email: quizData.email } });
-        aeDebugRefresh('submitLeadAndSchedule');
+    };
+    
+    // Form security enhancements
+    const formSecurity = {
+      // Generate CSRF token
+      generateCSRFToken() {
+        return 'csrf_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      },
+      
+      // Add CSRF protection to forms
+      protectForm(formElement) {
+        if (!formElement) return;
+        
+        let csrfInput = formElement.querySelector('input[name="csrf_token"]');
+        if (!csrfInput) {
+          csrfInput = document.createElement('input');
+          csrfInput.type = 'hidden';
+          csrfInput.name = 'csrf_token';
+          formElement.appendChild(csrfInput);
+        }
+        csrfInput.value = this.generateCSRFToken();
+      },
+      
+      // Basic XSS protection for inputs
+      sanitizeInput(input) {
+        return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                   .replace(/javascript:/gi, '')
+                   .replace(/on\w+\s*=/gi, '');
+      },
+      
+      // Rate limiting for form submissions
+      rateLimiter: {
+        submissions: {},
+        isAllowed(formName) {
+          const now = Date.now();
+          const lastSubmission = this.submissions[formName];
+          
+          if (!lastSubmission || (now - lastSubmission) > 10000) { // 10 second cooldown
+            this.submissions[formName] = now;
+            return true;
+          }
+          return false;
+        }
       }
-
-      // Hook into the end of your quiz. After you compute 'quizData' and show the outcome, call:
-      // submitLeadAndSchedule(quizData);
-    </script>
+    };
+    
+    // Initialize privacy compliance
+    cookieConsent.init();
+    
+    // Apply form security to all forms and setup GA4 tracking
+    document.querySelectorAll('form').forEach(form => {
+      formSecurity.protectForm(form);
+      
+      // Setup GA4 tracking for forms with specific classes/IDs
+      if (form.classList.contains('hs-form') || form.id === 'lead-form') {
+        form.addEventListener('submit', function(e) {
+          // Track form submission for GA4
+          const formData = new FormData(this);
+          const eventData = {
+            form_id: this.id || 'unknown-form',
+            lead_id: formData.get('lead_id') || window.leadId || '',
+            bill_amount: formData.get('bill_amount') || '',
+            zip_code: formData.get('zip') || '',
+            utility_provider: formData.get('utility') || '',
+            first_name: formData.get('first_name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || '',
+            opt_in: formData.get('opt_in') || 'no'
+          };
+          
+          // Track the event
+          trackGA4FormEvent(this.id || this.name || 'form-submit', eventData);
+        });
+      }
+    });
+    $('#year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
