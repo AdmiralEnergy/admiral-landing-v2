@@ -4,20 +4,7 @@
 /assets/favicon-32.png
 /assets/favicon-48.png
 /assets/favicon.ico
-
-# large media assets stay out of git history by default
-/assets/*.png
-/assets/*.jpg
-/assets/*.jpeg
+# optional: other heavy assets we don't want in Git
 /assets/*.mp4
-/assets/*.ico
+/assets/*.mov
 /assets/*.heic
-
-# allow the curated marketing assets that power the site today
-!/assets/admiral-bill-explainer.mp4
-!/assets/admiral-bill-explainer-poster.png
-!/assets/admiral-fallback.png
-!/assets/admiral-intro.mp4
-!/assets/admiralenergylogo.png
-!/assets/duke-bill-sample.png
-!/assets/share-image.png
