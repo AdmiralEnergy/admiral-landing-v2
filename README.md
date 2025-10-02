@@ -21,8 +21,9 @@ This update implements standardized Reddit Pixel and GA4 tracking as specified, 
   - Mirrors to GA4 as `generate_lead` with same lead_id and UTM params
   - Includes de-duplication via lead_id + session storage
 
-- **InitiateCheckout Event** (lines 1149-1153, 1206-1213)
-  - Fires when Calendly popup is opened
+- **Custom Event (InitiateCheckout)** (lines 1149-1153, 1206-1213)
+  - Fires Reddit `Custom` event with `customEventName: 'InitiateCheckout'` when Calendly popup is opened
+  - Reddit only supports specific event types, so InitiateCheckout is wrapped as Custom event
   - Added click handler for any `[data-calendly-open]` or `#bookCall` elements
 
 - **Purchase Event** (lines 1159-1162)
@@ -60,7 +61,7 @@ This update implements standardized Reddit Pixel and GA4 tracking as specified, 
 |------------|--------------|---------|----------|
 | Page Load | PageVisit | All pages | UTMs |
 | Lead Conversion | Lead | Bill upload OR lead form submit | lead_id + UTMs |
-| Calendar Open | InitiateCheckout | Calendly button click | UTMs |
+| Calendar Open | Custom | Calendly button click | customEventName: 'InitiateCheckout' + UTMs |
 | Booking Complete | Purchase | Calendly booking confirmed | value: 0, currency: 'USD' + UTMs |
 
 ### 4. GA4 Integration
@@ -94,7 +95,7 @@ If using Google Tag Manager, ensure these tags are configured:
 1. Install Reddit Pixel Helper browser extension
 2. Visit homepage - confirm **PageVisit** fires
 3. Complete lead form - confirm **Lead** event fires with lead_id
-4. Click "Book a call" - confirm **InitiateCheckout** fires
+4. Click "Book a call" - confirm **Custom event with InitiateCheckout** fires
 5. Complete Calendly booking - confirm **Purchase** fires with value: 0
 
 ### 2. GA4 DebugView Testing
@@ -122,7 +123,7 @@ If using Google Tag Manager, ensure these tags are configured:
 ### 6. Ads Manager Verification
 1. Wait 24-48 hours after testing
 2. Check Reddit Ads Manager Events section
-3. Confirm Lead, InitiateCheckout, Purchase events appear
+3. Confirm Lead, Custom: InitiateCheckout, Purchase events appear
 4. Create conversions in Ads Manager:
    - Primary: Lead event for optimization
    - Secondary: Purchase for booking completion tracking
