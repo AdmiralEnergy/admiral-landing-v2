@@ -4,5 +4,8 @@
   "private": true,
   "scripts": {
     "favicons": "node scripts/gen-favicons.js"
+  },
+  "dependencies": {
+    "twilio": "5.10.2"
   }
 }

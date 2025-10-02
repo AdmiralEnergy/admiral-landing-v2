@@ -4,3 +4,24 @@ publish = "."
 
 [build.environment]
 NODE_VERSION = "18"
+
+# Function configurations
+[functions]
+  # SMS functions
+  sms-send = { included_files = ["netlify/functions/sms-send.js"] }
+  sms-inbound = { included_files = ["netlify/functions/sms-inbound.js"] }
+  sms-triggers = { included_files = ["netlify/functions/sms-triggers.js"] }
+  cron-winback = { included_files = ["netlify/functions/cron-winback.js"] }
+
+# Scheduled Functions (commented out - enable manually when ready)
+# [[plugins]]
+#   package = "@netlify/plugin-scheduled-functions"
+#   [plugins.inputs]
+#     [plugins.inputs.functions]
+#       cron-winback = "0 9 * * 1"  # Every Monday at 9 AM ET
+
+# Redirects for SMS webhook (optional)
+[[redirects]]
+  from = "/sms-webhook"
+  to = "/.netlify/functions/sms-inbound"
+  status = 200

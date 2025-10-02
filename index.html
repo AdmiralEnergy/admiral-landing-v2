@@ -1118,9 +1118,24 @@
       // Optional: exit-intent preload values
       $('#exit_email').value = email; $('#exit_zip').value = zip; $('#exit_utility').value = utility;
 
-      // Optional SMS via Netlify Function (requires env + function deploy)
+      // Trigger SMS welcome sequence if opted in
       if(optIn==='yes'){
-        try { await fetch('/.netlify/functions/send-sms', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ leadId, firstName, email, phone }) }); } catch(_){ }
+        try { 
+          const utm = getUtmState();
+          await fetch('/.netlify/functions/sms-triggers', { 
+            method:'POST', 
+            headers:{'Content-Type':'application/json'}, 
+            body: JSON.stringify({ 
+              event: 'lead_opted_in', 
+              lead_id: leadId, 
+              phone: phone, 
+              utm: utm,
+              firstName: firstName 
+            }) 
+          }); 
+        } catch(_){ 
+          console.warn('SMS trigger failed:', _);
+        }
       }
       
       // Trigger email automation sequence
@@ -1166,6 +1181,27 @@
                 lead_id: leadId,
                 event_type: e.data.event_type || 'consultation'
               });
+              
+              // Trigger SMS appointment confirmation if user has opted in
+              const state = loadState();
+              if (state?.leadCaptured) {
+                try {
+                  fetch('/.netlify/functions/sms-triggers', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                      event: 'appt_booked',
+                      lead_id: leadId,
+                      phone: state.phone,
+                      utm: utm,
+                      datetime: 'your scheduled appointment time',
+                      firstName: state.firstName
+                    })
+                  });
+                } catch(_) {
+                  console.warn('SMS appointment confirmation failed:', _);
+                }
+              }
             }
           }
         });
