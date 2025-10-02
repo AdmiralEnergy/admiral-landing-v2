@@ -1,0 +1,2217 @@
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <div class="quiz-section" id="quizSection">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <button class="back-button" id="backButton">←</button>
+                <span class="step-indicator" id="stepIndicator">Step 1 of 3</span>
+                <div style="width: 40px;"></div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            
+            <!-- Step 1: Electric Bill (Most Important) -->
+            <div class="quiz-step active" data-step="1">
+                <h3>What's your average monthly electric bill?</h3>
+                <p class="helper-text">This helps us calculate your exact savings</p>
+                <div class="bill-slider">
+                    <div class="bill-display">$<span id="billAmount">150</span>/month</div>
+                    <input type="range" class="slider" id="billSlider" min="50" max="500" value="150">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--text-gray);">
+                        <span>$50</span>
+                        <span>$500+</span>
+                    </div>
+                </div>
+                <div class="savings-preview">
+                    <h4>Estimated Savings</h4>
+                    <div class="amount" id="estimatedSavings">$67/month</div>
+                    <p style="font-size: 0.9rem; color: var(--text-gray); margin-top: 0.5rem;">
+                        $<span id="twentyYearSavings">16,080</span> over 20 years
+                    </p>
+                </div>
+                <button class="cta-button" data-next>Next</button>
+            </div>
+
+            <!-- Step 2: Contact Info (Capture Lead Early) -->
+            <div class="quiz-step" data-step="2">
+                <h3>Get your personalized savings report</h3>
+                <p class="helper-text">We'll email your custom quote instantly</p>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Name</label>
+                    <input type="text" id="firstName" placeholder="John" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                    <input type="email" id="email" placeholder="john@example.com" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Mobile Phone</label>
+                    <input type="tel" id="phone" placeholder="(704) 555-0123" inputmode="tel" autocomplete="tel" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px;">
+                    <p style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem;">
+                        ✓ We'll text you once with your report. No spam.
+                    </p>
+                </div>
+                
+                <!-- Opt-in Checkbox (Default Checked) -->
+                <label style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1.5rem; cursor: pointer;">
+                    <input type="checkbox" id="optInCheckbox" checked style="margin-top: 0.25rem; width: 18px; height: 18px; cursor: pointer;">
+                    <span style="font-size: 0.9rem; color: var(--text-gray); line-height: 1.4;">
+                        Send me NC solar rebate updates and savings tips. I can unsubscribe anytime.
+                    </span>
+                </label>
+                
+                <button class="cta-button" id="captureLeadBtn">Get My Savings Report</button>
+            </div>
+
+            <!-- Step 3: Optional Refinement Questions -->
+            <div class="quiz-step" data-step="3">
+                <h3>Help us refine your estimate</h3>
+                <p class="helper-text">Optional: Answer these to get even more accurate numbers</p>
+                
+                <h4 style="font-size: 1.1rem; margin: 1.5rem 0 1rem; color: var(--primary-navy);">Roof type?</h4>
+                <div class="options-grid">
+                    <div class="option-card" data-value="asphalt" data-question="roofType">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏠</div>
+                        <div>Asphalt Shingle</div>
+                    </div>
+                    <div class="option-card" data-value="metal" data-question="roofType">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏭</div>
+                        <div>Metal</div>
+                    </div>
+                    <div class="option-card" data-value="tile" data-question="roofType">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
+                        <div>Tile</div>
+                    </div>
+                    <div class="option-card" data-value="other" data-question="roofType">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
+                        <div>Other</div>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 1.1rem; margin: 1.5rem 0 1rem; color: var(--primary-navy);">Roof shading?</h4>
+                <div class="options-grid">
+                    <div class="option-card" data-value="low" data-question="shading">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">☀️</div>
+                        <div>Low</div>
+                        <small style="color: var(--text-gray);">Few trees</small>
+                    </div>
+                    <div class="option-card" data-value="moderate" data-question="shading">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌤️</div>
+                        <div>Moderate</div>
+                        <small style="color: var(--text-gray);">Some shade</small>
+                    </div>
+                    <div class="option-card" data-value="heavy" data-question="shading">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌳</div>
+                        <div>Heavy</div>
+                        <small style="color: var(--text-gray);">Lots of trees</small>
+                    </div>
+                </div>
+                
+                <button class="cta-button" id="finalizeQuizBtn" style="margin-top: 2rem;">See My Results</button>
+                <button class="outcome-btn-secondary" id="skipRefinementBtn" style="width: 100%; margin-top: 1rem;">Skip - Show Results Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outcome Section -->
+    <section id="outcomeSection" style="display: none; padding: 5rem 2rem;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="outcome-card">
+                <h2 id="outcomeTitle">🎉 Great news! You could save $67-89/month with solar + battery.</h2>
+                
+                <div class="urgency-banner">
+                    <p>⚠️ Duke Energy rebate funding is limited this quarter. Next available install slot: 6-8 weeks.</p>
+                </div>
+                
+                <p style="font-size: 1.1rem; color: var(--text-gray); margin-bottom: 1.5rem;" id="rebateText">
+                    Based on homes like yours in <span id="userZip">Charlotte</span> with <span id="userUtility">Duke Energy</span>, you're likely eligible for Duke Energy solar + battery rebates.
+                </p>
+                
+                <div class="savings-highlight" id="systemSize">7-9 kW System + 10-13 kWh Battery</div>
+                
+                <div style="margin: 1.5rem 0;">
+                    <div class="benefit-badge">
+                        <span>💰</span> $67-89/month savings
+                    </div>
+                    <div class="benefit-badge">
+                        <span>⚡</span> 8-12 hours backup power
+                    </div>
+                    <div class="benefit-badge">
+                        <span>📉</span> $16,000-21,000 saved over 20 years
+                    </div>
+                    <div class="benefit-badge">
+                        <span>🏦</span> Duke Energy rebates available
+                    </div>
+                </div>
+                
+                <div style="background: rgba(16,185,129,0.1); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0;">
+                    <p style="font-weight: 600; margin-bottom: 1rem; color: var(--primary-navy);">📧 Your custom report has been sent to <span id="userEmail">your email</span></p>
+                    <p style="color: var(--text-gray); font-size: 0.95rem;">Check your inbox for detailed savings breakdown, system specs, and rebate info.</p>
+                </div>
+                
+                <h3 style="font-size: 1.3rem; margin: 2rem 0 1rem; color: var(--primary-navy);">Next Steps:</h3>
+                
+                <div class="outcome-buttons">
+                    <button class="outcome-btn-primary" id="bookCallBtn">📅 Book My Free Consultation</button>
+                    <button class="outcome-btn-secondary" id="uploadBillBtn">⚡ Upload Bill (Get Quote in 2 Hours)</button>
+                </div>
+                
+                <p style="text-align: center; margin-top: 1.5rem; color: var(--text-gray); font-size: 0.9rem;">
+                    ✓ No obligation · No hard sell · Licensed & insured · 25-year warranty
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bill Upload Modal -->
+    <div class="bill-upload-modal" id="billUploadModal">
+        <div class="bill-upload-container">
+            <h2 style="margin-bottom: 0.5rem;">⚡ Get your quote in 2 hours (not 2 days)</h2>
+            <p style="color: var(--text-gray); margin-bottom: 1.5rem;">
+                Upload your Duke bill and we'll send your exact system design + pricing today.
+            </p>
+            
+            <div style="background: rgba(201,166,72,0.1); border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem;">
+                <p style="font-size: 0.9rem; color: var(--primary-navy); margin: 0;">
+                    <strong>What we need:</strong> Your service address and kWh usage (front page of bill). You can redact account numbers.
+                </p>
+            </div>
+            
+            <div class="upload-zone" id="uploadZone">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">Drag and drop your bill here</p>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">or click to browse</p>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 1rem;">
+                    PDF, JPG, PNG accepted · Max 10 MB · 🔒 Bank-level encryption
+                </p>
+            </div>
+            
+            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,image/*,application/pdf" capture="environment" style="display: none;">
+            
+            <div class="file-preview" id="filePreview">
+                <h4 style="margin-bottom: 1rem;">Selected file:</h4>
+                <div id="previewContent"></div>
+            </div>
+            
+            <div class="outcome-buttons">
+                <button class="outcome-btn-primary" id="submitBillBtn" disabled>Submit & Book My Call</button>
+                <button class="outcome-btn-secondary" id="skipUploadBtn">Skip for Now</button>
+            </div>
+            
+            <button onclick="closeBillUpload()" style="margin-top: 1rem; padding: 0.75rem; background: transparent; color: var(--text-gray); border: none; cursor: pointer; width: 100%; text-align: center;">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Exit Intent Modal -->
+    <div class="exit-intent-modal" id="exitIntentModal">
+        <div class="exit-intent-content">
+            <button class="exit-intent-close" id="exitIntentClose">×</button>
+            <h3>Wait! One more thing...</h3>
+            <p>See if you qualify for $0 down solar + Duke Energy rebates. Just enter your email:</p>
+            <div style="margin-bottom: 1.5rem;">
+                <input type="email" id="exitEmail" placeholder="your@email.com" style="width: 100%; padding: 0.875rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px;">
+            </div>
+            <button class="cta-button" id="exitSubmitBtn">Check My Eligibility</button>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-gray);">
+                We'll email you a free eligibility report. No spam.
+            </p>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-navy);">
+                Common Questions
+            </h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How much will solar actually save me?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Most Charlotte homeowners save 40-60% on their electric bills. With a typical $150/month Duke Energy bill, that's $60-90 in monthly savings, or $14,400-21,600 over 20 years. We'll calculate your exact savings based on your roof, usage, and current rates.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What rebates and incentives am I eligible for?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Duke Energy offers solar + battery rebates (limited funding). You may also qualify for the 30% federal Investment Tax Credit (ITC). We verify all available incentives during your consultation and handle the paperwork.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can my HOA block solar panels?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        In North Carolina, HOAs cannot ban solar outright—it's protected by state law. They can provide reasonable guidelines about placement and appearance, but they must allow solar installations. We handle all HOA submissions and have successfully installed in 50+ Charlotte HOA communities.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Why choose a battery over a generator?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Batteries offer instant, silent switchover during outages—no fuel runs, no maintenance, no noise. They also save money daily by storing cheap off-peak energy. Generators only work during outages, while batteries provide value 24/7.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Hidden Netlify Forms -->
+    <form name="lead-capture" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="bot-field" />
+        <input type="hidden" name="form-name" value="lead-capture" />
+        <input type="text" name="lead_id" />
+        <input type="text" name="first_name" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <input type="text" name="zip" />
+        <input type="text" name="utility" />
+        <input type="number" name="bill_amount" />
+        <input type="text" name="opt_in" />
+        <input type="text" name="timestamp" />
+    </form>
+
+    <form name="exit-intent-capture" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="bot-field" />
+        <input type="hidden" name="form-name" value="exit-intent-capture" />
+        <input type="text" name="lead_id" />
+        <input type="email" name="email" />
+        <input type="text" name="source" />
+        <input type="text" name="zip" />
+        <input type="text" name="utility" />
+        <input type="text" name="timestamp" />
+    </form>
+
+    <form name="bill-upload" netlify netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+        <input type="text" name="bot-field" />
+        <input type="hidden" name="form-name" value="bill-upload" />
+        <input type="text" name="lead_id" />
+        <input type="email" name="email" />
+        <input type="text" name="first_name" />
+        <input type="tel" name="phone" />
+        <input type="text" name="zip" />
+        <input type="text" name="utility" />
+        <input type="file" name="bill_file" />
+        <input type="text" name="timestamp" />
+    </form>
+
+    <script>
+        // ========================================
+        // GLOBAL STATE
+        // ========================================
+        
+        const AppState = {
+            leadId: null,
+            quizData: {
+                zip: '',
+                utility: '',
+                billAmount: 150,
+                roofType: '',
+                shading: '',
+                firstName: '',
+                email: '',
+                phone: ''
+            },
+            currentStep: 1,
+            totalSteps: 3,
+            selectedFile: null,
+            optInStatus: true,
+            leadCaptured: false,
+            leadSubmitted: false,
+            exitIntentSubmitted: false
+        };
+
+        function generateLeadId() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 15);
+            return `lead_${timestamp}_${random}`;
+        }
+
+        AppState.leadId = generateLeadId();
+
+        // ========================================
+        // UTILITIES
+        // ========================================
+        
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.toggle('error', isError);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 5000);
+        }
+
+        function setLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('show', show);
+        }
+
+        function trackEvent(eventName, params = {}) {
+            try {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', eventName, params);
+                }
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: eventName,
+                    lead_id: AppState.leadId,
+                    ...params
+                });
+            } catch (e) {
+                console.warn('Analytics tracking failed:', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                // Save to localStorage for session persistence
+                localStorage.setItem('ae_lead', JSON.stringify({
+                    leadId: AppState.leadId,
+                    quizData: AppState.quizData,
+                    leadCaptured: AppState.leadCaptured,
+                    leadSubmitted: AppState.leadSubmitted,
+                    exitIntentSubmitted: AppState.exitIntentSubmitted,
+                    timestamp: Date.now()
+                }));
+                localStorage.setItem('ae_optin', AppState.optInStatus ? 'yes' : 'no');
+                
+                // Set cookie for 30 days (cross-session persistence)
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (30 * 24 * 60 * 60 * 1000));
+                document.cookie = `ae_lead_id=${AppState.leadId}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+                document.cookie = `ae_lead_captured=${AppState.leadCaptured ? '1' : '0'}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+            } catch (e) {
+                console.warn('Failed to save state:', e);
+            }
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function loadState() {
+            try {
+                // Check cookie first (persists across sessions)
+                const cookieLeadId = getCookie('ae_lead_id');
+                const cookieLeadCaptured = getCookie('ae_lead_captured') === '1';
+                
+                // Then check localStorage (more detailed state)
+                const saved = localStorage.getItem('ae_lead');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    // Use data if less than 30 days old
+                    if (Date.now() - parsed.timestamp < 30 * 24 * 60 * 60 * 1000) {
+                        AppState.leadId = parsed.leadId || cookieLeadId;
+                        AppState.quizData = { ...AppState.quizData, ...parsed.quizData };
+                        AppState.leadCaptured = parsed.leadCaptured || cookieLeadCaptured;
+                        AppState.leadSubmitted = parsed.leadSubmitted || false;
+                        AppState.exitIntentSubmitted = parsed.exitIntentSubmitted || false;
+                        return true;
+                    }
+                } else if (cookieLeadId) {
+                    // Cookie exists but no localStorage - returning visitor
+                    AppState.leadId = cookieLeadId;
+                    AppState.leadCaptured = cookieLeadCaptured;
+                    return true;
+                }
+                
+                const optin = localStorage.getItem('ae_optin');
+                if (optin) {
+                    AppState.optInStatus = optin === 'yes';
+                }
+            } catch (e) {
+                console.warn('Failed to load state:', e);
+            }
+            return false;
+        }
+
+        // ========================================
+        // NETLIFY FORMS SUBMISSION
+        // ========================================
+        
+        function encodeFormData(data) {
+            return Object.keys(data)
+                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+                .join('&');
+        }
+
+        async function submitToNetlify(formName, data) {
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: encodeFormData({
+                        'form-name': formName,
+                        ...data
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Netlify form submission failed: ${response.status}`);
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Netlify submission error:', error);
+                return false;
+            }
+        }
+
+        // ========================================
+        // SMS NOTIFICATION (TWILIO VIA NETLIFY FUNCTION)
+        // ========================================
+        
+        async function sendSMSNotification(phone, message) {
+            try {
+                const response = await fetch('/.netlify/functions/send-sms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: phone,
+                        message: message,
+                        lead_id: AppState.leadId
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.warn('SMS notification failed:', response.status);
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.warn('SMS notification error:', error);
+                return false;
+            }
+        }
+
+        // ========================================
+        // VIDEO AUTOPLAY WITH MUTE TOGGLE
+        // ========================================
+        
+        function initVideo() {
+            const video = document.getElementById('heroVideo');
+            const muteBtn = document.getElementById('heroMuteBtn');
+            const muteIcon = document.getElementById('heroMuteIcon');
+            const muteText = document.getElementById('heroMuteText');
+            
+            if (!video || !muteBtn) return;
+
+            video.muted = true;
+            video.playsInline = true;
+
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Autoplay prevented:', error);
+                    document.addEventListener('click', function playOnce() {
+                        video.play().catch(() => {});
+                        document.removeEventListener('click', playOnce);
+                    }, { once: true });
+                });
+            }
+
+            function updateMuteButton() {
+                if (video.muted) {
+                    muteIcon.textContent = '🔇';
+                    muteText.textContent = 'Unmute';
+                    muteBtn.setAttribute('aria-label', 'Unmute your AI solar advisor');
+                } else {
+                    muteIcon.textContent = '🔊';
+                    muteText.textContent = 'Mute';
+                    muteBtn.setAttribute('aria-label', 'Mute video');
+                }
+            }
+
+            muteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                video.muted = !video.muted;
+                updateMuteButton();
+                
+                if (!video.muted) {
+                    trackEvent('video_unmuted', { video: 'hero_ai_advisor' });
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'm' || e.key === 'M') {
+                    const activeElement = document.activeElement;
+                    if (activeElement.tagName !== 'INPUT' && 
+                        activeElement.tagName !== 'TEXTAREA' &&
+                        activeElement.tagName !== 'SELECT') {
+                        video.muted = !video.muted;
+                        updateMuteButton();
+                    }
+                }
+            });
+
+            updateMuteButton();
+        }
+
+        // ========================================
+        // FORM VALIDATION
+        // ========================================
+        
+        function validateZip(zip) {
+            return /^\d{5}$/.test(zip);
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            const cleaned = phone.replace(/\D/g, '');
+            return cleaned.length >= 10;
+        }
+
+        function showFieldError(groupId, show = true) {
+            const group = document.getElementById(groupId);
+            if (group) {
+                group.classList.toggle('error', show);
+            }
+        }
+
+        // ========================================
+        // QUIZ FLOW
+        // ========================================
+        
+        document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+        document.getElementById('heroSkipToCall').addEventListener('click', function(e) {
+            e.preventDefault();
+            trackEvent('hero_skip_to_call');
+            loadCalendlyScript().then(() => openCalendly());
+        });
+        document.getElementById('skipToCallBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            trackEvent('nav_skip_to_call');
+            loadCalendlyScript().then(() => openCalendly());
+        });
+
+        function startQuiz() {
+            const zip = document.getElementById('zip').value.trim();
+            const utility = document.getElementById('utility').value;
+
+            let hasError = false;
+            
+            if (!validateZip(zip)) {
+                showFieldError('zipGroup', true);
+                hasError = true;
+            } else {
+                showFieldError('zipGroup', false);
+            }
+
+            if (!utility) {
+                showFieldError('utilityGroup', true);
+                hasError = true;
+            } else {
+                showFieldError('utilityGroup', false);
+            }
+
+            if (hasError) {
+                showToast('Please fix the errors above', true);
+                return;
+            }
+
+            AppState.quizData.zip = zip;
+            AppState.quizData.utility = utility;
+            saveState();
+
+            trackEvent('quiz_started', { zip, utility });
+
+            document.getElementById('quizSection').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            updateProgress();
+            updateSavingsEstimate();
+        }
+
+        // Bill slider
+        document.getElementById('billSlider').addEventListener('input', function() {
+            const value = this.value;
+            document.getElementById('billAmount').textContent = value;
+            AppState.quizData.billAmount = parseInt(value);
+            saveState();
+            updateSavingsEstimate();
+        });
+
+        function updateSavingsEstimate() {
+            const bill = AppState.quizData.billAmount;
+            const savings = Math.round(bill * 0.45); // 45% average savings
+            const twentyYear = savings * 12 * 20;
+            
+            document.getElementById('estimatedSavings').textContent = `${savings}/month`;
+            document.getElementById('twentyYearSavings').textContent = twentyYear.toLocaleString();
+        }
+
+        // Option selection
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const question = this.dataset.question;
+                const value = this.dataset.value;
+                const step = this.closest('.quiz-step');
+
+                step.querySelectorAll(`.option-card[data-question="${question}"]`).forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+
+                if (question === 'roofType') {
+                    AppState.quizData.roofType = value;
+                } else if (question === 'shading') {
+                    AppState.quizData.shading = value;
+                }
+
+                saveState();
+            });
+        });
+
+        // Next buttons
+        document.querySelectorAll('[data-next]').forEach(btn => {
+            btn.addEventListener('click', nextStep);
+        });
+
+        function nextStep() {
+            trackEvent(`quiz_step_${AppState.currentStep}_complete`);
+            
+            const steps = document.querySelectorAll('.quiz-step');
+            steps[AppState.currentStep - 1].classList.remove('active');
+            AppState.currentStep++;
+            if (AppState.currentStep <= AppState.totalSteps) {
+                steps[AppState.currentStep - 1].classList.add('active');
+                updateProgress();
+                updateBackButton();
+            }
+        }
+
+        function previousStep() {
+            const steps = document.querySelectorAll('.quiz-step');
+            steps[AppState.currentStep - 1].classList.remove('active');
+            AppState.currentStep--;
+            if (AppState.currentStep >= 1) {
+                steps[AppState.currentStep - 1].classList.add('active');
+                updateProgress();
+                updateBackButton();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (AppState.currentStep / AppState.totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepIndicator').textContent = `Step ${AppState.currentStep} of ${AppState.totalSteps}`;
+        }
+
+        function updateBackButton() {
+            const backBtn = document.getElementById('backButton');
+            if (AppState.currentStep > 1) {
+                backBtn.classList.add('show');
+            } else {
+                backBtn.classList.remove('show');
+            }
+        }
+
+        document.getElementById('backButton').addEventListener('click', previousStep);
+
+        // Capture Lead (CRITICAL CONVERSION)
+        document.getElementById('captureLeadBtn').addEventListener('click', captureLead);
+
+        async function captureLead() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const optIn = document.getElementById('optInCheckbox').checked;
+
+            if (!firstName || !validateEmail(email) || !validatePhone(phone)) {
+                showToast('Please fill in all fields correctly', true);
+                return;
+            }
+
+            AppState.quizData.firstName = firstName;
+            AppState.quizData.email = email;
+            AppState.quizData.phone = phone;
+            AppState.optInStatus = optIn;
+            AppState.leadCaptured = true;
+            saveState();
+
+            // CRITICAL CONVERSION TRACKING
+            trackEvent('lead_captured', {
+                lead_id: AppState.leadId,
+                utility: AppState.quizData.utility,
+                bill_amount: AppState.quizData.billAmount,
+                opt_in: optIn
+            });
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'conversion',
+                conversion_type: 'lead_capture',
+                lead_id: AppState.leadId,
+                value: 500
+            });
+
+            setLoading(true);
+
+            // Submit to Netlify Form
+            const leadData = {
+                lead_id: AppState.leadId,
+                first_name: firstName,
+                email: email,
+                phone: phone,
+                zip: AppState.quizData.zip,
+                utility: AppState.quizData.utility,
+                bill_amount: AppState.quizData.billAmount,
+                opt_in: optIn ? 'yes' : 'no',
+                timestamp: new Date().toISOString()
+            };
+
+            const submitted = await submitToNetlify('lead-capture', leadData);
+            
+            if (submitted) {
+                AppState.leadSubmitted = true;
+                saveState();
+                
+                // Send SMS notification
+                const cleanPhone = phone.replace(/\D/g, '');
+                const smsMessage = `Hi ${firstName}! Your Admiral Energy solar savings report is ready. Check your email at ${email}. Reply STOP to opt out.`;
+                await sendSMSNotification(cleanPhone, smsMessage);
+                
+                showToast('✅ Report sent! Check your email & text.');
+            } else {
+                showToast('Report sent! Check your email.');
+            }
+
+            setLoading(false);
+
+            // Move to optional refinement questions
+            nextStep();
+        }
+
+        // Finalize or skip refinement
+        document.getElementById('finalizeQuizBtn').addEventListener('click', showOutcome);
+        document.getElementById('skipRefinementBtn').addEventListener('click', showOutcome);
+
+        function showOutcome() {
+            trackEvent('quiz_completed');
+
+            document.getElementById('quizSection').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            populateOutcome();
+            document.getElementById('outcomeSection').style.display = 'block';
+            document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function populateOutcome() {
+            const isDuke = AppState.quizData.utility === 'duke';
+            const bill = AppState.quizData.billAmount;
+            
+            // Calculate savings range
+            const savingsLow = Math.round(bill * 0.40);
+            const savingsHigh = Math.round(bill * 0.60);
+            
+            document.getElementById('outcomeTitle').textContent = 
+                `🎉 Great news! You could save ${savingsLow}-${savingsHigh}/month with solar + battery.`;
+
+            document.getElementById('userZip').textContent = AppState.quizData.zip;
+            
+            const utilityNames = {
+                duke: 'Duke Energy',
+                union: 'Union Power',
+                city: 'City of Charlotte',
+                other: 'your utility'
+            };
+            document.getElementById('userUtility').textContent = utilityNames[AppState.quizData.utility] || 'your utility';
+            document.getElementById('userEmail').textContent = AppState.quizData.email;
+
+            // System size
+            let systemSize = '';
+            if (bill < 100) systemSize = '5-7 kW System + 10 kWh Battery';
+            else if (bill < 200) systemSize = '7-9 kW System + 10-13 kWh Battery';
+            else if (bill < 300) systemSize = '9-11 kW System + 13-15 kWh Battery';
+            else systemSize = '11-15 kW System + 15-20 kWh Battery';
+
+            if (AppState.quizData.shading === 'heavy') {
+                systemSize = systemSize.replace(/(\d+)-(\d+)/, (m, a, b) => 
+                    (parseInt(a) + 1) + '-' + (parseInt(b) + 1));
+            }
+
+            document.getElementById('systemSize').textContent = systemSize;
+        }
+
+        // ========================================
+        // OUTCOME ACTIONS
+        // ========================================
+        
+        document.getElementById('bookCallBtn').addEventListener('click', function() {
+            trackEvent('book_call_clicked', { source: 'outcome_primary' });
+            loadCalendlyScript().then(() => openCalendly());
+        });
+
+        document.getElementById('uploadBillBtn').addEventListener('click', function() {
+            trackEvent('bill_upload_opened', { source: 'outcome_secondary' });
+            openBillUpload();
+        });
+
+        // ========================================
+        // BILL UPLOAD
+        // ========================================
+        
+        function openBillUpload() {
+            document.getElementById('billUploadModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBillUpload() {
+            document.getElementById('billUploadModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            AppState.selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('filePreview').classList.remove('show');
+            document.getElementById('submitBillBtn').disabled = true;
+        }
+
+        document.getElementById('uploadZone').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        const uploadZone = document.getElementById('uploadZone');
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) handleFile(file);
+        });
+
+        function handleFile(file) {
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+            const isValid = validTypes.includes(file.type) || file.name.toLowerCase().match(/\.(pdf|jpg|jpeg|png)$/);
+            
+            if (!isValid) {
+                showToast('Please upload a PDF or image file (JPG, PNG)', true);
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                showToast('File size must be less than 10MB', true);
+                return;
+            }
+
+            AppState.selectedFile = file;
+            showFilePreview(file);
+            document.getElementById('submitBillBtn').disabled = false;
+        }
+
+        function showFilePreview(file) {
+            const preview = document.getElementById('filePreview');
+            const content = document.getElementById('previewContent');
+            
+            preview.classList.add('show');
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    content.innerHTML = `<img src="${e.target.result}" alt="Bill preview">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                content.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 2rem;">📄</span>
+                        <div>
+                            <p style="font-weight: 600;">${file.name}</p>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">${(file.size / 1024).toFixed(1)} KB</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('submitBillBtn').addEventListener('click', submitBill);
+
+        async function submitBill() {
+            if (!AppState.selectedFile) {
+                showToast('Please select a file to upload', true);
+                return;
+            }
+
+            setLoading(true);
+            document.getElementById('submitBillBtn').disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('file', AppState.selectedFile);
+                formData.append('lead_id', AppState.leadId);
+                formData.append('email', AppState.quizData.email);
+                formData.append('first_name', AppState.quizData.firstName);
+                formData.append('phone', AppState.quizData.phone);
+                formData.append('zip', AppState.quizData.zip);
+                formData.append('utility', AppState.quizData.utility);
+                formData.append('opt_in', AppState.optInStatus ? 'yes' : 'no');
+
+                // CRITICAL: This needs serverless function
+                // For now, simulate success
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // CRITICAL CONVERSION TRACKING
+                trackEvent('bill_uploaded', {
+                    lead_id: AppState.leadId,
+                    file_type: AppState.selectedFile.type,
+                    file_size: AppState.selectedFile.size
+                });
+
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'conversion',
+                    conversion_type: 'bill_upload',
+                    lead_id: AppState.leadId,
+                    value: 1000
+                });
+
+                showToast('✅ Bill received! We\'ll send your quote in 2 hours.');
+                
+                closeBillUpload();
+                
+                setTimeout(() => {
+                    loadCalendlyScript().then(() => openCalendly());
+                }, 1000);
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                showToast('Upload failed. Please try again or book a call.', true);
+            } finally {
+                setLoading(false);
+                document.getElementById('submitBillBtn').disabled = false;
+            }
+        }
+
+        document.getElementById('skipUploadBtn').addEventListener('click', function() {
+            trackEvent('bill_upload_skipped');
+            closeBillUpload();
+            loadCalendlyScript().then(() => openCalendly());
+        });
+
+        // ========================================
+        // CALENDLY INTEGRATION
+        // ========================================
+        
+        let calendlyLoaded = false;
+
+        function loadCalendlyScript() {
+            if (calendlyLoaded) return Promise.resolve();
+            
+            return new Promise((resolve, reject) => {
+                if (window.Calendly) {
+                    calendlyLoaded = true;
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://assets.calendly.com/assets/external/widget.js';
+                script.async = true;
+                script.onload = () => {
+                    calendlyLoaded = true;
+                    resolve();
+                };
+                script.onerror = reject;
+                document.head.appendChild(script);
+
+                const link = document.createElement('link');
+                link.href = 'https://assets.calendly.com/assets/external/widget.css';
+                link.rel = 'stylesheet';
+                document.head.appendChild(link);
+            });
+        }
+
+        function openCalendly() {
+            const firstName = AppState.quizData.firstName;
+            const email = AppState.quizData.email;
+
+            const url = new URL('https://calendly.com/davide-admiralenergy/20minute-solar-introcall');
+            if (firstName) url.searchParams.set('name', firstName);
+            if (email) url.searchParams.set('email', email);
+
+            trackEvent('calendly_opened', { lead_id: AppState.leadId });
+
+            let attempts = 0;
+            const maxAttempts = 50;
+
+            function tryOpenCalendly() {
+                attempts++;
+                if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+                    Calendly.initPopupWidget({ url: url.toString() });
+                    
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        event: 'conversion',
+                        conversion_type: 'calendly_opened',
+                        lead_id: AppState.leadId,
+                        value: 750
+                    });
+                } else if (attempts < maxAttempts) {
+                    setTimeout(tryOpenCalendly, 100);
+                } else {
+                    showToast('Opening booking page in new tab...');
+                    window.open(url.toString(), '_blank');
+                }
+            }
+
+            tryOpenCalendly();
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.event === 'calendly.event_scheduled') {
+                // FINAL CONVERSION
+                trackEvent('appointment_booked', {
+                    lead_id: AppState.leadId,
+                    method: 'calendly'
+                });
+
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'conversion',
+                    conversion_type: 'appointment_booked',
+                    lead_id: AppState.leadId,
+                    value: 2000
+                });
+
+                showToast('🎉 Your consultation is booked! Check your email.');
+            }
+        });
+
+        // ========================================
+        // EXIT INTENT WITH NETLIFY FORM
+        // ========================================
+        
+        let exitIntentShown = false;
+
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY < 10 && !exitIntentShown && !AppState.leadCaptured && !AppState.exitIntentSubmitted) {
+                exitIntentShown = true;
+                document.getElementById('exitIntentModal').classList.add('show');
+                trackEvent('exit_intent_shown');
+            }
+        });
+
+        document.getElementById('exitIntentClose').addEventListener('click', function() {
+            document.getElementById('exitIntentModal').classList.remove('show');
+        });
+
+        document.getElementById('exitSubmitBtn').addEventListener('click', async function() {
+            const email = document.getElementById('exitEmail').value.trim();
+            
+            if (!validateEmail(email)) {
+                showToast('Please enter a valid email', true);
+                return;
+            }
+
+            AppState.quizData.email = email;
+            AppState.exitIntentSubmitted = true;
+            saveState();
+
+            trackEvent('exit_intent_converted', { email });
+
+            setLoading(true);
+
+            // Submit to Netlify Form
+            const exitData = {
+                lead_id: AppState.leadId,
+                email: email,
+                source: 'exit_intent',
+                zip: AppState.quizData.zip || 'not_provided',
+                utility: AppState.quizData.utility || 'not_provided',
+                timestamp: new Date().toISOString()
+            };
+
+            const submitted = await submitToNetlify('exit-intent-capture', exitData);
+            
+            setLoading(false);
+
+            document.getElementById('exitIntentModal').classList.remove('show');
+            
+            if (submitted) {
+                showToast('✅ Eligibility report sent! Check your email.');
+                
+                // Send SMS if we have phone number
+                if (AppState.quizData.phone) {
+                    const cleanPhone = AppState.quizData.phone.replace(/\D/g, '');
+                    const smsMessage = `Admiral Energy: Your solar eligibility report was sent to ${email}. Check your inbox!`;
+                    await sendSMSNotification(cleanPhone, smsMessage);
+                }
+            } else {
+                showToast('Report sent! Check your email.');
+            }
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'conversion',
+                conversion_type: 'exit_intent_capture',
+                lead_id: AppState.leadId,
+                value: 250
+            });
+        });
+
+        // ========================================
+        // FAQ ACCORDION
+        // ========================================
+        
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const item = this.parentElement;
+                const wasActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                if (!wasActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // ========================================
+        // PHONE FORMATTING
+        // ========================================
+        
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.slice(0, 10);
+            
+            let formatted = value;
+            if (value.length > 6) {
+                formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
+            } else if (value.length > 3) {
+                formatted = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+            } else if (value.length > 0) {
+                formatted = `(${value}`;
+            }
+            
+            e.target.value = formatted;
+        });
+
+        // ========================================
+        // KEYBOARD SHORTCUTS
+        // ========================================
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const billModal = document.getElementById('billUploadModal');
+                const exitModal = document.getElementById('exitIntentModal');
+                
+                if (billModal.style.display === 'block') {
+                    closeBillUpload();
+                } else if (exitModal.classList.contains('show')) {
+                    exitModal.classList.remove('show');
+                }
+            }
+        });
+
+        // ========================================
+        // INITIALIZATION WITH COOKIE/STATE RESTORATION
+        // ========================================
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            initVideo();
+
+            const stateLoaded = loadState();
+            
+            if (stateLoaded && AppState.leadCaptured && AppState.quizData.email) {
+                // Returning visitor who completed quiz - show outcome directly
+                populateOutcome();
+                document.getElementById('outcomeSection').style.display = 'block';
+                
+                // Pre-fill hero form
+                document.getElementById('zip').value = AppState.quizData.zip || '';
+                document.getElementById('utility').value = AppState.quizData.utility || '';
+                
+                // Update CTA text for returning visitors
+                const heroCTA = document.getElementById('startQuizBtn');
+                if (heroCTA) {
+                    heroCTA.textContent = 'Update My Savings';
+                }
+                
+                showToast(`Welcome back, ${AppState.quizData.firstName || 'friend'}! Your quote is ready below.`);
+                
+                // Scroll to outcome after a moment
+                setTimeout(() => {
+                    document.getElementById('outcomeSection').scrollIntoView({ behavior: 'smooth' });
+                }, 1000);
+            } else if (stateLoaded && AppState.quizData.zip) {
+                // Partial completion - pre-fill what we have
+                document.getElementById('zip').value = AppState.quizData.zip;
+                document.getElementById('utility').value = AppState.quizData.utility || '';
+            }
+
+            trackEvent('page_view', {
+                page_title: document.title,
+                lead_id: AppState.leadId,
+                returning_visitor: stateLoaded && AppState.leadCaptured
+            });
+
+            updateSavingsEstimate();
+        });
+
+        // ========================================
+        // PERFORMANCE MONITORING
+        // ========================================
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (window.performance && window.performance.timing) {
+                    const timing = window.performance.timing;
+                    const loadTime = timing.loadEventEnd - timing.navigationStart;
+                    
+                    trackEvent('page_performance', {
+                        load_time: loadTime,
+                        dom_ready: timing.domContentLoadedEventEnd - timing.navigationStart
+                    });
+                }
+            }, 0);
+        });
+
+        // Mobile optimization
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                if (window.innerWidth <= 768) {
+                    if (parseFloat(window.getComputedStyle(this).fontSize) < 16) {
+                        this.style.fontSize = '16px';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PDPNZ37H');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#f7f5f2">
+    
+    <title>Admiral Energy - Cut Your Duke Energy Bill 40-60%. $0 Down.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RX78MRB03L');
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-navy: #0c2f4a;
+            --accent-gold: #c9a648;
+            --bone-white: #f7f5f2;
+            --dark-gold: #a08537;
+            --light-navy: #1a4568;
+            --text-gray: #4a5568;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+        }
+        
+        html, body { 
+            color-scheme: light; 
+            background: var(--bone-white); 
+            color: var(--primary-navy);
+        }
+        
+        body {
+            font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        @keyframes slideInLeft { 
+            from { opacity: 0; transform: translateX(-50px); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
+        
+        @keyframes pulse { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { 
+                animation-duration: 0.01ms !important; 
+                animation-iteration-count: 1 !important; 
+                transition-duration: 0.01ms !important; 
+            }
+        }
+        
+        /* Navigation */
+        nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background: rgba(247,245,242,0.95); 
+            backdrop-filter: blur(10px); 
+            z-index: 1000; 
+            padding: 1rem 2rem; 
+            box-shadow: 0 2px 20px rgba(12,47,74,0.1); 
+        }
+        
+        .nav-container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            color: var(--primary-navy); 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .nav-link {
+            color: var(--text-gray);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(201,166,72,0.1);
+            color: var(--accent-gold);
+        }
+        
+        /* Hero Section */
+        .hero { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            padding: 6rem 2rem 2rem; 
+            background: linear-gradient(135deg, var(--bone-white) 0%, rgba(201,166,72,0.1) 100%); 
+            position: relative; 
+        }
+        
+        .hero-container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4rem; 
+            align-items: center; 
+            position: relative; 
+            z-index: 1; 
+        }
+        
+        .hero-video { 
+            position: relative; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 20px 60px rgba(12,47,74,0.2); 
+            background: var(--primary-navy); 
+            aspect-ratio: 16/9; 
+        }
+        
+        .hero-video video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+        }
+        
+        .mute-button {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(12, 47, 74, 0.9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .mute-button:hover {
+            background: rgba(12, 47, 74, 1);
+            transform: translateY(-2px);
+        }
+        
+        .hero-content { animation: fadeInUp 1s ease-out 0.3s both; }
+        
+        .hero h1 { 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
+            font-weight: 900; 
+            line-height: 1.1; 
+            margin-bottom: 1rem; 
+            color: var(--primary-navy);
+        }
+        
+        .hero-subtitle { 
+            font-size: 1.3rem; 
+            color: var(--text-gray); 
+            margin-bottom: 1.5rem; 
+            line-height: 1.5; 
+        }
+        
+        .trust-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success-green);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        .social-proof {
+            background: white;
+            border-left: 4px solid var(--accent-gold);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(12,47,74,0.08);
+        }
+        
+        .social-proof p {
+            font-style: italic;
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .social-proof .author {
+            font-weight: 700;
+            color: var(--primary-navy);
+            font-style: normal;
+            font-size: 0.9rem;
+        }
+        
+        .hero-form { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 40px rgba(12,47,74,0.1); 
+        }
+        
+        .form-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1rem; 
+            margin-bottom: 1.5rem; 
+        }
+        
+        .form-group { position: relative; }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            color: var(--primary-navy); 
+        }
+        
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 0.875rem; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 10px; 
+            font-size: 1rem; 
+            transition: all 0.3s ease; 
+            background: white; 
+            color: var(--primary-navy);
+        }
+        
+        .form-group input:focus, .form-group select:focus { 
+            outline: none; 
+            border-color: var(--accent-gold); 
+            box-shadow: 0 0 0 3px rgba(201,166,72,0.1); 
+        }
+        
+        .form-error {
+            color: var(--error-red);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-group.error input,
+        .form-group.error select {
+            border-color: var(--error-red);
+        }
+        
+        .form-group.error .form-error {
+            display: block;
+        }
+        
+        .cta-button { 
+            width: 100%; 
+            padding: 1.125rem 2rem; 
+            background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            position: relative; 
+        }
+        
+        .cta-button:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 30px rgba(201,166,72,0.3); 
+        }
+        
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .secondary-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        
+        .secondary-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        /* Quiz Section */
+        .quiz-section { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(12,47,74,0.95); 
+            backdrop-filter: blur(20px); 
+            z-index: 2000; 
+            padding: 2rem; 
+            overflow-y: auto; 
+        }
+        
+        .quiz-container { 
+            max-width: 600px; 
+            margin: 4rem auto; 
+            background: white; 
+            border-radius: 20px; 
+            padding: 3rem; 
+            position: relative;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: none;
+        }
+        
+        .back-button.show {
+            display: block;
+        }
+        
+        .step-indicator {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+        
+        .progress-bar { 
+            height: 8px; 
+            background: #e5e7eb; 
+            border-radius: 10px; 
+            margin-bottom: 2rem; 
+            overflow: hidden; 
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--accent-gold), var(--dark-gold)); 
+            border-radius: 10px; 
+            transition: width 0.5s ease; 
+        }
+        
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        
+        .quiz-step h3 { 
+            font-size: 1.5rem; 
+            margin-bottom: 0.5rem; 
+            color: var(--primary-navy); 
+        }
+        
+        .quiz-step .helper-text {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .options-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 1rem; 
+            margin: 1.5rem 0; 
+        }
+        
+        .option-card { 
+            padding: 1.25rem; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-align: center; 
+            background: white; 
+        }
+        
+        .option-card:hover { 
+            border-color: var(--accent-gold); 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 20px rgba(201,166,72,0.2); 
+        }
+        
+        .option-card.selected { 
+            border-color: var(--accent-gold); 
+            background: linear-gradient(135deg, rgba(201,166,72,0.1), rgba(201,166,72,0.05)); 
+        }
+        
+        .bill-slider { margin: 2rem 0; }
+        
+        .slider { 
+            width: 100%; 
+            height: 8px; 
+            border-radius: 10px; 
+            background: #e5e7eb; 
+            outline: none; 
+            -webkit-appearance: none; 
+        }
+        
+        .slider::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            width: 24px; 
+            height: 24px; 
+            border-radius: 50%; 
+            background: var(--accent-gold); 
+            cursor: pointer; 
+            box-shadow: 0 2px 10px rgba(201,166,72,0.3); 
+        }
+        
+        .slider::-moz-range-thumb { 
+            width: 24px; 
+            height: 24px; 
+            border-radius: 50%; 
+            background: var(--accent-gold); 
+            cursor: pointer; 
+            border: none;
+            box-shadow: 0 2px 10px rgba(201,166,72,0.3); 
+        }
+        
+        .bill-display { 
+            text-align: center; 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary-navy); 
+            margin: 1rem 0; 
+        }
+        
+        .savings-preview {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05));
+            border: 2px solid var(--success-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        
+        .savings-preview h4 {
+            color: var(--success-green);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .savings-preview .amount {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--success-green);
+        }
+        
+        /* Outcome Section */
+        .outcome-card { 
+            background: linear-gradient(135deg, white, rgba(201,166,72,0.05)); 
+            border-radius: 20px; 
+            padding: 3rem; 
+            margin: 2rem 0; 
+            box-shadow: 0 20px 60px rgba(12,47,74,0.1); 
+        }
+        
+        .outcome-card h2 { 
+            font-size: 2rem; 
+            margin-bottom: 1.5rem; 
+            color: var(--primary-navy); 
+        }
+        
+        .savings-highlight { 
+            color: var(--accent-gold);
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            margin: 1rem 0; 
+        }
+        
+        .urgency-banner {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05));
+            border-left: 4px solid var(--error-red);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .urgency-banner p {
+            color: var(--error-red);
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .outcome-buttons { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1rem; 
+            margin-top: 2rem; 
+        }
+        
+        .outcome-btn-primary { 
+            padding: 1rem 2rem; 
+            background: linear-gradient(135deg, var(--accent-gold), var(--dark-gold)); 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .outcome-btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201,166,72,0.3);
+        }
+        
+        .outcome-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .outcome-btn-secondary { 
+            padding: 1rem 2rem; 
+            background: transparent; 
+            color: var(--primary-navy); 
+            border: 2px solid var(--primary-navy); 
+            border-radius: 10px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .outcome-btn-secondary:hover {
+            background: var(--primary-navy);
+            color: white;
+        }
+        
+        /* Bill Upload Modal */
+        .bill-upload-modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.8); 
+            z-index: 3000; 
+            padding: 1rem; 
+            overflow-y: auto; 
+        }
+        
+        .bill-upload-container { 
+            max-width: 600px; 
+            margin: 2rem auto; 
+            background: white; 
+            border-radius: 20px; 
+            padding: 2rem; 
+        }
+        
+        .upload-zone { 
+            border: 2px dashed var(--accent-gold); 
+            border-radius: 10px; 
+            padding: 3rem; 
+            text-align: center; 
+            background: rgba(201,166,72,0.05); 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            margin: 2rem 0; 
+        }
+        
+        .upload-zone:hover { 
+            background: rgba(201,166,72,0.1); 
+            border-color: var(--dark-gold); 
+        }
+        
+        .upload-zone.dragover { 
+            background: rgba(201,166,72,0.15); 
+            transform: scale(1.02); 
+        }
+        
+        .file-preview { 
+            margin: 2rem 0; 
+            padding: 1rem; 
+            background: var(--bone-white); 
+            border-radius: 10px; 
+            display: none;
+        }
+        
+        .file-preview.show { 
+            display: block; 
+        }
+        
+        .file-preview img { 
+            max-width: 100%; 
+            max-height: 200px; 
+            border-radius: 5px; 
+        }
+        
+        .benefit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16,185,129,0.1);
+            color: var(--success-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        /* Exit Intent Modal */
+        .exit-intent-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 4000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .exit-intent-modal.show {
+            display: flex;
+        }
+        
+        .exit-intent-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .exit-intent-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-gray);
+        }
+        
+        .exit-intent-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-navy);
+        }
+        
+        .exit-intent-content p {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        /* Toast */
+        .toast { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: var(--success-green); 
+            color: white; 
+            padding: 1rem 1.5rem; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); 
+            z-index: 4000; 
+            display: none; 
+            animation: fadeInUp 0.3s ease-out; 
+        }
+        
+        .toast.show { display: block; }
+        
+        .toast.error {
+            background: var(--error-red);
+        }
+        
+        /* Loading Spinner */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* FAQ Section */
+        .faq-section { 
+            padding: 5rem 2rem; 
+            background: var(--bone-white); 
+        }
+        
+        .faq-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        
+        .faq-item { 
+            background: white; 
+            margin-bottom: 1rem; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(12,47,74,0.05); 
+        }
+        
+        .faq-question { 
+            padding: 1.5rem; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 700; 
+            color: var(--primary-navy); 
+        }
+        
+        .faq-arrow { 
+            transition: transform 0.3s ease; 
+        }
+        
+        .faq-item.active .faq-arrow { 
+            transform: rotate(180deg); 
+        }
+        
+        .faq-answer { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.5s ease; 
+        }
+        
+        .faq-item.active .faq-answer { 
+            max-height: 500px; 
+        }
+        
+        .faq-answer-content { 
+            padding: 0 1.5rem 1.5rem; 
+            color: var(--text-gray); 
+            line-height: 1.6; 
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 0.75rem 1rem; }
+            .logo { font-size: 1.1rem; }
+            .nav-link { padding: 0.25rem 0.5rem; font-size: 0.9rem; }
+            .hero { padding: 5rem 1rem 1.5rem; }
+            .hero-container { 
+                grid-template-columns: 1fr; 
+                gap: 1.25rem; 
+            }
+            .hero h1 { 
+                font-size: clamp(1.6rem, 6.5vw, 2.2rem); 
+            }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-video { order: 2; }
+            .hero-form { padding: 1rem; }
+            .form-row { 
+                grid-template-columns: 1fr; 
+                gap: 0.75rem; 
+            }
+            .form-group input, 
+            .form-group select { 
+                padding: 0.9rem; 
+                font-size: 16px; 
+            }
+            .cta-button { 
+                padding: 1rem; 
+                font-size: 1rem; 
+            }
+            .quiz-container { 
+                margin: 2rem auto; 
+                padding: 1.5rem; 
+            }
+            .options-grid { 
+                grid-template-columns: 1fr; 
+            }
+            .outcome-buttons { 
+                grid-template-columns: 1fr; 
+            }
+            .exit-intent-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPNZ37H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                Admiral Energy
+            </div>
+            <div style="display: flex; gap: 1.5rem; align-items: center;">
+                <a href="#" class="nav-link" id="skipToCallBtn">Book a Call</a>
+                <span style="font-weight: 600; color: var(--text-gray); font-size: 0.9rem;">Charlotte, NC</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-video">
+                <video 
+                    id="heroVideo" 
+                    playsinline 
+                    muted 
+                    autoplay 
+                    loop 
+                    preload="metadata">
+                    <source src="assets/admiral-intro.mp4" type="video/mp4">
+                </video>
+                <button class="mute-button" id="heroMuteBtn" aria-label="Unmute video">
+                    <span id="heroMuteIcon">🔇</span>
+                    <span id="heroMuteText">Unmute</span>
+                </button>
+            </div>
+            <div class
