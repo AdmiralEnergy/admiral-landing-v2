@@ -779,19 +779,62 @@
     function setProgress(stepIdx, total=3){ const pct = Math.max(5, Math.round((stepIdx/total)*100)); progressFill.style.width = pct+'%'; }
     function goto(step){ steps.forEach(s=>s.classList.remove('active')); const el = steps.find(s=>s.dataset.step==step); if(el){ el.classList.add('active'); setProgress(step-1); } }
 
-    // Welcome-back logic
+    // Welcome-back logic with 30-day window and restart option
     (function(){
       const state = loadState();
-      if(state?.leadCaptured){
-        $('#welcomeBack').style.display='block';
-        $('#welcomeBack').textContent = `Welcome back${state.firstName ? ', '+state.firstName : ''}! Your quote is ready.`;
-        billVal.textContent = `$${state.billAmount||150}`;
-        $('#out_bill').textContent = `$${state.billAmount||150}`;
-        renderOutcome(state.billAmount||150);
-        heroForm.style.display='none';
-        quiz.style.display='none';
-        outcome.style.display='block';
-        setProgress(3);
+      const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+      
+      if(state?.leadCaptured && state.timestamp){
+        const timeSinceCapture = Date.now() - state.timestamp;
+        
+        if(timeSinceCapture <= THIRTY_DAYS){
+          $('#welcomeBack').style.display='block';
+          $('#welcomeBack').innerHTML = `
+            <div>Welcome back${state.firstName ? ', '+state.firstName : ''}! Your quote is ready.</div>
+            <div style="margin-top:0.5rem;">
+              <button class="btn btn-secondary" id="restartTest" style="font-size:0.85rem;padding:0.4rem 0.8rem;">Is this not you? Restart test</button>
+            </div>
+          `;
+          billVal.textContent = `$${state.billAmount||150}`;
+          $('#out_bill').textContent = `$${state.billAmount||150}`;
+          renderOutcome(state.billAmount||150);
+          heroForm.style.display='none';
+          quiz.style.display='none';
+          outcome.style.display='block';
+          setProgress(3);
+          
+          // Add restart functionality
+          $('#restartTest').addEventListener('click', () => {
+            // Clear stored state
+            localStorage.removeItem('ae_state');
+            setCookie('ae_lead_id', '', -1); // Delete cookie
+            setCookie('ae_lead_captured', '', -1); // Delete cookie
+            
+            // Reset UI
+            $('#welcomeBack').style.display='none';
+            heroForm.style.display='block';
+            quiz.style.display='none';
+            outcome.style.display='none';
+            setProgress(0);
+            
+            // Generate new lead ID
+            leadId = makeLeadId();
+            window.leadId = leadId;
+            
+            // Track restart event
+            aeEvt('test_restarted', { previous_lead_id: state.leadId, new_lead_id: leadId });
+            
+            // Scroll to form
+            heroForm.scrollIntoView({behavior:'smooth',block:'center'});
+          });
+        } else {
+          // Outside 30-day window, clear old state
+          localStorage.removeItem('ae_state');
+          setCookie('ae_lead_id', '', -1);
+          setCookie('ae_lead_captured', '', -1);
+          leadId = makeLeadId();
+          window.leadId = leadId;
+        }
       }
     })();
 
@@ -1428,21 +1471,79 @@
       setTimeout(() => chatInput.focus(), 100);
     });
 
-    // Instant callback
+    // Business hours check for instant callback (9am-5pm ET, Mon-Fri)
+    function isBusinessHours() {
+      const now = new Date();
+      const et = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+        weekday: 'short'
+      });
+      
+      const etTime = et.formatToParts(now);
+      const dayOfWeek = etTime.find(part => part.type === 'weekday').value;
+      const hour = parseInt(etTime.find(part => part.type === 'hour').value);
+      
+      // Check if it's Monday-Friday
+      const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+      const isWeekday = weekdays.includes(dayOfWeek);
+      
+      // Check if it's between 9am-5pm ET
+      const isBusinessTime = hour >= 9 && hour < 17;
+      
+      return isWeekday && isBusinessTime;
+    }
+    
+    // Instant callback with business hours validation
     $('#instantCallback').addEventListener('click', ()=>{
       const s = loadState();
       if(!s?.phone){
         alert('Please complete the savings quiz first so we have your phone number!');
         return;
       }
+      
+      if(!isBusinessHours()){
+        alert('Instant callbacks are available Monday-Friday, 9:00 AM - 5:00 PM Eastern Time. Please schedule a consultation or try again during business hours.');
+        // Open Calendly instead
+        openCalendlyPrefilled(s?.firstName||'', s?.email||'');
+        return;
+      }
+      
       aeEvt('instant_callback_requested', { value:500, currency:'USD', lead_id: leadId });
       alert(`Thanks! We'll call you at ${s.phone} within the next 5 minutes.`);
-      // In production, trigger actual callback system
+      
+      // Actual callback system request
       fetch('/.netlify/functions/request-callback', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ leadId, phone: s.phone, firstName: s.firstName })
-      }).catch(()=>{});
+        body: JSON.stringify({ 
+          leadId, 
+          phone: s.phone, 
+          firstName: s.firstName,
+          email: s.email,
+          billAmount: s.billAmount,
+          zip: s.zip,
+          utility: s.utility
+        })
+      }).then(response => response.json())
+      .then(data => {
+        if(!data.success) {
+          throw new Error(data.message || 'Callback request failed');
+        }
+        aeEvt('instant_callback_scheduled', { 
+          value: 500, 
+          currency: 'USD', 
+          lead_id: leadId,
+          callback_window: data.data?.callbackWindow || '5-10 minutes'
+        });
+      })
+      .catch(error => {
+        console.error('Callback request error:', error);
+        alert('Sorry, there was an issue scheduling your callback. Please try booking a consultation instead.');
+        openCalendlyPrefilled(s?.firstName||'', s?.email||'');
+      });
     });
 
     // Cookie consent and privacy compliance

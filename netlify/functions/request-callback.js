@@ -17,24 +17,54 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { leadId, phone, firstName } = JSON.parse(event.body);
+    const { leadId, phone, firstName, email, billAmount, zip, utility } = JSON.parse(event.body);
     
-    console.log('Callback request received:', { leadId, phone, firstName });
+    console.log('Callback request received:', { 
+      leadId, 
+      phone, 
+      firstName, 
+      email, 
+      billAmount, 
+      zip, 
+      utility 
+    });
+
+    // Validate required fields
+    if (!leadId || !phone) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          success: false,
+          message: 'Lead ID and phone number are required'
+        })
+      };
+    }
 
     // In production, integrate with your call center system or services like:
     // - Twilio for automated calling
     // - CallRail for call tracking
     // - Your CRM's callback API
+    // - Salesforce, HubSpot, or other CRM systems
     
-    // For now, log the request and simulate success
+    // Enhanced callback data with complete lead information
     const callbackData = {
       leadId,
       phone,
-      firstName,
+      firstName: firstName || 'Unknown',
+      email: email || null,
+      billAmount: billAmount || null,
+      zip: zip || null,
+      utility: utility || null,
       requestedAt: new Date().toISOString(),
       status: 'scheduled',
       priority: 'high', // Instant callbacks are high priority
-      callbackWindow: '5-10 minutes'
+      callbackWindow: '5-10 minutes',
+      source: 'instant_callback_button',
+      notes: `Lead requested instant callback. Bill: $${billAmount || 'N/A'}/mo, Utility: ${utility || 'N/A'}, ZIP: ${zip || 'N/A'}`
     };
 
     // Simulate API call to scheduling system
