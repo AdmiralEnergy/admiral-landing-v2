@@ -1172,9 +1172,9 @@
           url: 'https://calendly.com/davide-admiralenergy/batterysolar-intro?hide_event_type_details=1&hide_gdpr_banner=1' +
                (firstName?`&name=${encodeURIComponent(firstName)}`:'') +
                (email?`&email=${encodeURIComponent(email)}`:'')}); 
-        // Track Reddit InitiateCheckout for Calendly opening
+        // Track Reddit Custom event for Calendly opening
         const utm = getUtmState();
-        fireReddit('InitiateCheckout', utm);
+        fireReddit('Custom', { customEventName: 'InitiateCheckout', ...utm });
         
         aeEvt('calendly_opened', { value:750, currency:'USD', lead_id: leadId });
         
@@ -1250,12 +1250,12 @@
         });
       }
     };
-    // Add Calendly InitiateCheckout tracking for any Calendly buttons
+    // Add Calendly Custom event tracking for any Calendly buttons
     document.addEventListener('click', (e) => {
       const calendlyButton = e.target.closest('[data-calendly-open], #bookCall');
       if (calendlyButton) {
         const utm = getUtmState();
-        fireReddit('InitiateCheckout', utm);
+        fireReddit('Custom', { customEventName: 'InitiateCheckout', ...utm });
       }
     });
     
