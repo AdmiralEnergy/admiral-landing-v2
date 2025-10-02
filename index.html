@@ -51,6 +51,18 @@
     })(window,document,'script','dataLayer','GTM-PDPNZ37H');
   </script>
 
+  <!-- Reddit Pixel -->
+  <script>
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){
+    p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};
+    p.callQueue=[];var t=d.createElement("script");
+    t.src="https://www.redditstatic.com/ads/pixel.js";t.async=!0;
+    var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}
+    (window,document);
+    rdt('init','a2_hpzbegj1w700');
+    rdt('track','PageVisit');
+  </script>
+
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX78MRB03L"></script>
   <script>
@@ -68,17 +80,98 @@
       }
     });
     
+    // Reddit Pixel + GA4 unified tracking helper
+    const trackEvent = (eventName, data = {}) => {
+      const leadId = data.lead_id || window.leadId || '';
+      
+      // GA4 tracking (existing)
+      gtag('event', eventName, {
+        ...data,
+        lead_id: leadId,
+        event_category: 'engagement',
+        event_label: data.section || eventName
+      });
+      
+      // Reddit Pixel tracking based on event type
+      switch(eventName) {
+        case 'lead_captured':
+        case 'quiz_step_1_complete':
+          // CompleteRegistration - lead intake form completion
+          rdt('track','CompleteRegistration', (function(){
+            var o = {};
+            if (leadId) o.lead_id = leadId;
+            return o;
+          })());
+          break;
+          
+        case 'bill_uploaded':
+          // Lead - when they submit their bill
+          rdt('track','Lead', (function(){
+            var o = {};
+            if (leadId) o.lead_id = leadId;
+            return o;
+          })());
+          break;
+          
+        case 'calendly_opened':
+          // InitiateCheckout - attempt to schedule with calendly
+          rdt('track','InitiateCheckout', (function(){
+            var o = {};
+            var p = data.path || 'calendly_modal';
+            if (p) o.path = p;
+            return o;
+          })());
+          break;
+          
+        case 'calendly_booking_completed':
+          // Purchase - book a time on calendly (triggered via Calendly webhook/callback)
+          rdt('track','Purchase', (function(){
+            var o = {};
+            var m = 'calendly';
+            if (m) o.method = m;
+            return o;
+          })());
+          break;
+          
+        case 'video_interaction':
+        case 'video_play':
+        case 'video_mute_toggle':
+          // ViewContent - video interactions and sound toggles
+          rdt('track','ViewContent', (function(){
+            var o = {};
+            var s = data.section || data.video_id || 'video_interaction';
+            if (s) o.section = s;
+            return o;
+          })());
+          break;
+          
+        case 'live_chat_opened':
+        case 'instant_callback_requested':
+        case 'exit_intent_shown':
+          // Custom events for other meaningful interactions
+          rdt('track','Custom', { 
+            customEventName: eventName,
+            lead_id: leadId,
+            context: data.section || 'engagement'
+          });
+          break;
+      }
+      
+      // Console log for debugging (remove in production)
+      if(window.AE_DEBUG) {
+        console.log('[Tracking]', eventName, data);
+      }
+    };
+
     // Enhanced ecommerce tracking for lead funnel
     const trackFunnelStep = (step, action, data = {}) => {
-      gtag('event', 'funnel_step', {
+      // Use unified tracking
+      trackEvent('funnel_step', {
         funnel_step: step,
         funnel_action: action,
         value: data.value || 0,
         currency: 'USD',
-        lead_id: data.lead_id || '',
-        bill_amount: data.bill_amount || '',
-        zip_code: data.zip_code || '',
-        utility_provider: data.utility_provider || ''
+        ...data
       });
     };
     
@@ -329,7 +422,7 @@
       <!-- Step 2: Contact info (LEAD CAPTURE) -->
       <div class="quiz-step" data-step="2">
         <h3 style="margin-top:0;color:var(--primary-navy)">Where should we send your savings report?</h3>
-        <form id="leadForm" name="lead-capture" method="POST" data-netlify="true">
+        <form id="lead-form" class="hs-form" name="lead-capture" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="lead-capture" />
           <input type="hidden" name="lead_id" id="lead_id" />
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
@@ -407,9 +500,9 @@
             <button class="btn" id="liveChat" style="background:#0084FF;color:white">💬 Live chat now</button>
           </div>
           <div>
-            <div class="video-container" style="position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:16px">
+            <div class="video-container" style="position:relative;width:100%;max-height:400px;overflow:visible;border-radius:16px;background:#f0f0f0">
               <div class="video-skeleton skeleton">📹 Loading video...</div>
-              <video id="outcomeExplainer" class="admiral-explainer lazy-video" playsinline muted loop preload="none" style="width:100%;height:100%;object-fit:cover" data-src="/assets/admiral-bill-explainer.mp4" poster="/assets/admiral-bill-explainer-poster.png"></video>
+              <video id="outcomeExplainer" class="admiral-explainer lazy-video" playsinline muted loop preload="none" style="width:100%;height:auto;max-height:400px;object-fit:contain" data-src="/assets/admiral-bill-explainer.mp4" poster="/assets/admiral-bill-explainer-poster.png"></video>
               <div class="video-overlay">
                 <div class="touch-controls">
                   <button class="touch-btn" id="outPlayPauseBtn" tabindex="0">⏸️ Pause</button>
@@ -541,7 +634,10 @@
     const $$ = (sel, el=document) => [...el.querySelectorAll(sel)];
     const aeEvt = (name, params={}) => { 
       try { 
-        // Enhanced tracking with funnel steps
+        // Use unified tracking system
+        trackEvent(name, params);
+        
+        // Enhanced tracking with funnel steps (for backward compatibility)
         const funnelSteps = {
           'quiz_started': { step: 1, value: 100 },
           'quiz_step_1_complete': { step: 2, value: 200 },
@@ -559,9 +655,10 @@
           });
         }
         
-        gtag('event', name, params); 
         formInteractions++;
-      } catch(_){} 
+      } catch(_){
+        console.warn('Tracking error:', _);
+      } 
     };
     const showToast = (msg) => { try{ if(window.Toastify){ Toastify({text:msg}).showToast(); } }catch(_) { console.log('[Toast]', msg) } };
 
@@ -590,7 +687,7 @@
     const billSlider = $('#billSlider');
     const billVal = $('#billVal');
 
-    const leadForm = $('#leadForm');
+    const leadForm = $('#lead-form');
     const outcome = $('#outcome');
 
     let leadId = getCookie('ae_lead_id') || makeLeadId();
@@ -834,6 +931,17 @@
 
       // Track + show outcome
       aeEvt('lead_captured', { value:500, currency:'USD', lead_id: leadId });
+      
+      // Enhanced GA4 tracking for lead generation
+      trackGA4FormEvent('lead-form', {
+        form_id: 'lead-form',
+        lead_id: leadId,
+        bill_amount: billAmount,
+        zip_code: zip,
+        utility_provider: utility,
+        opt_in: optIn,
+        value: 500
+      });
       $('#out_bill').textContent = `$${billAmount}`;
       renderOutcome(billAmount);
       quiz.style.display='none'; outcome.style.display='block'; setProgress(3);
@@ -862,41 +970,139 @@
       $('#out_savings').textContent = `$${min.toLocaleString()}–$${max.toLocaleString()}/yr`;
     }
 
-    // Calendly
+    // Calendly with Purchase tracking
     window.openCalendlyPrefilled = function(firstName, email){
       try {
         Calendly.initPopupWidget({
-          url: 'https://calendly.com/admiral-energy/15min?hide_event_type_details=1&hide_gdpr_banner=1' +
+          url: 'https://calendly.com/davide-admiralenergy/batterysolar-intro?hide_event_type_details=1&hide_gdpr_banner=1' +
                (firstName?`&name=${encodeURIComponent(firstName)}`:'') +
-               (email?`&email=${encodeURIComponent(email)}`:'')
-        });
+               (email?`&email=${encodeURIComponent(email)}`:'')}); 
         aeEvt('calendly_opened', { value:750, currency:'USD', lead_id: leadId });
-      } catch(_){}
+        
+        // Listen for Calendly completion events
+        window.addEventListener('message', function(e) {
+          if (e.data.event && e.data.event.indexOf('calendly') === 0) {
+            if (e.data.event === 'calendly.event_scheduled') {
+              // Track Reddit Pixel Purchase event
+              aeEvt('calendly_booking_completed', { 
+                value: 1000, 
+                currency: 'USD', 
+                lead_id: leadId,
+                event_type: e.data.event_type || 'consultation'
+              });
+            }
+          }
+        });
+      } catch(_){
+        console.warn('Calendly initialization failed:', _);
+      }
     }
+    
+    // Enhanced GA4 form tracking for lead generation
+    window.trackGA4FormEvent = function(formName, eventData = {}) {
+      // Enhanced form tracking specifically for GA4 GTM integration
+      const leadId = eventData.lead_id || window.leadId || '';
+      
+      gtag('event', 'generate_lead', {
+        event_category: 'lead_generation',
+        event_label: formName,
+        form_name: formName,
+        lead_id: leadId,
+        value: eventData.value || 500,
+        currency: 'USD',
+        custom_parameter_1: leadId,
+        custom_parameter_2: eventData.bill_amount || '',
+        custom_parameter_3: eventData.zip_code || '',
+        custom_parameter_4: eventData.utility_provider || ''
+      });
+      
+      // Also trigger the form submit event for GTM
+      if (typeof dataLayer !== 'undefined') {
+        dataLayer.push({
+          event: 'form_submit',
+          form_name: formName,
+          form_id: eventData.form_id || formName.replace(/[^a-z0-9]/gi, '-'),
+          lead_id: leadId,
+          ...eventData
+        });
+      }
+    };
     $('#bookCall').addEventListener('click', ()=>{
       const s = loadState();
       openCalendlyPrefilled(s?.firstName||'', s?.email||'');
     });
 
-    // Video mute toggle (Hero video)
+    // Video mute toggle (Hero video) with enhanced tracking
     (function(){
       const v = document.getElementById('admiralExplainer');
       const b = document.getElementById('explainerMute');
       if (!v || !b) return;
       const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
-      b.addEventListener('click', async ()=>{ v.muted = !v.muted; if(!v.paused){ try{ await v.play(); }catch(e){} } sync(); });
+      b.addEventListener('click', async ()=>{ 
+        v.muted = !v.muted; 
+        if(!v.paused){ try{ await v.play(); }catch(e){} } 
+        sync(); 
+        // Track video interaction
+        aeEvt('video_mute_toggle', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video', 
+          muted: v.muted,
+          video_time: Math.round(v.currentTime)
+        });
+      });
       v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+      v.addEventListener('play', () => {
+        aeEvt('video_play', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('pause', () => {
+        aeEvt('video_interaction', { 
+          video_id: 'admiralExplainer', 
+          section: 'hero_video', 
+          action: 'pause',
+          video_time: Math.round(v.currentTime)
+        });
+      });
       sync();
     })();
 
-    // Video mute toggle (Outcome video)
+    // Video mute toggle (Outcome video) with enhanced tracking
     (function(){
       const v = document.getElementById('outcomeExplainer');
       const b = document.getElementById('outcomeMute');
       if (!v || !b) return;
       const sync = ()=>{ b.textContent = v.muted ? '🔇 Unmute' : '🔊 Mute'; };
-      b.addEventListener('click', async ()=>{ v.muted = !v.muted; if(!v.paused){ try{ await v.play(); }catch(e){} } sync(); });
+      b.addEventListener('click', async ()=>{ 
+        v.muted = !v.muted; 
+        if(!v.paused){ try{ await v.play(); }catch(e){} } 
+        sync(); 
+        // Track video interaction
+        aeEvt('video_mute_toggle', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video', 
+          muted: v.muted,
+          video_time: Math.round(v.currentTime)
+        });
+      });
       v.addEventListener('canplay', async()=>{ try{ await v.play(); }catch(e){} });
+      v.addEventListener('play', () => {
+        aeEvt('video_play', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video',
+          video_time: Math.round(v.currentTime)
+        });
+      });
+      v.addEventListener('pause', () => {
+        aeEvt('video_interaction', { 
+          video_id: 'outcomeExplainer', 
+          section: 'outcome_video', 
+          action: 'pause',
+          video_time: Math.round(v.currentTime)
+        });
+      });
       sync();
     })();
 
@@ -1019,7 +1225,7 @@
       if (skeleton) skeleton.style.display = 'none';
     };
 
-    // Touch controls for videos
+    // Touch controls for videos with tracking
     (function(){
       const setupTouchControls = (videoId, playBtnId, touchMuteBtnId) => {
         const video = document.getElementById(videoId);
@@ -1029,12 +1235,26 @@
         
         const updatePlayBtn = () => { playBtn.textContent = video.paused ? '▶️ Play' : '⏸️ Pause'; };
         const updateMuteBtn = () => { touchMuteBtn.textContent = video.muted ? '🔇 Unmute' : '🔊 Mute'; };
+        const section = videoId.includes('admiral') ? 'hero_video' : 'outcome_video';
         
         playBtn.addEventListener('click', async () => {
           if(video.paused) {
             try { await video.play(); } catch(e) {}
+            aeEvt('video_play', { 
+              video_id: videoId, 
+              section: section,
+              source: 'touch_controls',
+              video_time: Math.round(video.currentTime)
+            });
           } else {
             video.pause();
+            aeEvt('video_interaction', { 
+              video_id: videoId, 
+              section: section, 
+              action: 'pause',
+              source: 'touch_controls',
+              video_time: Math.round(video.currentTime)
+            });
           }
           updatePlayBtn();
         });
@@ -1044,6 +1264,13 @@
           if(!video.paused) {
             try { await video.play(); } catch(e) {}
           }
+          aeEvt('video_mute_toggle', { 
+            video_id: videoId, 
+            section: section, 
+            muted: video.muted,
+            source: 'touch_controls',
+            video_time: Math.round(video.currentTime)
+          });
           updateMuteBtn();
         });
         
@@ -1060,19 +1287,61 @@
       // Simulate live chat widget - in production, integrate with Intercom, Zendesk, etc.
       const chatWidget = document.createElement('div');
       chatWidget.innerHTML = `
-        <div style="position:fixed;bottom:20px;right:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:1rem;max-width:300px;z-index:1000">
+        <div style="position:fixed;bottom:20px;right:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:1rem;max-width:300px;z-index:1000;border:1px solid #e5e7eb">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-            <strong>Admiral Energy Support</strong>
-            <button onclick="this.closest('div').remove()" style="border:none;background:none;font-size:1.2rem;cursor:pointer">×</button>
+            <strong style="color:var(--primary-navy)">Admiral Energy Support</strong>
+            <button onclick="this.closest('[data-chat-widget]').remove()" style="border:none;background:none;font-size:1.2rem;cursor:pointer;color:#666;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">&times;</button>
           </div>
-          <p style="margin:.5rem 0;font-size:.9rem">Hi! I'm here to help with your solar questions. What would you like to know?</p>
+          <p style="margin:.5rem 0;font-size:.9rem;color:var(--text-gray)">Hi! I'm here to help with your solar questions. What would you like to know?</p>
           <div style="display:flex;gap:.5rem;margin-top:.75rem">
-            <input placeholder="Ask about solar..." style="flex:1;padding:.5rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem" />
-            <button style="padding:.5rem .75rem;background:#0084FF;color:white;border:none;border-radius:6px;cursor:pointer">Send</button>
+            <input id="chatInput" placeholder="Ask about solar..." style="flex:1;padding:.5rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem" />
+            <button id="chatSend" style="padding:.5rem .75rem;background:#0084FF;color:white;border:none;border-radius:6px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='#0056CC'" onmouseout="this.style.background='#0084FF'">Send</button>
           </div>
+          <div id="chatResponse" style="margin-top:.75rem;padding:.5rem;background:#f8f9fa;border-radius:6px;font-size:.85rem;display:none"></div>
         </div>
       `;
+      chatWidget.setAttribute('data-chat-widget', 'true');
       document.body.appendChild(chatWidget);
+      
+      // Add functionality to the chat
+      const chatInput = chatWidget.querySelector('#chatInput');
+      const chatSend = chatWidget.querySelector('#chatSend');
+      const chatResponse = chatWidget.querySelector('#chatResponse');
+      
+      const sendMessage = () => {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        // Show typing indicator
+        chatResponse.style.display = 'block';
+        chatResponse.innerHTML = '<em style="color:#666">Agent is typing...</em>';
+        
+        // Simulate response after delay
+        setTimeout(() => {
+          const responses = [
+            "Thanks for your question! A solar specialist will contact you within 30 minutes to provide detailed information.",
+            "Great question! Based on your earlier quiz, you're eligible for up to $9,000 in Duke PowerPair rebates. Let me schedule a call to discuss specifics.",
+            "I'd be happy to help! For personalized solar calculations, our team will need to review your specific roof and energy usage. Would you like to schedule a consultation?",
+            "Thanks for reaching out! Our Duke PowerPair specialists are available now. Would you prefer a callback or to schedule your free consultation?"
+          ];
+          const response = responses[Math.floor(Math.random() * responses.length)];
+          chatResponse.innerHTML = response + '<br><br><button onclick="window.openCalendlyPrefilled()" style="background:var(--accent-gold);color:white;border:none;padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem">Schedule Consultation</button>';
+        }, 1500);
+        
+        chatInput.value = '';
+        aeEvt('chat_message_sent', { message, lead_id: leadId });
+      };
+      
+      chatSend.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Focus input when chat opens
+      setTimeout(() => chatInput.focus(), 100);
     });
 
     // Instant callback
@@ -1212,9 +1481,31 @@
     // Initialize privacy compliance
     cookieConsent.init();
     
-    // Apply form security to all forms
+    // Apply form security to all forms and setup GA4 tracking
     document.querySelectorAll('form').forEach(form => {
       formSecurity.protectForm(form);
+      
+      // Setup GA4 tracking for forms with specific classes/IDs
+      if (form.classList.contains('hs-form') || form.id === 'lead-form') {
+        form.addEventListener('submit', function(e) {
+          // Track form submission for GA4
+          const formData = new FormData(this);
+          const eventData = {
+            form_id: this.id || 'unknown-form',
+            lead_id: formData.get('lead_id') || window.leadId || '',
+            bill_amount: formData.get('bill_amount') || '',
+            zip_code: formData.get('zip') || '',
+            utility_provider: formData.get('utility') || '',
+            first_name: formData.get('first_name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || '',
+            opt_in: formData.get('opt_in') || 'no'
+          };
+          
+          // Track the event
+          trackGA4FormEvent(this.id || this.name || 'form-submit', eventData);
+        });
+      }
     });
     $('#year').textContent = new Date().getFullYear();
   </script>
