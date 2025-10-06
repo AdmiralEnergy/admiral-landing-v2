@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Award, Users, ArrowRight, Star, Zap, DollarSign, Clock, Phone, Mail, MapPin, AlertCircle } from 'lucide-react';
+import Header from '../components/layout/Header';
 
 export default function AdmiralEnergyLanding() {
   type LeadFormData = {
@@ -364,17 +366,7 @@ export default function AdmiralEnergyLanding() {
       </div>
 
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-md transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <div className="text-xl sm:text-2xl font-bold tracking-tight" style={{ color: '#0c2f4a' }}>
-            ⚡ Admiral Energy
-          </div>
-          <div className="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-md transition-all duration-300 hover:scale-105"
-               style={{ backgroundColor: '#c9a648', color: '#0c2f4a' }}>
-            ✓ Certified Trade Ally
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero */}
       <section className="relative py-12 sm:py-16 lg:py-24 overflow-hidden"
@@ -402,6 +394,15 @@ export default function AdmiralEnergyLanding() {
               Find out if your home qualifies in 60 seconds.
             </p>
 
+            <div className="mt-6 flex gap-3">
+              <Link to="/calculator" className="rounded-xl px-5 py-3 bg-emerald-600 text-white font-semibold">
+                Run Savings Calculator
+              </Link>
+              <Link to="/catalog" className="rounded-xl px-5 py-3 bg-slate-900 text-white">
+                View Panel & Battery Catalog
+              </Link>
+            </div>
+
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm" style={{ color: '#c9a648' }}>
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5" />
@@ -415,7 +416,7 @@ export default function AdmiralEnergyLanding() {
           </div>
 
           {/* Form */}
-    <div ref={formRef as any} className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl backdrop-blur-sm animate-slide-up"
+          <div id="lead" ref={formRef as any} className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl backdrop-blur-sm animate-slide-up"
                style={{ backgroundColor: 'rgba(247, 245, 242, 0.98)', animationDelay: '0.2s' }}>
             {submitSuccess ? (
               <div className="text-center py-8 animate-fade-in">
