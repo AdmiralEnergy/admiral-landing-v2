@@ -1,6 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
+  const { pathname } = useLocation();
+  const showNavExtras = pathname !== "/";
   const linkBase = "px-3 py-2 text-sm font-medium hover:opacity-80";
   const active = "text-emerald-600";
   const idle = "text-slate-700";
@@ -12,18 +14,22 @@ export default function Header() {
           Admiral Energy
         </Link>
         <div className="flex items-center gap-1">
-          <NavLink
-            to="/catalog"
-            className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-          >
-            Catalog
-          </NavLink>
-          <NavLink
-            to="/calculator"
-            className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-          >
-            Calculator
-          </NavLink>
+          {showNavExtras && (
+            <>
+              <NavLink
+                to="/catalog"
+                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
+              >
+                Catalog
+              </NavLink>
+              <NavLink
+                to="/calculator"
+                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
+              >
+                Calculator
+              </NavLink>
+            </>
+          )}
           <a href="#lead" className={`${linkBase} ${idle}`}>
             Get Quote
           </a>
