@@ -318,7 +318,8 @@ const ProductCatalog = () => {
                     borderRadius: '20px',
                     fontSize: '12px',
                     fontWeight: 'bold',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                    zIndex: 30
                 }, children: panel.badge }), _jsxs("div", { style: {
                     width: '100%',
                     height: '180px',
@@ -330,7 +331,8 @@ const ProductCatalog = () => {
                     gridTemplateRows: 'repeat(10, 1fr)',
                     gap: '2px',
                     padding: '8px',
-                    position: 'relative'
+                    position: 'relative',
+                    zIndex: 0
                 }, children: [Array.from({ length: 60 }).map((_, i) => (_jsx("div", { style: {
                             background: 'rgba(201, 166, 72, 0.15)',
                             border: '1px solid rgba(201, 166, 72, 0.4)',
@@ -345,7 +347,8 @@ const ProductCatalog = () => {
                             borderRadius: '8px',
                             fontSize: '14px',
                             fontWeight: 'bold',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                            zIndex: 20
                         }, children: [panel.watts, "W"] })] }), _jsx("div", { style: { color: BRAND.gold, fontSize: '13px', fontWeight: 'bold', marginBottom: '4px', letterSpacing: '0.05em' }, children: panel.manufacturer }), _jsx("h3", { style: { color: BRAND.navy, fontSize: '18px', fontWeight: 'bold', marginBottom: '12px', lineHeight: '1.3' }, children: panel.model }), _jsxs("div", { style: {
                     background: `linear-gradient(135deg, #d1fae5, #a7f3d0)`,
                     border: `3px solid #10b981`,
@@ -407,7 +410,8 @@ const ProductCatalog = () => {
                     borderRadius: '20px',
                     fontSize: '12px',
                     fontWeight: 'bold',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                    zIndex: 30
                 }, children: battery.badge }), _jsxs("div", { style: {
                     width: '100%',
                     height: '180px',
@@ -418,7 +422,8 @@ const ProductCatalog = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'relative'
+                    position: 'relative',
+                    zIndex: 0
                 }, children: [_jsx(Battery, { size: 64, style: { color: BRAND.gold }, strokeWidth: 1.5 }), _jsxs("div", { style: {
                             position: 'absolute',
                             top: '12px',
@@ -429,7 +434,8 @@ const ProductCatalog = () => {
                             borderRadius: '8px',
                             fontSize: '14px',
                             fontWeight: 'bold',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                            zIndex: 20
                         }, children: [battery.capacity, " kWh"] }), _jsx("div", { style: { display: 'flex', gap: '4px', marginTop: '16px' }, children: Array.from({ length: 5 }).map((_, i) => (_jsx("div", { style: {
                                 width: '8px',
                                 background: BRAND.gold,
