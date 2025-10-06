@@ -1,5 +1,3 @@
-import Nav from "../components/Nav";
-
 const products = [
   {
     name: "SunPower A-Series",
@@ -17,14 +15,15 @@ const products = [
 
 export default function ProductCatalog() {
   return (
-    <>
-      <Nav />
-      <main style={{ maxWidth: 900, margin: "0 auto" }}>
-        <header style={{ marginTop: 48 }}>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: 12 }}>Admiral Energy Product Catalog</h1>
-          <p style={{ fontSize: "1.1rem", maxWidth: 640 }}>
-            High-efficiency panels, smart inverters, and storage options engineered for Carolina
-            homes. Every system includes design, permitting, installation, and ongoing monitoring.
+    <main>
+      <div className="container" style={{ display: "grid", gap: 32 }}>
+        <header style={{ paddingTop: 24, maxWidth: 720 }}>
+          <h1 style={{ fontSize: "clamp(2.25rem, 2vw + 1rem, 3rem)", marginBottom: 12 }}>
+            Admiral Energy Product Catalog
+          </h1>
+          <p style={{ fontSize: "1.1rem", lineHeight: 1.7 }}>
+            High-efficiency panels, smart inverters, and storage options engineered for Carolina homes.
+            Every system includes design, permitting, installation, and ongoing monitoring.
           </p>
         </header>
 
@@ -32,7 +31,6 @@ export default function ProductCatalog() {
           style={{
             display: "grid",
             gap: 20,
-            marginTop: 32,
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           }}
         >
@@ -51,7 +49,7 @@ export default function ProductCatalog() {
             </article>
           ))}
         </section>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

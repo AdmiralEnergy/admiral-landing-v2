@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import Nav from "../components/Nav";
 import { getSavedUtm } from "../lib/utm";
 
 type CalculatorState = {
@@ -21,24 +20,25 @@ export default function SolarCalculator() {
   const systemSizeKw = Math.max(4, Math.round((inputs.monthlyBill / 15) * savingsMultiplier[inputs.roofShade]));
 
   return (
-    <>
-      <Nav />
-      <main style={{ maxWidth: 760, margin: "0 auto" }}>
-        <header style={{ marginTop: 48 }}>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: 12 }}>NC Solar Calculator</h1>
-          <p style={{ fontSize: "1.1rem", maxWidth: 620 }}>
-            Estimate your monthly savings and recommended system size based on your Duke Energy bill.
-            We’ll email you a full report with financing options and utility incentives.
+    <main>
+      <div className="container" style={{ display: "grid", gap: 32 }}>
+        <header style={{ paddingTop: 24, maxWidth: 720 }}>
+          <h1 style={{ fontSize: "clamp(2.25rem, 2vw + 1rem, 3rem)", marginBottom: 12 }}>NC Solar Calculator</h1>
+          <p style={{ fontSize: "1.1rem", lineHeight: 1.7 }}>
+            Estimate your monthly savings and recommended system size based on your Duke Energy bill. We’ll
+            email you a full report with financing options and utility incentives.
           </p>
         </header>
 
         <section
           style={{
-            marginTop: 32,
-            padding: 24,
-            borderRadius: 16,
+            padding: 28,
+            borderRadius: 20,
             background: "#fff",
             boxShadow: "0 12px 30px rgba(15, 23, 42, 0.08)",
+            display: "grid",
+            gap: 24,
+            maxWidth: 640,
           }}
         >
           <div style={{ display: "grid", gap: 16 }}>
@@ -73,18 +73,18 @@ export default function SolarCalculator() {
             </label>
           </div>
 
-          <div style={{ marginTop: 24, padding: 16, borderRadius: 12, background: "#f1f5f9" }}>
+          <div style={{ padding: 16, borderRadius: 12, background: "#f1f5f9" }}>
             <p style={{ margin: "0 0 8px" }}>Projected monthly savings</p>
             <strong style={{ fontSize: "1.75rem" }}>${projectedSavings}</strong>
             <p style={{ margin: "12px 0 0" }}>Recommended system size: {systemSizeKw} kW</p>
           </div>
 
-          <p style={{ marginTop: 24, fontSize: "0.95rem", color: "#1e293b" }}>
-            Ready for the full design? We’ll use these inputs {Object.keys(utm).length ? "and your saved UTM parameters" : ""}
+          <p style={{ margin: 0, fontSize: "0.95rem", color: "#1e293b" }}>
+            Ready for the full design? We’ll use these inputs{Object.keys(utm).length ? " and your saved UTM parameters" : ""}
             to prepare a proposal within 24 hours.
           </p>
         </section>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }
