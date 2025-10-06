@@ -11,3 +11,11 @@
 
 # Local Netlify folder
 .netlify
+
+# Dependencies & build output
+node_modules
+dist
+
+# Environment files
+.env*
+!.env.local.example
