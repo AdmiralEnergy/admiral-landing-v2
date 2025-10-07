@@ -1,0 +1,19 @@
+﻿Remove duplicate <Header /> from landing page (layout owns header).
+
+Add hidden static Netlify registration form to index.html so lead-intake is always detected.
+
+Replace hero calculator/catalog with a single CTA to #lead.
+
+Keep HTML-first (uncontrolled) form for stability; phone formats on blur.
+
+Safety: keep Netlify auto-publish OFF until preview is verified.
+
+Acceptance criteria
+
+Exactly one sticky header at the top.
+
+Hero shows one CTA  takes you to #lead.
+
+Form submits to Netlify Forms (lead-intake) and includes UTM fields when present.
+
+Build is green; preview loads on mobile + desktop. (See <attachments> above for file contents. You may not need to search or read the file again.)
