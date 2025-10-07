@@ -23,5 +23,10 @@
       <input type="text" name="utm_content" />
     </form>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      document.forms['lead-intake']?.addEventListener('submit', () => {
+        window.gtag?.('event', 'lead_submit', { form: 'lead-intake' });
+      });
+    </script>
   </body>
 </html>

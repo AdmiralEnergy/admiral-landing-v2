@@ -29,7 +29,7 @@ export default function LeadIntakeForm() {
   };
 
   return (
-    <form ref={formRef} name="lead-intake" method="POST" data-netlify="true" data-netlify-honeypot="website" className="space-y-4">
+    <form ref={formRef} name="lead-intake" method="POST" action="/thank-you" data-netlify="true" data-netlify-honeypot="website" className="space-y-4">
       <input type="hidden" name="form-name" value="lead-intake" />
 
       <input name="name" placeholder="Full Name" autoComplete="name" maxLength={100} required
