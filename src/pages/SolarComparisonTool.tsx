@@ -309,45 +309,780 @@ export default function SolarComparisonTool() {
         </div>
 
         {/* System Cost Breakdown */}
-  <div className="relative z-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl shadow-xl p-8 mb-8 text-white">
+        <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl shadow-xl p-8 mb-8 text-white">
           <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
             <Zap className="w-6 h-6" />
             Solar System Details & Costs
           </h2>
-          {/* Always-on details panel (helps debug visibility during launch) */}
-          <section className="mt-4 rounded-2xl bg-white/80 shadow-lg ring-1 ring-black/5 p-6 relative z-10">
-            {/* Example content; swap in your real fields */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <p className="text-sm text-slate-500">System Size</p>
-                <p className="text-xl font-semibold">{systemSize} kW</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Battery</p>
-                <p className="text-xl font-semibold">
-                  {batteryIncluded ? `${batterySizeKwh} kWh` : "None"}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Hard Costs</p>
-                <p className="text-xl font-semibold">${hardCosts.toLocaleString()}</p>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <label className="block text-sm font-semibold mb-2">Base System Cost ($)</label>
+              <input
+                type="number"
+                value={baseSystemCost}
+                onChange={(e) => setBaseSystemCost(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+              />
             </div>
-
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-black/5">
-                <p className="text-sm text-slate-500">Duke Current Bill</p>
-                <p className="text-lg font-semibold">${dukeBill.toFixed(2)}</p>
-              </div>
-              <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-black/5">
-                <p className="text-sm text-slate-500">Solar Service Fee</p>
-                <p className="text-lg font-semibold">${solarServiceFee.toFixed(2)}</p>
-              </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Adders Cost ($)</label>
+              <input
+                type="number"
+                value={addersCost}
+                onChange={(e) => setAddersCost(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+              />
             </div>
-          </section>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Battery Cost ($)</label>
+              <input
+                type="number"
+                value={batteryCost}
+                onChange={(e) => setBatteryCost(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+              />
+            </div>
+            <div className="bg-white/30 rounded-lg p-3">
+              <label className="block text-sm font-semibold mb-1">Hard Costs Subtotal</label>
+              <p className="text-2xl font-bold">${hardCosts.toLocaleString()}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+            <div>
+              <label className="block text-sm font-semibold mb-2">System Size (kW)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={systemSize}
+                onChange={(e) => setSystemSize(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Battery Included</label>
+              <select
+                value={batteryIncluded ? 'yes' : 'no'}
+                onChange={(e) => setBatteryIncluded(e.target.value === 'yes')}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white"
+              >
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Battery Size (kWh)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={batterySizeKwh}
+                onChange={(e) => setBatterySizeKwh(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+                disabled={!batteryIncluded}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Solar Offset (%)</label>
+              <input
+                type="number"
+                value={solarOffset}
+                onChange={(e) => setSolarOffset(Number(e.target.value))}
+                className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white placeholder-white/60"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* ...rest of component content (omitted in copy) ... */}
+        {/* Sungage Financing Options */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <div className="flex items-center gap-3 mb-6">
+            <Building2 className="w-8 h-8" />
+            <h2 className="text-2xl font-bold">Sungage Financing Options</h2>
+          </div>
+          
+          <div className="bg-white/20 backdrop-blur rounded-xl p-6 mb-6">
+            <label className="flex items-center gap-3 cursor-pointer mb-4">
+              <input
+                type="checkbox"
+                checked={useSungageFinancing}
+                onChange={(e) => setUseSungageFinancing(e.target.checked)}
+                className="w-5 h-5 rounded"
+              />
+              <span className="text-lg font-semibold">Use Sungage Financing (with dealer fee schedule)</span>
+            </label>
+            
+            {useSungageFinancing && (
+              <>
+                <div className="mb-4">
+                  <label className="block text-sm font-semibold mb-2">Select Interest Rate & Term</label>
+                  <select
+                    value={selectedSungageRate}
+                    onChange={(e) => setSelectedSungageRate(Number(e.target.value))}
+                    className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white text-lg"
+                  >
+                    {sungageRates.map((rate, idx) => (
+                      <option key={idx} value={idx}>
+                        {rate.label} - Dealer Fee: ${rate.dealerFee.toFixed(0)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="bg-white/30 rounded-lg p-4">
+                  <h3 className="font-bold mb-3">Current Selection:</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="opacity-80">Interest Rate:</p>
+                      <p className="text-2xl font-bold">{currentFinancing.rate}%</p>
+                    </div>
+                    <div>
+                      <p className="opacity-80">Loan Term:</p>
+                      <p className="text-2xl font-bold">{currentFinancing.term} years</p>
+                    </div>
+                    <div>
+                      <p className="opacity-80">Dealer Fee:</p>
+                      <p className="text-2xl font-bold">${currentFinancing.dealerFee.toFixed(0)}</p>
+                    </div>
+                    <div>
+                      <p className="opacity-80">Gross Price:</p>
+                      <p className="text-2xl font-bold">${quotedAmount.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            
+            {!useSungageFinancing && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Custom Rate (%)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={customLoanRate}
+                    onChange={(e) => setCustomLoanRate(Number(e.target.value))}
+                    className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Term (years)</label>
+                  <input
+                    type="number"
+                    value={customLoanTerm}
+                    onChange={(e) => setCustomLoanTerm(Number(e.target.value))}
+                    className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Dealer Fee ($)</label>
+                  <input
+                    type="number"
+                    value={customDealerFee}
+                    onChange={(e) => setCustomDealerFee(Number(e.target.value))}
+                    className="w-full px-4 py-3 border-2 border-white/30 bg-white/20 rounded-lg focus:border-white focus:outline-none text-white"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="bg-yellow-400/20 border-2 border-yellow-300 rounded-lg p-4">
+            <p className="text-sm font-semibold mb-2">💡 Sungage Dealer Fee Pattern:</p>
+            <p className="text-xs opacity-90">
+              Dealer fees increase as interest rates decrease (25-year loans). The 2.99% / 15-year option has a subsidized dealer fee despite the lowest rate. This is systematic, not random.
+            </p>
+          </div>
+        </div>
+
+        {/* Deal Optimization Strategies */}
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <div className="flex items-center gap-3 mb-6">
+            <Lightbulb className="w-8 h-8" />
+            <h2 className="text-2xl font-bold">Deal Optimization Strategies</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <h3 className="text-lg font-bold mb-4">TOU Rate Arbitrage</h3>
+              <div className="space-y-3">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={applyTOUSavings}
+                    onChange={(e) => setApplyTOUSavings(e.target.checked)}
+                    className="w-5 h-5 rounded"
+                  />
+                  <span className="text-sm">Apply Time-of-Use savings</span>
+                </label>
+                {applyTOUSavings && (
+                  <>
+                    <div>
+                      <label className="block text-xs mb-1">Peak Rate ($/kWh)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={touOnPeakRate}
+                        onChange={(e) => setTouOnPeakRate(Number(e.target.value))}
+                        className="w-full px-3 py-2 border-2 border-white/30 bg-white/20 rounded-lg text-white text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs mb-1">Off-Peak Rate ($/kWh)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={touOffPeakRate}
+                        onChange={(e) => setTouOffPeakRate(Number(e.target.value))}
+                        className="w-full px-3 py-2 border-2 border-white/30 bg-white/20 rounded-lg text-white text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs mb-1">Cycle Days/Year</label>
+                      <input
+                        type="number"
+                        value={touCycleDays}
+                        onChange={(e) => setTouCycleDays(Number(e.target.value))}
+                        className="w-full px-3 py-2 border-2 border-white/30 bg-white/20 rounded-lg text-white text-sm"
+                      />
+                    </div>
+                    <div className="text-sm font-bold pt-2 border-t border-white/30">
+                      Monthly Savings: ${touSavings.monthly.toFixed(2)}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recommendations Section */}
+        {recommendations.hasIssues && (
+          <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+            <div className="flex items-center gap-3 mb-6">
+              <AlertTriangle className="w-8 h-8" />
+              <h2 className="text-2xl font-bold">Deal Analysis & Recommendations</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  Issues Identified
+                </h3>
+                <ul className="space-y-2">
+                  {recommendations.issues.map((issue, idx) => (
+                    <li key={idx} className="text-sm flex items-start gap-2">
+                      <span className="text-yellow-300 font-bold">•</span>
+                      <span>{issue}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5" />
+                  Recommended Solutions
+                </h3>
+                <ul className="space-y-2">
+                  {recommendations.solutions.map((solution, idx) => (
+                    <li key={idx} className="text-sm flex items-start gap-2">
+                      <span className="text-green-300 font-bold">✓</span>
+                      <span>{solution}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Incentives Section */}
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <div className="flex items-center gap-3 mb-6">
+            <Award className="w-8 h-8" />
+            <h2 className="text-2xl font-bold">Available Incentives</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold">Federal 30% ITC</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={applyITC}
+                    onChange={(e) => setApplyITC(e.target.checked)}
+                    className="w-5 h-5 rounded"
+                  />
+                  <span className="text-sm">Apply</span>
+                </label>
+              </div>
+              <p className="text-sm mb-3">Investment Tax Credit - 30% of system cost</p>
+              <div className="text-3xl font-bold">
+                {applyITC ? `-$${incentives.itcAmount.toFixed(0)}` : '$0'}
+              </div>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold">Duke PowerPair Rebate</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={applyPowerPair}
+                    onChange={(e) => setApplyPowerPair(e.target.checked)}
+                    className="w-5 h-5 rounded"
+                  />
+                  <span className="text-sm">Apply</span>
+                </label>
+              </div>
+              <div className="text-sm space-y-2 mb-3">
+                <div className="flex justify-between">
+                  <span>Solar: ${(Math.min(systemSize, 10) * 1000 * 0.36).toFixed(0)}</span>
+                  <span className="text-xs opacity-80">($0.36/watt up to 10kW)</span>
+                </div>
+                {batteryIncluded && (
+                  <div className="flex justify-between">
+                    <span>Battery: ${(Math.min(batterySizeKwh, 13.5) * 400).toFixed(0)}</span>
+                    <span className="text-xs opacity-80">($400/kWh up to 13.5kWh)</span>
+                  </div>
+                )}
+              </div>
+              <div className="text-3xl font-bold">
+                {applyPowerPair ? `-$${incentives.totalPowerPairRebate.toFixed(0)}` : '$0'}
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl p-6 text-gray-800">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Hard Costs</p>
+                <p className="text-2xl font-bold">${hardCosts.toFixed(0)}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Dealer Fee ({currentFinancing.rate}%)</p>
+                <p className="text-2xl font-bold text-blue-600">+${currentFinancing.dealerFee.toFixed(0)}</p>
+                <p className="text-xs text-gray-500 mt-1">{roiAnalysis.dealerFeeImpact.toFixed(1)}% of total</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Total Incentives</p>
+                <p className="text-2xl font-bold text-green-600">-${incentives.totalIncentives.toFixed(0)}</p>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600 mb-1">Effective Cost (Loan Amount)</p>
+                <p className="text-3xl font-bold text-green-700">${incentives.effectiveCost.toFixed(0)}</p>
+                <p className="text-xs text-green-600 mt-1">
+                  {roiAnalysis.effectiveDiscount.toFixed(1)}% discount from incentives!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Monthly Comparison */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* Duke Energy */}
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Duke Energy (Increasing)
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Duke Bill (Today):</label>
+                <input
+                  type="number"
+                  value={dukeBill}
+                  onChange={(e) => setDukeBill(Number(e.target.value))}
+                  className="w-32 px-3 py-2 border-2 border-gray-200 rounded-lg text-right focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Service Fee:</label>
+                <input
+                  type="number"
+                  value={dukeServiceFee}
+                  onChange={(e) => setDukeServiceFee(Number(e.target.value))}
+                  className="w-32 px-3 py-2 border-2 border-gray-200 rounded-lg text-right focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Loan Payment:</label>
+                <span className="text-gray-900 font-bold">$0.00</span>
+              </div>
+              <div className="flex justify-between items-center pt-3 bg-blue-50 p-4 rounded-lg">
+                <label className="text-xl font-bold text-blue-800">Total (Month 1):</label>
+                <span className="text-2xl font-bold text-blue-900">
+                  ${(dukeBill + dukeServiceFee).toFixed(2)}/mo
+                </span>
+              </div>
+              <div className="mt-4 p-4 bg-red-50 rounded-lg border-2 border-red-200">
+                <p className="text-sm font-semibold text-red-800 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" />
+                  Increases 4% annually
+                </p>
+                <p className="text-xs text-red-700 mt-1">
+                  Year 10: ${((dukeBill * Math.pow(1.04, 10)) + dukeServiceFee).toFixed(2)}/mo
+                </p>
+                <p className="text-xs text-red-700">
+                  Year 25: ${((dukeBill * Math.pow(1.04, 25)) + dukeServiceFee).toFixed(2)}/mo
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Solar */}
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-green-600 to-green-800 p-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <TrendingDown className="w-6 h-6" />
+                Solar (Decreasing)
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Duke Bill ({solarOffset}% offset):</label>
+                <span className="text-gray-900 font-bold">
+                  ${projections.offsetDukeBill.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Service Fee:</label>
+                <input
+                  type="number"
+                  value={solarServiceFee}
+                  onChange={(e) => setSolarServiceFee(Number(e.target.value))}
+                  className="w-32 px-3 py-2 border-2 border-gray-200 rounded-lg text-right focus:border-green-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Loan Payment:</label>
+                <span className="text-gray-900 font-bold">${monthlyLoanPayment.toFixed(2)}</span>
+              </div>
+              {applyTOUSavings && touSavings.monthly > 0 && (
+                <div className="flex justify-between items-center pb-3 border-b-2 border-green-200 bg-green-50 -mx-6 px-6 py-2">
+                  <label className="font-semibold text-green-700">TOU Arbitrage:</label>
+                  <span className="text-green-700 font-bold">-${touSavings.monthly.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="flex justify-between items-center pt-3 bg-green-50 p-4 rounded-lg">
+                <label className="text-xl font-bold text-green-800">
+                  {applyTOUSavings ? 'Effective Cost:' : 'Total (Month 1):'}
+                </label>
+                <span className="text-2xl font-bold text-green-900">
+                  ${effectiveMonthlyCost.toFixed(2)}/mo
+                </span>
+              </div>
+              <div className={`mt-4 p-4 rounded-lg border-2 ${monthlyDifference >= 0 ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
+                <p className={`text-sm font-semibold flex items-center gap-2 ${monthlyDifference >= 0 ? 'text-green-800' : 'text-orange-800'}`}>
+                  {monthlyDifference >= 0 ? <TrendingDown className="w-4 h-4" /> : <TrendingUp className="w-4 h-4" />}
+                  {monthlyDifference >= 0 ? 'Immediate Savings' : 'Building Equity'}
+                </p>
+                <p className={`text-xs mt-1 ${monthlyDifference >= 0 ? 'text-green-700' : 'text-orange-700'}`}>
+                  {monthlyDifference >= 0 
+                    ? `Saving $${monthlyDifference.toFixed(2)}/month from day one!`
+                    : `Paying $${Math.abs(monthlyDifference).toFixed(2)}/month more, but building equity in your system`
+                  }
+                </p>
+                <p className="text-xs text-gray-600 mt-2">
+                  After loan payoff (Year {loanTerm}): ${projections.monthlyAfterLoan.toFixed(2)}/mo
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Warning Banner for Bad Deals */}
+        {savings.twentyFive < 0 && (
+          <div className="bg-gradient-to-r from-red-600 to-red-800 rounded-2xl shadow-xl p-6 mb-8 text-white">
+            <div className="flex items-center gap-3">
+              <div className="text-4xl">⚠️</div>
+              <div>
+                <h2 className="text-2xl font-bold mb-2">WARNING: This Quote Will Cost You Money!</h2>
+                <p className="text-lg">
+                  Based on this proposal, you'll pay ${Math.abs(savings.twentyFive).toFixed(0)} MORE over 25 years than staying with Duke Energy. 
+                  Review the recommendations above to improve this deal.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Breakeven Alert */}
+        {breakevenMonth && breakevenMonth <= 300 && (
+          <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-xl p-6 mb-8 text-white">
+            <div className="flex items-center gap-3">
+              <DollarSign className="w-8 h-8" />
+              <div>
+                <h3 className="text-2xl font-bold">Breakeven Point Reached!</h3>
+                <p className="text-lg">
+                  Solar becomes cheaper than Duke Energy in month {breakevenMonth} 
+                  ({Math.floor(breakevenMonth / 12)} years, {breakevenMonth % 12} months)
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Deal Analysis */}
+        <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <div className="flex items-center gap-3 mb-6">
+            <CheckCircle className="w-8 h-8" />
+            <h2 className="text-3xl font-bold">Deal Quality Assessment</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <h3 className="text-lg font-semibold mb-2">Effective System Cost</h3>
+              <p className="text-4xl font-bold mb-2">${incentives.effectiveCost.toFixed(0)}</p>
+              <p className="text-sm opacity-90">
+                After ${incentives.totalIncentives.toFixed(0)} in incentives
+              </p>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <h3 className="text-lg font-semibold mb-2">25-Year Savings</h3>
+              <p className={`text-4xl font-bold mb-2 ${savings.twentyFive > 0 ? 'text-yellow-300' : 'text-red-300'}`}>
+                {savings.twentyFive > 0 ? '+' : ''}${savings.twentyFive.toFixed(0)}
+              </p>
+              <p className="text-sm opacity-90">
+                {savings.twentyFive > 0 ? 'Total saved vs Duke Energy' : 'Additional cost vs Duke Energy'}
+              </p>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur rounded-xl p-6">
+              <h3 className="text-lg font-semibold mb-2">Return on Investment</h3>
+              <p className={`text-4xl font-bold mb-2 ${roiAnalysis.roi25Year > 0 ? 'text-green-300' : 'text-red-300'}`}>
+                {roiAnalysis.roi25Year.toFixed(0)}%
+              </p>
+              <p className="text-sm opacity-90">
+                Over 25 years
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-6 bg-white rounded-xl p-6 text-gray-800">
+            <h3 className="text-xl font-bold mb-4">The Bottom Line</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-start gap-3">
+                <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${savings.twentyFive > 0 ? 'text-green-600' : 'text-red-600'}`} />
+                <p>
+                  <span className="font-semibold">Financing:</span> {currentFinancing.rate}% rate over {currentFinancing.term} years with ${currentFinancing.dealerFee.toFixed(0)} dealer fee ({roiAnalysis.dealerFeeImpact.toFixed(1)}% of system cost).
+                  Total incentives of ${incentives.totalIncentives.toFixed(0)} ({roiAnalysis.effectiveDiscount.toFixed(1)}% off) brings effective cost to ${incentives.effectiveCost.toFixed(0)}.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${savings.twentyFive > 0 ? 'text-green-600' : 'text-red-600'}`} />
+                <p>
+                  <span className="font-semibold">Monthly Impact:</span>
+                  {monthlyDifference >= 0 
+                    ? ` Saving $${monthlyDifference.toFixed(2)}/month from day one!`
+                    : ` Paying $${Math.abs(monthlyDifference).toFixed(2)}/month more initially, but building equity.`
+                  }
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${savings.twentyFive > 0 ? 'text-green-600' : 'text-red-600'}`} />
+                <p>
+                  <span className="font-semibold">Long-term Value:</span> Over 25 years, you'll {savings.twentyFive > 0 ? 'save' : 'pay'} ${Math.abs(savings.twentyFive).toFixed(0)} 
+                  compared to Duke Energy - that's a {roiAnalysis.roi25Year.toFixed(0)}% return on your investment.
+                </p>
+              </div>
+              {breakevenMonth && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <p>
+                    <span className="font-semibold">Break-even:</span> You'll reach cumulative break-even in month {breakevenMonth} 
+                    ({Math.floor(breakevenMonth / 12)} years, {breakevenMonth % 12} months).
+                  </p>
+                </div>
+              )}
+              <div className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <p>
+                  <span className="font-semibold">After Loan Payoff:</span> In year {loanTerm + 1} and beyond, your monthly energy cost 
+                  drops to just ${projections.monthlyAfterLoan.toFixed(2)}/month while Duke customers are paying 
+                  ${((dukeBill * Math.pow(1.04, loanTerm)) + dukeServiceFee).toFixed(2)}/month.
+                </p>
+              </div>
+              {applyTOUSavings && touSavings.annual > 0 && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <p>
+                    <span className="font-semibold">TOU Arbitrage Bonus:</span> Battery saves an additional ${touSavings.annual.toFixed(0)}/year 
+                    (${touSavings.monthly.toFixed(2)}/month) by charging at off-peak rates and discharging during peak hours.
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-6 p-4 bg-green-50 rounded-lg border-2 border-green-300">
+              <p className="text-lg font-bold text-green-800 text-center mb-2">
+                {recommendations.excellentDeal
+                  ? "✅ EXCELLENT DEAL - Strong recommendation!" 
+                  : recommendations.goodDeal
+                  ? "✅ GOOD DEAL - Solid investment!"
+                  : savings.twentyFive > 0 && roiAnalysis.roi25Year > 20
+                  ? "⚠️ MARGINAL - Very modest returns"
+                  : savings.twentyFive > 0 
+                  ? "⚠️ POOR - Minimal savings, consider alternatives"
+                  : "❌ NOT RECOMMENDED - You will lose money"}
+              </p>
+              {savings.twentyFive < 0 && (
+                <p className="text-sm text-red-700 text-center mt-2">
+                  System is too small ({solarOffset}% offset) for the investment. Review recommendations above to improve this deal.
+                </p>
+              )}
+              {savings.twentyFive > 0 && roiAnalysis.roi25Year < 20 && (
+                <p className="text-sm text-orange-700 text-center mt-2">
+                  System only offsets {solarOffset}% of usage. Consider increasing system size or trying a better financing option.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Long-term Projections */}
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+            <DollarSign className="w-8 h-8 text-green-600" />
+            Cumulative Cost Analysis
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* 5 Year */}
+            <div className="border-2 border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">5 Year Total</h3>
+              <div className="space-y-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Duke Energy</p>
+                  <p className="text-xs text-gray-500 mb-2">Bills increasing at 4%/year</p>
+                  <p className="text-2xl font-bold text-blue-800">${projections.duke5.toFixed(0)}</p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Solar</p>
+                  <p className="text-xs text-gray-500 mb-2">Interest charges decreasing</p>
+                  <p className="text-2xl font-bold text-green-800">${projections.solar5.toFixed(0)}</p>
+                  <p className="text-xs text-green-600 mt-2 font-semibold">Interest paid: ${projections.interest5.toFixed(0)}</p>
+                </div>
+                <div className={`p-4 rounded-lg ${savings.five > 0 ? 'bg-green-100' : 'bg-orange-100'}`}>
+                  <p className="text-sm text-gray-600 mb-1">{savings.five > 0 ? 'Your Savings' : 'Investment Period'}</p>
+                  <p className={`text-2xl font-bold ${savings.five > 0 ? 'text-green-700' : 'text-orange-700'}`}>
+                    {savings.five > 0 ? '+' : ''} ${savings.five.toFixed(0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 10 Year */}
+            <div className="border-2 border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">10 Year Total</h3>
+              <div className="space-y-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Duke Energy</p>
+                  <p className="text-xs text-gray-500 mb-2">Bills increasing at 4%/year</p>
+                  <p className="text-2xl font-bold text-blue-800">${projections.duke10.toFixed(0)}</p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Solar</p>
+                  <p className="text-xs text-gray-500 mb-2">Interest charges decreasing</p>
+                  <p className="text-2xl font-bold text-green-800">${projections.solar10.toFixed(0)}</p>
+                  <p className="text-xs text-green-600 mt-2 font-semibold">Interest paid: ${projections.interest10.toFixed(0)}</p>
+                </div>
+                <div className={`p-4 rounded-lg ${savings.ten > 0 ? 'bg-green-100' : 'bg-orange-100'}`}>
+                  <p className="text-sm text-gray-600 mb-1">{savings.ten > 0 ? 'Your Savings' : 'Investment Period'}</p>
+                  <p className={`text-2xl font-bold ${savings.ten > 0 ? 'text-green-700' : 'text-orange-700'}`}>
+                    {savings.ten > 0 ? '+' : ''} ${savings.ten.toFixed(0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 25 Year */}
+            <div className="border-2 border-green-300 rounded-xl p-6 bg-green-50">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">25 Year Total</h3>
+              <div className="space-y-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Duke Energy</p>
+                  <p className="text-xs text-gray-500 mb-2">Bills increasing at 4%/year</p>
+                  <p className="text-2xl font-bold text-blue-800">${projections.duke25.toFixed(0)}</p>
+                </div>
+                <div className="bg-green-100 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Solar</p>
+                  <p className="text-xs text-gray-500 mb-2">Loan paid off - minimal costs!</p>
+                  <p className="text-2xl font-bold text-green-800">${projections.solar25.toFixed(0)}</p>
+                  <p className="text-xs text-green-600 mt-2 font-semibold">Total interest: ${projections.interest25.toFixed(0)}</p>
+                </div>
+                <div className={`p-4 rounded-lg ${savings.twentyFive > 0 ? 'bg-green-200' : 'bg-red-100'}`}>
+                  <p className="text-sm text-gray-600 mb-1">{savings.twentyFive > 0 ? 'Total Savings' : 'Total Loss'}</p>
+                  <p className={`text-3xl font-bold ${savings.twentyFive > 0 ? 'text-green-800' : 'text-red-800'}`}>
+                    {savings.twentyFive > 0 ? '+' : ''}${savings.twentyFive.toFixed(0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-gradient-to-r from-yellow-100 to-green-100 rounded-xl">
+            <div className="flex items-center gap-3 mb-4">
+              <DollarSign className="w-6 h-6 text-green-700" />
+              <h3 className="text-xl font-bold text-gray-800">Financial Summary</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-700">System hard costs:</span>
+                  <span className="font-bold text-gray-800">${hardCosts.toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between text-blue-700">
+                  <span>Dealer fee ({currentFinancing.rate}%):</span>
+                  <span className="font-bold">+${currentFinancing.dealerFee.toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between text-green-700">
+                  <span>Federal ITC (30%):</span>
+                  <span className="font-bold">-${incentives.itcAmount.toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between text-green-700">
+                  <span>PowerPair Rebate:</span>
+                  <span className="font-bold">-${incentives.totalPowerPairRebate.toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t-2 border-green-300">
+                  <span className="font-semibold text-gray-800">Effective cost (financed):</span>
+                  <span className="font-bold text-green-700">${incentives.effectiveCost.toFixed(0)}</span>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Monthly loan payment:</span>
+                  <span className="font-bold text-gray-800">${monthlyLoanPayment.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Total interest paid:</span>
+                  <span className="font-bold text-orange-700">${projections.totalInterest.toFixed(0)}</span>
+                </div>
+                {applyTOUSavings && touSavings.annual > 0 && (
+                  <div className="flex justify-between text-green-700">
+                    <span>Annual TOU savings:</span>
+                    <span className="font-bold">${touSavings.annual.toFixed(0)}/year</span>
+                  </div>
+                )}
+                <div className="flex justify-between pt-2 border-t-2 border-green-300">
+                  <span className="text-gray-700">After payoff (Year {loanTerm}):</span>
+                  <span className="font-bold text-green-700">${projections.monthlyAfterLoan.toFixed(2)}/mo</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">25-year ROI:</span>
+                  <span className={`font-bold ${roiAnalysis.roi25Year > 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    {roiAnalysis.roi25Year.toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
