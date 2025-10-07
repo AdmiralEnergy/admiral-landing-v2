@@ -309,7 +309,7 @@ export default function SolarComparisonTool() {
         </div>
 
         {/* System Cost Breakdown */}
-        <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl shadow-xl p-8 mb-8 text-white">
+  <div className="relative z-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl shadow-xl p-8 mb-8 text-white">
           <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
             <Zap className="w-6 h-6" />
             Solar System Details & Costs
