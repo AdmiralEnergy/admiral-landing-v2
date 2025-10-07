@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Sun, Zap, DollarSign, TrendingDown, TrendingUp, Award, CheckCircle, AlertTriangle, Lightbulb, Building2 } from 'lucide-react';
 
 export default function SolarComparisonTool() {
-  const [clientName, setClientName] = useState('Matthew Parker');
-  const [serviceAddress, setServiceAddress] = useState('1222 Tredenham Way, Durham, North Carolina, 27703, United States');
+  const [clientName, setClientName] = useState('');
+  const [serviceAddress, setServiceAddress] = useState('');
   
   // Duke Energy Side
   const [dukeBill, setDukeBill] = useState(205.04);

@@ -44,8 +44,8 @@ export default function AdmiralEnergyLanding() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Format phone number
-  const formatPhoneNumber = (value: string) => {
+  // Format phone number - improved to handle cursor position
+  const formatPhoneNumber = (value: string, preserveCursor: boolean = false) => {
     const phoneNumber = value.replace(/\D/g, '');
     if (phoneNumber.length === 0) return '';
     if (phoneNumber.length <= 3) return phoneNumber;
@@ -88,7 +88,19 @@ export default function AdmiralEnergyLanding() {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     let formattedValue = type === 'checkbox' ? checked : value;
 
-    if (name === 'phone') formattedValue = formatPhoneNumber(value);
+    // Special handling for phone to prevent cursor jumping
+    if (name === 'phone') {
+      const currentValue = formData.phone;
+      const newDigits = value.replace(/\D/g, '');
+      
+      // Only reformat if digits actually changed to prevent cursor jumping
+      if (newDigits !== currentValue.replace(/\D/g, '')) {
+        formattedValue = formatPhoneNumber(value);
+      } else {
+        formattedValue = currentValue; // Keep current value if no digit change
+        return; // Exit early to prevent state update
+      }
+    }
     if (name === 'zip') formattedValue = value.replace(/\D/g, '').slice(0, 5);
     if (name === 'name') formattedValue = value.slice(0, 100);
     if (name === 'email') formattedValue = value.slice(0, 100);
@@ -101,7 +113,7 @@ export default function AdmiralEnergyLanding() {
     }
 
     if (submitError) setSubmitError(false);
-  }, [touched, validateField, submitError]);
+  }, [touched, validateField, submitError, formData.phone]);
 
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
@@ -310,7 +322,8 @@ export default function AdmiralEnergyLanding() {
             aria-invalid={hasError ? 'true' : 'false'}
             aria-describedby={hasError ? `${name}-error` : undefined}
             disabled={isSubmitting}
-            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-3.5 rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+            inputMode={name === 'phone' ? 'tel' : name === 'zip' ? 'numeric' : name === 'email' ? 'email' : 'text'}
+            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-4 text-base rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
               hasError
                 ? 'border-red-500 focus:border-red-500 focus:ring-red-200 bg-red-50'
                 : 'border-gray-300 focus:border-[#c9a648] focus:ring-[#c9a648]/20 bg-white'
@@ -347,8 +360,12 @@ export default function AdmiralEnergyLanding() {
         .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
         .animate-spin { animation: spin 1s linear infinite; }
         .gradient-text { background: linear-gradient(135deg, #c9a648 0%, #f7f5f2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        input:focus { transform: scale(1.01); }
-        input:disabled { transform: scale(1); }
+        input:focus { transform: none; box-shadow: 0 0 0 3px rgba(201, 166, 72, 0.15); border-color: #c9a648; }
+        input:disabled { transform: none; }
+        input { transition: all 0.2s ease; }
+        input:focus::placeholder { opacity: 0.7; }
+        /* Prevent zoom on iOS */
+        input[type="text"], input[type="email"], input[type="tel"] { font-size: 16px; }
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
@@ -380,18 +397,18 @@ export default function AdmiralEnergyLanding() {
           <div className="text-center mb-8 sm:mb-12 animate-slide-up">
             <div className="inline-block mb-4 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold animate-pulse-glow"
                  style={{ backgroundColor: 'rgba(201, 166, 72, 0.2)', color: '#c9a648', border: '1px solid #c9a648' }}>
-              ⚡ Limited Time - Rebates Filling Fast
+              ⚡ URGENT: Duke Energy Rebates Ending Soon - Limited Spots Available
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight px-2"
                 style={{ color: '#f7f5f2' }}>
-              North Carolina Homeowners:<br />
-              <span className="gradient-text">Get Up to $9,000</span> in Duke Rebates<br />
-              <span style={{ color: '#c9a648' }}>+ 30% Federal Tax Credit</span>
+              NC Homeowners: Get $9,000 in<br />
+              <span className="gradient-text">FREE Solar Rebates</span><br />
+              <span style={{ color: '#c9a648' }}>Before They're Gone Forever</span>
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl mb-4 font-medium px-4" style={{ color: '#e8e6e3' }}>
-              Find out if your home qualifies in 60 seconds.
+              See if your home qualifies for up to $39,000 in combined savings. Free eligibility check takes 60 seconds.
             </p>
 
             {/* Hide calculator/catalog — keep hero focused on lead capture */}
