@@ -403,9 +403,50 @@ const SolarCalculator = () => {
     handleConfigUpdate({ selectedBattery: batteryId });
   }, [handleConfigUpdate]);
 
-  const handleCTAClick = useCallback(() => {
-    alert('🎉 Awesome! An Admiral Energy solar expert will contact you within 24 hours to finalize your custom system design and schedule your free site assessment. Get ready to own your power!');
-  }, []);
+  // Non-blocking CTA: show toast and optionally submit a hidden Netlify form
+  const [toast, setToast] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [ctaForm, setCtaForm] = useState({ bill: String(config.monthlyBill || ''), zip: '' });
+
+  const encode = (data: Record<string, string>) =>
+    Object.keys(data)
+      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+      .join("&");
+
+  const handleCTAClick = useCallback(async (e?: React.FormEvent) => {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      // Keep Netlify Forms compatibility with an URL-encoded POST to "/"
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "calculator",
+          bill: String(ctaForm.bill ?? ''),
+          zip: String(ctaForm.zip ?? '')
+        })
+      });
+
+      // analytics hooks (no-op if not present)
+      (window as any).dataLayer?.push?.({ event: "form_submit", form: "calculator" });
+      (window as any).rdt?.track?.("Custom", { event_name: "calculator_submit" });
+
+      setToast(
+        '🎉 Awesome! An Admiral Energy solar expert will reach out within 24 hours to review your numbers and next steps.'
+      );
+
+      // reset local CTA form
+      setCtaForm({ bill: '', zip: '' });
+    } catch (err) {
+      setToast('Hmm—submission hiccup. Try again or ping us in chat.');
+    } finally {
+      setSubmitting(false);
+      // auto-dismiss the toast
+      setTimeout(() => setToast(null), 6000);
+    }
+  }, [ctaForm]);
 
   const calculations = useMemo(() => {
     if (!selectedPanel || !selectedBattery) return null as any;
@@ -1588,8 +1629,16 @@ const SolarCalculator = () => {
 
         {/* CTA */}
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          {/* Hidden Netlify form for compatibility */}
+          <form name="calculator" data-netlify="true" style={{ display: 'none' }}>
+            <input type="hidden" name="form-name" value="calculator" />
+            <input name="bill" value={String(ctaForm.bill)} readOnly />
+            <input name="zip" value={ctaForm.zip} readOnly />
+          </form>
+
           <button 
             onClick={handleCTAClick}
+            disabled={submitting}
             style={{
               background: `linear-gradient(135deg, ${BRAND_COLORS.accent}, ${BRAND_COLORS.accentDark})`,
               color: BRAND_COLORS.primary,
@@ -1598,16 +1647,25 @@ const SolarCalculator = () => {
               fontWeight: 'bold',
               borderRadius: '12px',
               border: 'none',
-              cursor: 'pointer',
+              cursor: submitting ? 'not-allowed' : 'pointer',
+              opacity: submitting ? 0.7 : 1,
               boxShadow: '0 8px 20px rgba(201, 166, 72, 0.4)',
               transition: 'all 0.3s ease'
             }}
           >
-            Stop Renting, Start Owning Your Power →
+            {submitting ? 'Submitting…' : 'Stop Renting, Start Owning Your Power →'}
           </button>
+
           <p style={{ marginTop: '20px', color: '#718096', fontSize: '0.875rem' }}>
             © 2025 Admiral Energy • Charlotte, NC • Veteran-Owned & Operated
           </p>
+
+          {/* Toast */}
+          {toast && (
+            <div style={{ position: 'fixed', right: 20, bottom: 20, maxWidth: 360, background: BRAND_COLORS.primary, color: '#f7f5f2', padding: 16, borderRadius: 16, boxShadow: '0 8px 30px rgba(2,6,23,0.4)' }}>
+              {toast}
+            </div>
+          )}
         </div>
       </div>
     </div>
