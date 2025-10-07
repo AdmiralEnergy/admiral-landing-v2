@@ -26,13 +26,16 @@ function NotFound() {
   return <div style={{ padding: 24 }}>404 — Not Found</div>;
 }
 
+const ENABLE_ADVISOR = import.meta.env.VITE_ENABLE_ADVISOR === 'true';
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
       { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
-      { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
+      // /advisor is gated by VITE_ENABLE_ADVISOR to keep it internal by default
+      ...(ENABLE_ADVISOR ? [{ path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> }] : []),
       { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
       { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
       { path: "*", element: <NotFound /> }, // keep LAST
