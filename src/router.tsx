@@ -1,26 +1,46 @@
+// src/router.tsx
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-import Layout from "./components/layout/Layout";
-import NotFound from "./components/NotFound";
 
+// PAGES – PascalCase, default exports
 const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
 const AdvisorPage = lazy(() => import("./pages/SolarComparisonTool"));
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
 
-export default function AppRouter() {
+// LIGHT LAYOUT + 404
+import Header from "./components/layout/Header";
+function Layout() {
   return (
-    <Suspense fallback={<div className="p-6 text-slate-700">Loading…</div>}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/** index route */}
-          <Route index element={<Suspense fallback={null}><LandingPage /></Suspense>} />
-          <Route path="advisor" element={<Suspense fallback={null}><AdvisorPage /></Suspense>} />
-          <Route path="calculator" element={<Suspense fallback={null}><CalculatorPage /></Suspense>} />
-          <Route path="catalog" element={<Suspense fallback={null}><CatalogPage /></Suspense>} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </Suspense>
+    <>
+      <Header />
+      <main>
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
+      </main>
+    </>
   );
+}
+function NotFound() {
+  return <div style={{ padding: 24 }}>404 — Not Found</div>;
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
+      { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
+      { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
+      { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+      { path: "*", element: <NotFound /> }, // keep LAST
+    ],
+  },
+]);
+
+export { router };
+export default function AppRouter() {
+  return <RouterProvider router={router} />;
 }
