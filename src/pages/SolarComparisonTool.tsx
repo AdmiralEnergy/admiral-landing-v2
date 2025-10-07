@@ -2,25 +2,59 @@ import React, { useState, useMemo } from 'react';
 import { Sun, Zap, DollarSign, TrendingDown, TrendingUp, Award, CheckCircle, AlertTriangle, Lightbulb, Building2 } from 'lucide-react';
 
 export default function SolarComparisonTool() {
-  const [clientName, setClientName] = useState('');
-  const [serviceAddress, setServiceAddress] = useState('');
-  
-  // Duke Energy Side
-  const [dukeBill, setDukeBill] = useState(205.04);
-  const [dukeServiceFee, setDukeServiceFee] = useState(0);
-  
+  // helpers to coerce '' into 0 for safe arithmetic
+  const safe = (v: number | '' | undefined) => (typeof v === 'number' ? v : 0);
+  // initial defaults grouped for easy reset (start mostly blank to avoid baked-in quotes)
+  const initialDefaults = {
+    clientName: '',
+    serviceAddress: '',
+    dukeBill: '',
+    dukeServiceFee: '',
+    baseSystemCost: '',
+    addersCost: '',
+    batteryCost: '',
+    systemSize: '',
+    batteryIncluded: true,
+    batterySizeKwh: '',
+    solarOffset: '',
+    solarServiceFee: '',
+    loanPayment: '',
+  };
+
+  const [clientName, setClientName] = useState<string | ''>(initialDefaults.clientName);
+  const [serviceAddress, setServiceAddress] = useState<string | ''>(initialDefaults.serviceAddress);
+
+  // Duke Energy Side (editable by user)
+  const [dukeBill, setDukeBill] = useState<number | ''>(initialDefaults.dukeBill as any);
+  const [dukeServiceFee, setDukeServiceFee] = useState<number | ''>(initialDefaults.dukeServiceFee as any);
+  const [autoApplyOffset, setAutoApplyOffset] = useState(true);
+  const [dukeBillAfterOffsetManual, setDukeBillAfterOffsetManual] = useState<number | ''>('');
+
   // Solar Side - Base Costs
-  const [baseSystemCost, setBaseSystemCost] = useState(9200);
-  const [addersCost, setAddersCost] = useState(1288);
-  const [batteryCost, setBatteryCost] = useState(10650);
+  const [baseSystemCost, setBaseSystemCost] = useState<number | ''>(initialDefaults.baseSystemCost as any);
+  const [addersCost, setAddersCost] = useState<number | ''>(initialDefaults.addersCost as any);
+  const [batteryCost, setBatteryCost] = useState<number | ''>(initialDefaults.batteryCost as any);
   
-  const hardCosts = baseSystemCost + addersCost + batteryCost;
+  // numeric coercions to avoid arithmetic on ''
+  const nBaseSystemCost = safe(baseSystemCost);
+  const nAddersCost = safe(addersCost);
+  const nBatteryCost = safe(batteryCost);
+  const hardCosts = nBaseSystemCost + nAddersCost + nBatteryCost;
   
-  const [systemSize, setSystemSize] = useState(3.68);
-  const [batteryIncluded, setBatteryIncluded] = useState(true);
-  const [batterySizeKwh, setBatterySizeKwh] = useState(5);
-  const [solarOffset, setSolarOffset] = useState(30);
-  const [solarServiceFee, setSolarServiceFee] = useState(0);
+  const [systemSize, setSystemSize] = useState<number | ''>(initialDefaults.systemSize as any);
+  const [batteryIncluded, setBatteryIncluded] = useState(initialDefaults.batteryIncluded);
+  const [batterySizeKwh, setBatterySizeKwh] = useState<number | ''>(initialDefaults.batterySizeKwh as any);
+  const [solarOffset, setSolarOffset] = useState<number | ''>(initialDefaults.solarOffset as any);
+  const [solarServiceFee, setSolarServiceFee] = useState<number | ''>(initialDefaults.solarServiceFee as any);
+  const [loanPayment, setLoanPayment] = useState<number | ''>(initialDefaults.loanPayment as any);
+
+  // top-level numeric aliases
+  const nSystemSize = safe(systemSize);
+  const nBatterySizeKwh = safe(batterySizeKwh);
+  const nSolarOffset = safe(solarOffset);
+  const nDukeBill = safe(dukeBill);
+  const nDukeServiceFee = safe(dukeServiceFee);
+  const nSolarServiceFee = safe(solarServiceFee);
   
   // Sungage Financing Options
   const sungageRates = [
@@ -74,9 +108,9 @@ export default function SolarComparisonTool() {
   
   // TOU Arbitrage Calculation
   const touSavings = useMemo(() => {
-    if (!applyTOUSavings || !batteryIncluded) return { monthly: 0, annual: 0 };
+  if (!applyTOUSavings || !batteryIncluded) return { monthly: 0, annual: 0 };
     
-    const usableKwh = batterySizeKwh * 0.9;
+  const usableKwh = safe(batterySizeKwh) * 0.9;
     const dailyArbitrage = usableKwh * (touOnPeakRate - touOffPeakRate);
     const annual = dailyArbitrage * touCycleDays;
     
@@ -85,16 +119,25 @@ export default function SolarComparisonTool() {
       monthly: annual / 12
     };
   }, [applyTOUSavings, batteryIncluded, batterySizeKwh, touOnPeakRate, touOffPeakRate, touCycleDays]);
+
+  // derived duke bill after offset (single source of truth)
+  const offsetPct = safe(solarOffset);
+  const dukeBillAfterSolar = useMemo(() => {
+    const bill = safe(dukeBill);
+    const computed = Math.max(0, bill * (1 - offsetPct / 100));
+    if (!autoApplyOffset && typeof dukeBillAfterOffsetManual === 'number') return dukeBillAfterOffsetManual;
+    return computed;
+  }, [dukeBill, offsetPct, autoApplyOffset, dukeBillAfterOffsetManual]);
   
   // Calculate incentives
   const incentives = useMemo(() => {
-    const itcAmount = applyITC ? quotedAmount * 0.30 : 0;
-    
-    const powerPairSolarWatts = Math.min(systemSize, 10) * 1000;
-    const powerPairSolarRebate = applyPowerPair ? powerPairSolarWatts * 0.36 : 0;
-    
-    const powerPairBatteryKwh = batteryIncluded ? Math.min(batterySizeKwh, 13.5) : 0;
-    const powerPairBatteryRebate = applyPowerPair ? powerPairBatteryKwh * 400 : 0;
+  const itcAmount = applyITC ? quotedAmount * 0.30 : 0;
+
+  const powerPairSolarWatts = Math.min(nSystemSize, 10) * 1000;
+  const powerPairSolarRebate = applyPowerPair ? powerPairSolarWatts * 0.36 : 0;
+
+  const powerPairBatteryKwh = batteryIncluded ? Math.min(nBatterySizeKwh, 13.5) : 0;
+  const powerPairBatteryRebate = applyPowerPair ? powerPairBatteryKwh * 400 : 0;
     
     const totalPowerPairRebate = powerPairSolarRebate + powerPairBatteryRebate;
     const totalIncentives = itcAmount + totalPowerPairRebate;
@@ -133,7 +176,7 @@ export default function SolarComparisonTool() {
     let solarTotal = 0;
     let remainingBalance = loanPrincipal;
     
-    const offsetDukeBill = dukeBill * (1 - solarOffset / 100);
+  const offsetDukeBill = safe(dukeBill) * (1 - safe(solarOffset) / 100);
     
     let dukeCosts = [];
     let solarCosts = [];
@@ -142,7 +185,7 @@ export default function SolarComparisonTool() {
     for (let month = 1; month <= months; month++) {
       const year = Math.floor((month - 1) / 12);
       const yearFactor = Math.pow(1 + annualIncrease, year);
-      const dukeMonthly = (dukeBill * yearFactor) + dukeServiceFee;
+  const dukeMonthly = (safe(dukeBill) * yearFactor) + safe(dukeServiceFee);
       dukeTotal += dukeMonthly;
       dukeCosts.push(dukeTotal);
       
@@ -154,13 +197,13 @@ export default function SolarComparisonTool() {
         const principalThisMonth = monthlyLoanPayment - interestThisMonth;
         remainingBalance = Math.max(0, remainingBalance - principalThisMonth);
         
-        const solarUtilityBill = offsetDukeBill * yearFactor;
-        const touSavingsThisMonth = applyTOUSavings ? (touSavings.monthly * yearFactor) : 0;
-        solarMonthly = solarUtilityBill + solarServiceFee + monthlyLoanPayment - touSavingsThisMonth;
+  const solarUtilityBill = offsetDukeBill * yearFactor;
+  const touSavingsThisMonth = applyTOUSavings ? (touSavings.monthly * yearFactor) : 0;
+  solarMonthly = solarUtilityBill + safe(solarServiceFee) + safe(monthlyLoanPayment) - touSavingsThisMonth;
       } else {
-        const solarUtilityBill = offsetDukeBill * yearFactor;
-        const touSavingsThisMonth = applyTOUSavings ? (touSavings.monthly * yearFactor) : 0;
-        solarMonthly = solarUtilityBill + solarServiceFee - touSavingsThisMonth;
+  const solarUtilityBill = offsetDukeBill * yearFactor;
+  const touSavingsThisMonth = applyTOUSavings ? (touSavings.monthly * yearFactor) : 0;
+  solarMonthly = solarUtilityBill + safe(solarServiceFee) - touSavingsThisMonth;
       }
       
       solarTotal += solarMonthly;
@@ -183,7 +226,7 @@ export default function SolarComparisonTool() {
       dukeCosts,
       solarCosts,
       loanMonths,
-      monthlyAfterLoan: (dukeBill * (1 - solarOffset / 100)) * Math.pow(1 + annualIncrease, loanTerm) + solarServiceFee - (applyTOUSavings ? touSavings.monthly * Math.pow(1 + annualIncrease, loanTerm) : 0)
+  monthlyAfterLoan: (safe(dukeBill) * (1 - safe(solarOffset) / 100)) * Math.pow(1 + annualIncrease, loanTerm) + safe(solarServiceFee) - (applyTOUSavings ? touSavings.monthly * Math.pow(1 + annualIncrease, loanTerm) : 0)
     };
   }, [dukeBill, dukeServiceFee, loanPrincipal, solarOffset, loanRate, loanTerm, solarServiceFee, monthlyLoanPayment, touSavings, applyTOUSavings]);
   
@@ -216,8 +259,12 @@ export default function SolarComparisonTool() {
     };
   }, [quotedAmount, incentives.totalIncentives, savings.twentyFive, projections.totalInterest, monthlyLoanPayment, loanTerm, projections.interest25, loanPrincipal, currentFinancing.dealerFee]);
 
-  const effectiveMonthlyCost = projections.offsetDukeBill + solarServiceFee + monthlyLoanPayment - touSavings.monthly;
-  const monthlyDifference = dukeBill + dukeServiceFee - effectiveMonthlyCost;
+  // ensure numeric operations are safe even when inputs are blank
+  const effectiveMonthlyCost = safe(projections.offsetDukeBill) + safe(solarServiceFee) + safe(monthlyLoanPayment) - touSavings.monthly;
+  const monthlyDifference = safe(dukeBill) + safe(dukeServiceFee) - effectiveMonthlyCost;
+
+  // alias the derived duke bill from dukeBillAfterSolar so we have the expected name in the UI
+  const dukeBillAfterOffset = dukeBillAfterSolar;
 
   const recommendations = useMemo(() => {
     const issues = [];
@@ -237,8 +284,8 @@ export default function SolarComparisonTool() {
       solutions.push("Select a better interest rate option");
     }
     
-    if (solarOffset < 50) {
-      issues.push(`Solar offset is only ${solarOffset}% - customer still heavily dependent on grid`);
+    if (safe(solarOffset) < 50) {
+      issues.push(`Solar offset is only ${safe(solarOffset)}% - customer still heavily dependent on grid`);
       solutions.push("Increase system size to 75-95% offset for better savings");
       solutions.push("Consider ground mount or carport if roof space limited");
     }
@@ -252,7 +299,7 @@ export default function SolarComparisonTool() {
     }
     
     if (!applyPowerPair) {
-      const potentialPowerPair = (Math.min(systemSize, 10) * 1000 * 0.36) + (batteryIncluded ? Math.min(batterySizeKwh, 13.5) * 400 : 0);
+      const potentialPowerPair = (Math.min(nSystemSize, 10) * 1000 * 0.36) + (batteryIncluded ? Math.min(nBatterySizeKwh, 13.5) * 400 : 0);
       issues.push("PowerPair rebates not applied - missing significant incentives");
       solutions.push(`Enable PowerPair rebates (worth $${potentialPowerPair.toFixed(0)})`);
     }
@@ -638,12 +685,12 @@ export default function SolarComparisonTool() {
               </div>
               <div className="text-sm space-y-2 mb-3">
                 <div className="flex justify-between">
-                  <span>Solar: ${(Math.min(systemSize, 10) * 1000 * 0.36).toFixed(0)}</span>
+                  <span>Solar: ${(Math.min(nSystemSize, 10) * 1000 * 0.36).toFixed(0)}</span>
                   <span className="text-xs opacity-80">($0.36/watt up to 10kW)</span>
                 </div>
                 {batteryIncluded && (
                   <div className="flex justify-between">
-                    <span>Battery: ${(Math.min(batterySizeKwh, 13.5) * 400).toFixed(0)}</span>
+                    <span>Battery: ${(Math.min(nBatterySizeKwh, 13.5) * 400).toFixed(0)}</span>
                     <span className="text-xs opacity-80">($400/kWh up to 13.5kWh)</span>
                   </div>
                 )}
@@ -701,6 +748,25 @@ export default function SolarComparisonTool() {
                 />
               </div>
               <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
+                <label className="font-semibold text-gray-700">Duke Bill (after offset):</label>
+                {autoApplyOffset ? (
+                  <span className="text-gray-900 font-bold">${dukeBillAfterOffset.toFixed(2)}</span>
+                ) : (
+                  <input
+                    type="number"
+                    value={dukeBillAfterOffsetManual ?? dukeBillAfterOffset}
+                    onChange={(e) => setDukeBillAfterOffsetManual(Number(e.target.value))}
+                    className="w-32 px-3 py-2 border-2 border-gray-200 rounded-lg text-right focus:border-blue-500 focus:outline-none"
+                  />
+                )}
+              </div>
+              <div className="flex items-center gap-3 py-2">
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={autoApplyOffset} onChange={(e) => setAutoApplyOffset(e.target.checked)} className="w-4 h-4" />
+                  Auto-apply solar offset to Duke bill
+                </label>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b-2 border-gray-200">
                 <label className="font-semibold text-gray-700">Service Fee:</label>
                 <input
                   type="number"
@@ -716,7 +782,7 @@ export default function SolarComparisonTool() {
               <div className="flex justify-between items-center pt-3 bg-blue-50 p-4 rounded-lg">
                 <label className="text-xl font-bold text-blue-800">Total (Month 1):</label>
                 <span className="text-2xl font-bold text-blue-900">
-                  ${(dukeBill + dukeServiceFee).toFixed(2)}/mo
+                  ${(safe(dukeBill) + safe(dukeServiceFee)).toFixed(2)}/mo
                 </span>
               </div>
               <div className="mt-4 p-4 bg-red-50 rounded-lg border-2 border-red-200">
@@ -725,11 +791,36 @@ export default function SolarComparisonTool() {
                   Increases 4% annually
                 </p>
                 <p className="text-xs text-red-700 mt-1">
-                  Year 10: ${((dukeBill * Math.pow(1.04, 10)) + dukeServiceFee).toFixed(2)}/mo
+                  Year 10: ${((safe(dukeBill) * Math.pow(1.04, 10)) + safe(dukeServiceFee)).toFixed(2)}/mo
                 </p>
                 <p className="text-xs text-red-700">
-                  Year 25: ${((dukeBill * Math.pow(1.04, 25)) + dukeServiceFee).toFixed(2)}/mo
+                  Year 25: ${((safe(dukeBill) * Math.pow(1.04, 25)) + safe(dukeServiceFee)).toFixed(2)}/mo
                 </p>
+              </div>
+              <div className="mt-4 flex gap-3">
+                <button
+                  className="px-4 py-2 bg-gray-100 rounded border text-sm"
+                  onClick={() => {
+                    // reset to initial defaults (set numeric fields to blank '')
+                    setClientName('');
+                    setServiceAddress('');
+                    setDukeBill('');
+                    setDukeServiceFee('');
+                    setBaseSystemCost('');
+                    setAddersCost('');
+                    setBatteryCost('');
+                    setSystemSize('');
+                    setBatteryIncluded(true);
+                    setBatterySizeKwh('');
+                    setSolarOffset('');
+                    setSolarServiceFee('');
+                    setLoanPayment('');
+                    setAutoApplyOffset(true);
+                    setDukeBillAfterOffsetManual('');
+                  }}
+                >
+                  Clear all fields
+                </button>
               </div>
             </div>
           </div>
@@ -905,7 +996,7 @@ export default function SolarComparisonTool() {
                 <p>
                   <span className="font-semibold">After Loan Payoff:</span> In year {loanTerm + 1} and beyond, your monthly energy cost 
                   drops to just ${projections.monthlyAfterLoan.toFixed(2)}/month while Duke customers are paying 
-                  ${((dukeBill * Math.pow(1.04, loanTerm)) + dukeServiceFee).toFixed(2)}/month.
+                  ${((safe(dukeBill) * Math.pow(1.04, loanTerm)) + safe(dukeServiceFee)).toFixed(2)}/month.
                 </p>
               </div>
               {applyTOUSavings && touSavings.annual > 0 && (
