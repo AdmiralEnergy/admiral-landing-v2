@@ -1,38 +1,16 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
-
 export default function Header() {
-  const { pathname } = useLocation();
-  const showNavExtras = pathname !== "/";
   const linkBase = "px-3 py-2 text-sm font-medium hover:opacity-80";
-  const active = "text-emerald-600";
-  const idle = "text-slate-700";
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
       <nav className="mx-auto max-w-6xl flex items-center justify-between px-4 h-14">
-        <Link to="/" className="font-semibold">
+        <a href="/" className="font-semibold text-slate-900 hover:opacity-80">
           Admiral Energy
-        </Link>
+        </a>
+
         <div className="flex items-center gap-1">
-          {showNavExtras && (
-            <>
-              <NavLink
-                to="/catalog"
-                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-              >
-                Catalog
-              </NavLink>
-              <NavLink
-                to="/calculator"
-                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-              >
-                Calculator
-              </NavLink>
-            </>
-          )}
-          <a href="#lead" className={`${linkBase} ${idle}`}>
-            Get Quote
-          </a>
+          <a href="#lead" className={`${linkBase} text-slate-700`}>Get Quote</a>
+          <a href="/advisor" className={`${linkBase} text-slate-700`}>Advisor</a>
         </div>
       </nav>
     </header>

@@ -1,0 +1,1 @@
+{"bundles":[{"asset":"271f2bcfd094b5778fbd756cc2d9084d662ea1ea0c7351c90c8d4b92b2116957.eszip","format":"eszip2"}],"routes":[{"function":"zip-utility-lookup","pattern":"^/api/zip-utility-lookup/?$","excluded_patterns":[],"path":"/api/zip-utility-lookup"}],"post_cache_routes":[],"bundler_version":"14.5.6","layers":[],"import_map":"netlify:import-map","function_config":{}}
