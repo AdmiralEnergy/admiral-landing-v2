@@ -1,56 +1,66 @@
-<!--
-Guidance for AI coding agents working on the Admiral Energy landing repo.
-Keep this file short (20–50 lines) and focused on project-specific patterns, tooling, and files to inspect.
---> 
+<!-- Short, targeted instructions for AI coding agents working on this repo. -->
+
+> Internal note: This guide is for AI and automation tools working inside this repo.
+> Do not edit build, deploy, or config files based on assumptions — always verify with `npm run build` and confirm output in `dist/` before pushing.
 
 # Admiral Energy — Copilot / AI agent instructions
 
-Quick context
-- Small React + Vite + TypeScript landing site. See `README.md` and `package.json` for scripts.
-- Builds with Vite; dev: `npm run dev`, build: `npm run build`, preview: `npm run preview`.
+Stack & constraints
+- Vite + React + TypeScript. Tailwind v3 for styles (`tailwind.config.cjs`). Project targets Node 22 for Netlify builds.
 
-What to read first
-- `package.json` — scripts and top-level deps (React, Vite, Tailwind).
-- `vite.config.ts` — dev/build plugins and entry points.
-- `src/` and `app/` — actual application code. `src/main.tsx` or `src/main.js` is the client entry.
-- `public/` and `assets/` — static assets used by pages.
-- `netlify/` — serverless functions and edge utilities (important if editing server-side behaviour).
+Scripts (confirm in `package.json`)
+- dev: `npm run dev` — local Vite with HMR
+- build: `npm run build` — outputs `dist/`
+- preview: `npm run preview`
 
-Architecture notes (short)
-- Frontend-only single-page app built with React + Vite. TypeScript present but some legacy JS files remain (both `.js` and `.tsx` coexist).
-- Routes are declared in `src/router.tsx` / `src/router.js` and pages live in `src/pages/`.
-- Visual/layout components are under `src/components/` and `app/` contains additional entry-level assets and possible alternate entry points.
-- Server-side logic (email/sms) lives under `netlify/functions/` and `netlify/edge-functions/` — treat these as separate deployable units.
+Build & deploy (guardrails)
+- Build: `npm run build` → `dist/`. Netlify is used for deployment (Node 22).
+- SPA redirect rule: `/*` → `/index.html` (HTTP 200) — check `netlify.toml` for redirects.
 
-Project-specific conventions
-- Keep changes to TypeScript types in `src/types/globals.d.ts` or the `types/` folder.
-- Files with both `.js` and `.ts[x]` names indicate gradual migration; prefer matching existing file style in the same folder when making small edits.
-- Tailwind is used — styles are in `src/index.css` and `tailwind.config.cjs`.
+Branching & PR rules (required)
+- Production branch: `main` = prod. Feature work goes on `feat/*` branches. Open PRs for all changes; do not push directly to `main`.
 
-Build & debugging tips
-- Use `npm run dev` for local HMR. Vite serves the SPA at http://localhost:5173 by default.
-- Serverless functions under `netlify/functions/` are not automatically run by Vite; use Netlify CLI or deploy previews to test them, or write small unit tests that call function handlers directly.
+Routing & pages
+- Uses React Router. Landing page is the index route; keep the `*` catch-all route last.
+- Key files: `src/router.tsx`, `src/pages/SolarComparisonTool.tsx`, `src/pages/SolarCalculator.tsx` (PascalCase filenames only).
 
-Integration points to watch
-- `netlify.toml` controls Netlify builds and redirects; changes here affect deploy behavior.
-- `netlify/edge-functions/zip-utility-lookup.js` and other edge code are executed at the CDN edge — avoid importing Node-only modules there.
+Analytics & pixels
+- GA4 and Reddit pixel are present. Do not add duplicate pixel blocks; reuse the existing integration.
 
-When you edit code, prioritize
-1. Small, focused changes that follow surrounding file style (JS vs TS).
-2. Update `src/types/globals.d.ts` when public objects change.
-3. If modifying serverless functions, ensure exports match Netlify handler shape used in existing functions.
+File map & conventions
+- Entry: `src/main.tsx` or `src/main.js`; styles in `src/index.css`.
+- Pages: keep PascalCase (`SolarCalculator.tsx`, `SolarComparisonTool.tsx`).
+- Types: add public types to `src/types/globals.d.ts`.
+- Do NOT commit compiled `.js` twins next to `.tsx` files.
 
-Examples to inspect when implementing features
-- Adding a route: follow `src/router.tsx` and add pages to `src/pages/`.
-- Asset references: use files under `assets/` (top-level `assets/` or `src/assets/`) so Vite handles bundling.
+Done criteria
+- Project builds clean (`npm run build`).
+- Routes deep-link (refresh on nested routes works).
+- Netlify Forms capture submissions where used.
+- GA4/Reddit pixels fire without duplication.
 
-Files to open when troubleshooting
-- `package.json`, `vite.config.ts`, `netlify.toml`, `netlify/functions/*`, `netlify/edge-functions/*`, `src/router.tsx`, `src/main.tsx`, `src/pages/*`, `src/components/layout/Header.tsx`.
+Do / Don’t
+- Do: keep PascalCase page filenames; follow existing JS vs TS style in a folder.
+- Don’t: commit compiled `.js` alongside `.tsx` sources; don’t add duplicate analytics snippets.
 
-Notes / constraints
-- Keep changes minimal in `netlify/` unless you can run Netlify CLI locally — Vite won’t exercise those during dev.
-- Don’t assume full TypeScript coverage; type carefully and prefer small opt-ins (declare types in `globals.d.ts`).
+Optional — quick how-tos for agents
+- Add a lazy route (React lazy + Suspense):
 
-If unclear, ask for:
-- preferred TypeScript strictness or whether JS-to-TS migration is desired for the task
-- whether Netlify function behavior should be tested locally (and if Netlify CLI is available)
+```js
+// in src/router.tsx
+const SolarComparison = lazy(() => import("./pages/SolarComparisonTool"))
+// <Route path="/compare" element={<Suspense><SolarComparison/></Suspense>} />
+```
+
+- Calculator form submit pattern (static Netlify form or fetch): include a hidden `form-name` field and POST as URL-encoded when using Netlify Forms.
+
+```html
+<form name="calculator" method="POST" data-netlify="true">
+	<input type="hidden" name="form-name" value="calculator" />
+	<!-- fields... -->
+</form>
+<!-- or client-side: fetch('/?no-cache=1', { method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(form) }) -->
+```
+
+TL;DR
+- Keep this file. It’s in the right place. Follow the branch/deploy guardrails above and prune any non-discoverable assumptions before making changes.
