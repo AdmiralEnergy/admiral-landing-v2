@@ -14,22 +14,6 @@ export default function Header() {
           Admiral Energy
         </Link>
         <div className="flex items-center gap-1">
-          {showNavExtras && (
-            <>
-              <NavLink
-                to="/catalog"
-                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-              >
-                Catalog
-              </NavLink>
-              <NavLink
-                to="/calculator"
-                className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
-              >
-                Calculator
-              </NavLink>
-            </>
-          )}
           <a href="#lead" className={`${linkBase} ${idle}`}>
             Get Quote
           </a>
