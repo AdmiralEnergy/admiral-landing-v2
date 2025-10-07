@@ -4,13 +4,19 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
       <nav className="mx-auto max-w-6xl flex items-center justify-between px-4 h-14">
-        <a href="/" className="font-semibold text-slate-900 hover:opacity-80">
-          Admiral Energy
+        <a href="/" className="flex items-center gap-2 font-semibold text-slate-900 hover:opacity-80">
+          <img
+            src="/admiralenergylogo.png"
+            alt="Admiral Energy"
+            className="h-7 w-auto"
+            decoding="async"
+            loading="eager"
+          />
+          <span className="leading-none">Admiral Energy</span>
         </a>
 
         <div className="flex items-center gap-1">
           <a href="#lead" className={`${linkBase} text-slate-700`}>Get Quote</a>
-          <a href="/advisor" className={`${linkBase} text-slate-700`}>Advisor</a>
         </div>
       </nav>
     </header>

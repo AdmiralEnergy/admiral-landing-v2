@@ -1,0 +1,40 @@
+﻿**Release checklist**
+
+- [ ] One sticky header at top on load + scroll
+- [ ] Hero CTA jumps to `#lead`
+- [ ] Submit test -> shows in **Netlify  Forms  lead-intake**
+- [ ] Visit with `?utm_source=reddit&utm_medium=cpc&utm_campaign=test&utm_content=hero` and resubmit -> UTMs captured
+- [ ] Phone field: type / insert mid-string / backspace across `)` & `-` / paste -> no focus jumps; formats on blur
+- [ ] `/advisor` loads and navigates normally (no router dependency in header)
+- [ ] Mobile check (iOS Safari) -> no zoom on focus; form is usable end-to-end
+
+(Optional) Tiny polish before promote
+1) Thank-you redirect
+
+Add one hidden input to your visible form component (LeadIntakeForm.tsx):
+
+<input type="hidden" name="redirect" value="/thank-you" />
+
+2) GA4 submit ping (keeps HTML-first)
+
+Drop near the end of index.html, before </body>:
+
+<script>
+  document.forms['lead-intake']?.addEventListener('submit', () => {
+    window.gtag?.('event','lead_submit',{form:'lead-intake'});
+  });
+</script>
+
+3) Netlify notifications (1 min)
+
+Netlify  Forms  lead-intake  Notifications  add your email/Slack so you see real leads immediately.
+
+Promote game plan
+
+Review the preview on #24 using the checklist above.
+
+When its green, merge to main and Promote to production (keep auto-publish off until youre happy).
+
+Do one live test submit from production. Confirm it appears in Forms with UTMs.
+
+Want me to hand you a one-liner patch for the redirect + GA4 bits you can commit on the same branch?

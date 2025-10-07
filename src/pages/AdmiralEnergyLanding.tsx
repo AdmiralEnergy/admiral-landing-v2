@@ -653,9 +653,10 @@ export default function AdmiralEnergyLanding() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 mb-8">
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-4" style={{ color: '#c9a648' }}>
-                ⚡ Admiral Energy
-              </h3>
+              <div className="flex items-center gap-2 mb-2">
+                <img src="/admiralenergylogo.png" alt="Admiral Energy" className="h-6 w-auto" decoding="async" loading="lazy" />
+                <h3 className="text-xl sm:text-2xl font-bold" style={{ color: '#c9a648' }}>Admiral Energy</h3>
+              </div>
               <p className="text-sm" style={{ color: '#e8e6e3' }}>
                 North Carolina's premier solar and battery storage provider
               </p>
