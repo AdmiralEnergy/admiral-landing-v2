@@ -319,7 +319,7 @@ const ProductCatalog = () => {
         e.currentTarget.style.borderColor = BRAND.creamDark;
       }}
     >
-      <div 
+      <div
         style={{
           position: 'absolute',
           top: '16px',
@@ -330,7 +330,8 @@ const ProductCatalog = () => {
           borderRadius: '20px',
           fontSize: '12px',
           fontWeight: 'bold',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          zIndex: 30
         }}
       >
         {panel.badge}
@@ -347,7 +348,8 @@ const ProductCatalog = () => {
         gridTemplateRows: 'repeat(10, 1fr)',
         gap: '2px',
         padding: '8px',
-        position: 'relative'
+        position: 'relative',
+        zIndex: 0
       }}>
         {Array.from({ length: 60 }).map((_, i) => (
           <div key={i} style={{
@@ -366,7 +368,8 @@ const ProductCatalog = () => {
           borderRadius: '8px',
           fontSize: '14px',
           fontWeight: 'bold',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          zIndex: 20
         }}>
           {panel.watts}W
         </div>
@@ -486,7 +489,8 @@ const ProductCatalog = () => {
           borderRadius: '20px',
           fontSize: '12px',
           fontWeight: 'bold',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          zIndex: 30
         }}
       >
         {battery.badge}
@@ -502,7 +506,8 @@ const ProductCatalog = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative'
+        position: 'relative',
+        zIndex: 0
       }}>
         <Battery size={64} style={{ color: BRAND.gold }} strokeWidth={1.5} />
         <div style={{
@@ -515,7 +520,8 @@ const ProductCatalog = () => {
           borderRadius: '8px',
           fontSize: '14px',
           fontWeight: 'bold',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          zIndex: 20
         }}>
           {battery.capacity} kWh
         </div>

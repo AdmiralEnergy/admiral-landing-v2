@@ -1,13 +1,46 @@
-import { lazy } from "react";
-import { createBrowserRouter } from "react-router-dom";
+// src/router.tsx
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
-const Landing = lazy(() => import("./pages/AdmiralEnergyLanding"));
-const Catalog = lazy(() => import("./pages/ProductCatalog"));
-const Calculator = lazy(() => import("./pages/SolarCalculator"));
+// PAGES – PascalCase, default exports
+const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
+const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
+const AdvisorPage = lazy(() => import("./pages/SolarComparisonTool"));
+const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
 
-export const router = createBrowserRouter([
-  { path: "/", element: <Landing /> },
-  { path: "/catalog", element: <Catalog /> },
-  { path: "/calculator", element: <Calculator /> },
-  { path: "*", element: <Landing /> },
+// LIGHT LAYOUT + 404
+import Header from "./components/layout/Header";
+function Layout() {
+  return (
+    <>
+      <Header />
+      <main>
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
+      </main>
+    </>
+  );
+}
+function NotFound() {
+  return <div style={{ padding: 24 }}>404 — Not Found</div>;
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
+      { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
+      { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
+      { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+      { path: "*", element: <NotFound /> }, // keep LAST
+    ],
+  },
 ]);
+
+export { router };
+export default function AppRouter() {
+  return <RouterProvider router={router} />;
+}

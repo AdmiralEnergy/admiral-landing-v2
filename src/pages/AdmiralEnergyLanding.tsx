@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Award, Users, ArrowRight, Star, Zap, DollarSign, Clock, Phone, Mail, MapPin, AlertCircle } from 'lucide-react';
+// Header is rendered by the layout wrapper; do not import here to avoid double headers
+import LeadIntakeForm from '../components/LeadIntakeForm';
 
 export default function AdmiralEnergyLanding() {
   type LeadFormData = {
@@ -41,8 +44,8 @@ export default function AdmiralEnergyLanding() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Format phone number
-  const formatPhoneNumber = (value: string) => {
+  // Format phone number - improved to handle cursor position
+  const formatPhoneNumber = (value: string, preserveCursor: boolean = false) => {
     const phoneNumber = value.replace(/\D/g, '');
     if (phoneNumber.length === 0) return '';
     if (phoneNumber.length <= 3) return phoneNumber;
@@ -85,7 +88,19 @@ export default function AdmiralEnergyLanding() {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     let formattedValue = type === 'checkbox' ? checked : value;
 
-    if (name === 'phone') formattedValue = formatPhoneNumber(value);
+    // Special handling for phone to prevent cursor jumping
+    if (name === 'phone') {
+      const currentValue = formData.phone;
+      const newDigits = value.replace(/\D/g, '');
+      
+      // Only reformat if digits actually changed to prevent cursor jumping
+      if (newDigits !== currentValue.replace(/\D/g, '')) {
+        formattedValue = formatPhoneNumber(value);
+      } else {
+        formattedValue = currentValue; // Keep current value if no digit change
+        return; // Exit early to prevent state update
+      }
+    }
     if (name === 'zip') formattedValue = value.replace(/\D/g, '').slice(0, 5);
     if (name === 'name') formattedValue = value.slice(0, 100);
     if (name === 'email') formattedValue = value.slice(0, 100);
@@ -98,7 +113,7 @@ export default function AdmiralEnergyLanding() {
     }
 
     if (submitError) setSubmitError(false);
-  }, [touched, validateField, submitError]);
+  }, [touched, validateField, submitError, formData.phone]);
 
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
@@ -307,7 +322,8 @@ export default function AdmiralEnergyLanding() {
             aria-invalid={hasError ? 'true' : 'false'}
             aria-describedby={hasError ? `${name}-error` : undefined}
             disabled={isSubmitting}
-            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-3.5 rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+            inputMode={name === 'phone' ? 'tel' : name === 'zip' ? 'numeric' : name === 'email' ? 'email' : 'text'}
+            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-4 text-base rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
               hasError
                 ? 'border-red-500 focus:border-red-500 focus:ring-red-200 bg-red-50'
                 : 'border-gray-300 focus:border-[#c9a648] focus:ring-[#c9a648]/20 bg-white'
@@ -344,8 +360,12 @@ export default function AdmiralEnergyLanding() {
         .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
         .animate-spin { animation: spin 1s linear infinite; }
         .gradient-text { background: linear-gradient(135deg, #c9a648 0%, #f7f5f2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        input:focus { transform: scale(1.01); }
-        input:disabled { transform: scale(1); }
+        input:focus { transform: none; box-shadow: 0 0 0 3px rgba(201, 166, 72, 0.15); border-color: #c9a648; }
+        input:disabled { transform: none; }
+        input { transition: all 0.2s ease; }
+        input:focus::placeholder { opacity: 0.7; }
+        /* Prevent zoom on iOS */
+        input[type="text"], input[type="email"], input[type="tel"] { font-size: 16px; }
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
@@ -363,18 +383,7 @@ export default function AdmiralEnergyLanding() {
         />
       </div>
 
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-md transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <div className="text-xl sm:text-2xl font-bold tracking-tight" style={{ color: '#0c2f4a' }}>
-            ⚡ Admiral Energy
-          </div>
-          <div className="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-md transition-all duration-300 hover:scale-105"
-               style={{ backgroundColor: '#c9a648', color: '#0c2f4a' }}>
-            ✓ Certified Trade Ally
-          </div>
-        </div>
-      </header>
+  {/* Header rendered by layout wrapper */}
 
       {/* Hero */}
       <section className="relative py-12 sm:py-16 lg:py-24 overflow-hidden"
@@ -388,19 +397,26 @@ export default function AdmiralEnergyLanding() {
           <div className="text-center mb-8 sm:mb-12 animate-slide-up">
             <div className="inline-block mb-4 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold animate-pulse-glow"
                  style={{ backgroundColor: 'rgba(201, 166, 72, 0.2)', color: '#c9a648', border: '1px solid #c9a648' }}>
-              ⚡ Limited Time - Rebates Filling Fast
+              ⚡ URGENT: Duke Energy Rebates Ending Soon - Limited Spots Available
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight px-2"
                 style={{ color: '#f7f5f2' }}>
-              North Carolina Homeowners:<br />
-              <span className="gradient-text">Get Up to $9,000</span> in Duke Rebates<br />
-              <span style={{ color: '#c9a648' }}>+ 30% Federal Tax Credit</span>
+              NC Homeowners: Get $9,000 in<br />
+              <span className="gradient-text">FREE Solar Rebates</span><br />
+              <span style={{ color: '#c9a648' }}>Before They're Gone Forever</span>
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl mb-4 font-medium px-4" style={{ color: '#e8e6e3' }}>
-              Find out if your home qualifies in 60 seconds.
+              See if your home qualifies for up to $39,000 in combined savings. Free eligibility check takes 60 seconds.
             </p>
+
+            {/* Hide calculator/catalog — keep hero focused on lead capture */}
+            <div className="mt-6">
+              <a href="#lead" className="inline-flex items-center rounded-lg px-6 py-4 font-semibold bg-[#c9a648] text-white">
+                Check My Eligibility →
+              </a>
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm" style={{ color: '#c9a648' }}>
               <div className="flex items-center gap-2">
@@ -415,7 +431,7 @@ export default function AdmiralEnergyLanding() {
           </div>
 
           {/* Form */}
-    <div ref={formRef as any} className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl backdrop-blur-sm animate-slide-up"
+          <div id="lead" ref={formRef as any} className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl backdrop-blur-sm animate-slide-up"
                style={{ backgroundColor: 'rgba(247, 245, 242, 0.98)', animationDelay: '0.2s' }}>
             {submitSuccess ? (
               <div className="text-center py-8 animate-fade-in">
@@ -447,63 +463,7 @@ export default function AdmiralEnergyLanding() {
               </div>
             ) : (
               <div className="space-y-4">
-                <FormField name="name" type="text" placeholder="Full Name" autoComplete="name" icon={Users} />
-                <FormField name="email" type="email" placeholder="Email Address" autoComplete="email" icon={Mail} />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormField name="phone" type="tel" placeholder="Phone Number" autoComplete="tel" icon={Phone} />
-                  <FormField name="zip" type="text" placeholder="Zip Code" autoComplete="postal-code" icon={MapPin} />
-                </div>
-
-                {/* Honeypot (hidden) */}
-                <div style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, overflow: 'hidden' }}>
-                  <input
-                    type="text"
-                    name="website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={formData.website}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Consent */}
-                <FormField name="consent" type="checkbox" placeholder="" />
-
-                {errors.submit && (
-                  <div className="flex items-start gap-2 p-4 rounded-lg animate-fade-in"
-                       style={{ backgroundColor: '#fee2e2', border: '1px solid #ef4444' }}>
-                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#dc2626' }} />
-                    <p className="text-sm" style={{ color: '#dc2626' }} role="alert">
-                      {errors.submit}
-                    </p>
-                  </div>
-                )}
-
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="w-full py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2 group"
-                  style={{ background: 'linear-gradient(135deg, #c9a648 0%, #b89539 100%)', color: '#0c2f4a' }}
-                  aria-label={isSubmitting ? 'Submitting eligibility check' : 'Check eligibility'}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-[#0c2f4a] border-t-transparent rounded-full animate-spin" />
-                      Checking Eligibility...
-                    </>
-                  ) : (
-                    <>
-                      Check My Eligibility
-                      <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </>
-                  )}
-                </button>
-
-                <div className="flex items-center justify-center gap-2 text-xs sm:text-sm" style={{ color: '#1a4d74' }}>
-                  <Shield className="w-4 h-4" />
-                  <span>100% secure. Your info is never shared.</span>
-                </div>
+                <LeadIntakeForm />
               </div>
             )}
           </div>
