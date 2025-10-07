@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Shield, Award, Users, ArrowRight, Star, Zap, DollarSign, Clock, Phone, Mail, MapPin, AlertCircle } from 'lucide-react';
-import Header from '../components/layout/Header';
+// Header is rendered by the layout wrapper; do not import here to avoid double headers
+import LeadIntakeForm from '../components/LeadIntakeForm';
 
 export default function AdmiralEnergyLanding() {
   type LeadFormData = {
@@ -382,8 +383,7 @@ export default function AdmiralEnergyLanding() {
         />
       </div>
 
-      {/* Sticky Header */}
-      <Header />
+  {/* Header rendered by layout wrapper */}
 
       {/* Hero */}
       <section className="relative py-12 sm:py-16 lg:py-24 overflow-hidden"
@@ -411,7 +411,12 @@ export default function AdmiralEnergyLanding() {
               See if your home qualifies for up to $39,000 in combined savings. Free eligibility check takes 60 seconds.
             </p>
 
-            {/* Links hidden for A/B testing - calculator and catalog removed */}
+            {/* Hide calculator/catalog — keep hero focused on lead capture */}
+            <div className="mt-6">
+              <a href="#lead" className="inline-flex items-center rounded-lg px-6 py-4 font-semibold bg-[#c9a648] text-white">
+                Check My Eligibility →
+              </a>
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm" style={{ color: '#c9a648' }}>
               <div className="flex items-center gap-2">
@@ -457,70 +462,9 @@ export default function AdmiralEnergyLanding() {
                 </div>
               </div>
             ) : (
-              <form name="lead-intake" method="POST" data-netlify="true" data-netlify-honeypot="website" className="space-y-4">
-                <input type="hidden" name="form-name" value="lead-intake" />
-                <FormField name="name" type="text" placeholder="Full Name" autoComplete="name" icon={Users} />
-                <FormField name="email" type="email" placeholder="Email Address" autoComplete="email" icon={Mail} />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormField name="phone" type="tel" placeholder="Phone Number" autoComplete="tel" icon={Phone} />
-                  <FormField name="zip" type="text" placeholder="Zip Code" autoComplete="postal-code" icon={MapPin} />
-                </div>
-
-                {/* Honeypot (hidden) */}
-                <div style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, overflow: 'hidden' }}>
-                  <input
-                    type="text"
-                    name="website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={formData.website}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Consent */}
-                <FormField name="consent" type="checkbox" placeholder="" />
-
-                {errors.submit && (
-                  <div className="flex items-start gap-2 p-4 rounded-lg animate-fade-in"
-                       style={{ backgroundColor: '#fee2e2', border: '1px solid #ef4444' }}>
-                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#dc2626' }} />
-                    <p className="text-sm" style={{ color: '#dc2626' }} role="alert">
-                      {errors.submit}
-                    </p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
-                  disabled={isSubmitting}
-                  className="w-full py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2 group"
-                  style={{ background: 'linear-gradient(135deg, #c9a648 0%, #b89539 100%)', color: '#0c2f4a' }}
-                  aria-label={isSubmitting ? 'Submitting eligibility check' : 'Check eligibility'}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-[#0c2f4a] border-t-transparent rounded-full animate-spin" />
-                      Checking Eligibility...
-                    </>
-                  ) : (
-                    <>
-                      Check My Eligibility
-                      <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </>
-                  )}
-                </button>
-
-                <div className="flex items-center justify-center gap-2 text-xs sm:text-sm" style={{ color: '#1a4d74' }}>
-                  <Shield className="w-4 h-4" />
-                  <span>100% secure. Your info is never shared.</span>
-                </div>
-              </form>
+              <div className="space-y-4">
+                <LeadIntakeForm />
+              </div>
             )}
           </div>
         </div>
