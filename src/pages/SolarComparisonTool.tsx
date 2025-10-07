@@ -314,7 +314,37 @@ export default function SolarComparisonTool() {
             <Zap className="w-6 h-6" />
             Solar System Details & Costs
           </h2>
-          {/* ...existing JSX... */}
+          {/* Always-on details panel (helps debug visibility during launch) */}
+          <section className="mt-4 rounded-2xl bg-white/80 shadow-lg ring-1 ring-black/5 p-6 relative z-10">
+            {/* Example content; swap in your real fields */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <p className="text-sm text-slate-500">System Size</p>
+                <p className="text-xl font-semibold">{systemSize} kW</p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-500">Battery</p>
+                <p className="text-xl font-semibold">
+                  {batteryIncluded ? `${batterySizeKwh} kWh` : "None"}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-500">Hard Costs</p>
+                <p className="text-xl font-semibold">${hardCosts.toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-black/5">
+                <p className="text-sm text-slate-500">Duke Current Bill</p>
+                <p className="text-lg font-semibold">${dukeBill.toFixed(2)}</p>
+              </div>
+              <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-black/5">
+                <p className="text-sm text-slate-500">Solar Service Fee</p>
+                <p className="text-lg font-semibold">${solarServiceFee.toFixed(2)}</p>
+              </div>
+            </div>
+          </section>
         </div>
 
         {/* ...rest of component content (omitted in copy) ... */}
