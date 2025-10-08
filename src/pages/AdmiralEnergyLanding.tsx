@@ -543,8 +543,9 @@ export default function AdmiralEnergyLanding() {
               </p>
             </div>
 
-            <div className="relative p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105"
-                 style={{ backgroundColor: '#0c2f4a' }}>
+      <div className="relative p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105"
+        style={{ backgroundColor: '#0c2f4a' }}
+        aria-describedby="itc-footnote">
               <Zap className="w-10 h-10 sm:w-12 sm:h-12 mb-4" style={{ color: '#c9a648' }} />
               <p className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-2" style={{ color: '#c9a648' }}>
                 30%
@@ -553,10 +554,18 @@ export default function AdmiralEnergyLanding() {
                 Federal Solar Tax Credit
               </p>
               <p className="text-sm" style={{ color: '#e8e6e3' }}>
-                30% of total system cost back via tax credit
+                <span className="block">
+                  30% credit available through Dec 31, 2025* (subject to change)
+                </span>
               </p>
             </div>
           </div>
+
+          <p id="itc-footnote" className="mt-3 text-sm text-slate-600">
+            * To qualify for the 30% Residential Clean Energy Credit, systems must be purchased and
+            placed in service by Dec 31, 2025. Timing rules and eligibility can change.
+            Please consult a tax professional.
+          </p>
 
           <div className="text-center p-4 sm:p-6 rounded-xl" style={{ backgroundColor: '#c9a648', color: '#0c2f4a' }}>
             <p className="text-lg sm:text-xl lg:text-2xl font-bold flex items-center justify-center gap-2 flex-wrap">
