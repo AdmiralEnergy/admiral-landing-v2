@@ -26,7 +26,7 @@ function NotFound() {
   return <div style={{ padding: 24 }}>404 — Not Found</div>;
 }
 
-const ENABLE_ADVISOR = import.meta.env.VITE_ENABLE_ADVISOR === 'true';
+const ENABLE_ADVISOR = (import.meta.env.VITE_ENABLE_ADVISOR ?? 'true') === 'true';
 
 const router = createBrowserRouter([
   {
