@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       ...(ENABLE_ADVISOR ? [{
         path: "advisor",
         lazy: async () => {
-          const m = await import("./routes/advisor/SolarComparisonTool");
+          const m = await import("./routes/advisor/solar-comparison-tool");
           return { Component: m.default };
         }
       }] : []),
