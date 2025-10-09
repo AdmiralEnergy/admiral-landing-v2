@@ -5,7 +5,7 @@ import { lazy, Suspense } from "react";
 // PAGES – PascalCase, default exports
 const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
-const AdvisorPage = lazy(() => import("./pages/SolarComparisonTool"));
+const AdvisorPage = lazy(() => import("./routes/advisor/index"));
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
 
 // LIGHT LAYOUT + 404

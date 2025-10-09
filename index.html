@@ -31,6 +31,9 @@
       <input type="text" name="utm_campaign" />
       <input type="text" name="utm_content" />
     </form>
+    <form name="advisor-intake" method="POST" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="advisor-intake" />
+    </form>
     <script type="module" src="/src/main.tsx"></script>
     <script>
       document.forms['lead-intake']?.addEventListener('submit', () => {
