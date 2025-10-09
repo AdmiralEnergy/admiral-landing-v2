@@ -1,0 +1,65 @@
+VS Code / Codex Kickoff Prompt — Admiral Energy /advisor MVP
+
+Role: Senior full-stack dev (Vite + React + TS + Tailwind v3).
+Branch: feat/advisor-mvp
+Goal: Implement the /advisor MVP flow per docs/ADVISOR_DEV_GUIDE.md.
+
+Tasks:
+
+Routing
+
+Add lazy route /advisor and AdvisorApp shell with stepper (1–4).
+
+State
+
+Create src/routes/advisor/state.ts with AdvisorState (see guide), Context or Zustand if already installed; otherwise Context.
+
+Persist to LocalStorage key advisor:v1.
+
+Steps
+
+Build 4 step components in src/routes/advisor/steps/ with validation and Next/Back.
+
+Block Next until valid; show inline helper text.
+
+UI
+
+Tailwind card layout, brand colors (navy/gold/off-white), mobile-first.
+
+Top stepper (active state).
+
+Forms
+
+Add hidden Netlify form advisor-intake; on final submit, mirror state to hidden inputs and submit.
+
+Analytics
+
+Create src/config/analytics.ts with track() and redditLead() helpers.
+
+Fire advisor_step_view on each step mount.
+
+Fire advisor_submit_success and Reddit Lead on success.
+
+UTM capture: on initial load of /advisor, parse location.search into localStorage.utm.
+
+Quality
+
+TypeScript strict, no new deps.
+
+Ensure /advisor builds and runs locally; no console errors.
+
+Output:
+
+Provide a full diff for created/changed files.
+
+Include run-steps for QA: npm install && npm run dev, path to /advisor, how to trigger a test submission, where to see Netlify Forms entry.
+
+Confirm no package.json changes unless strictly necessary.
+
+Acceptance:
+
+Compiles on Node 22
+
+Netlify Forms receives entry (field names match spec)
+
+GA4 event visible in Realtime; Reddit Pixel Lead fires
