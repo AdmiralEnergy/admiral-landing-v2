@@ -5,7 +5,7 @@ import { lazy, Suspense } from "react";
 // PAGES – PascalCase, default exports
 const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
-const AdvisorPage = lazy(() => import("./routes/advisor/index"));
+// Keep advisor feature gated by env flag, but mount canonical tool at /advisor and the wizard at /intake
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
 
 // LIGHT LAYOUT + 404
@@ -34,8 +34,22 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
-      // /advisor is gated by VITE_ENABLE_ADVISOR to keep it internal by default
-      ...(ENABLE_ADVISOR ? [{ path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> }] : []),
+      // /advisor -> canonical SolarComparisonTool (lazy loaded from routes/advisor)
+      ...(ENABLE_ADVISOR ? [{
+        path: "advisor",
+        lazy: async () => {
+          const m = await import("./routes/advisor/SolarComparisonTool");
+          return { Component: m.default };
+        }
+      }] : []),
+      // /intake -> preserved advisor wizard
+      ...(ENABLE_ADVISOR ? [{
+        path: "intake",
+        lazy: async () => {
+          const m = await import("./routes/advisor/index");
+          return { Component: m.default };
+        }
+      }] : []),
       { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
       { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
       { path: "*", element: <NotFound /> }, // keep LAST
