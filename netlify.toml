@@ -9,3 +9,20 @@ NODE_VERSION = "22"
 from = "/*"
 to = "/index.html"
 status = 200
+
+# Headers applied only in production context (keeps deploy previews open)
+[context.production]
+
+	[[context.production.headers]]
+	for = "/advisor"
+		[context.production.headers.values]
+		Basic-Auth = "advisor:REDACTED"         # rotate in Netlify UI after commit
+		X-Robots-Tag = "noindex, nofollow"
+		Cache-Control = "no-store"
+
+	[[context.production.headers]]
+	for = "/advisor/*"
+		[context.production.headers.values]
+		Basic-Auth = "advisor:REDACTED"
+		X-Robots-Tag = "noindex, nofollow"
+		Cache-Control = "no-store"
