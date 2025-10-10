@@ -5,6 +5,7 @@ import { lazy, Suspense } from "react";
 const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
+const EstimatePage = lazy(() => import("./pages/Estimate"));
 
 // Advisor routes
 // /advisor -> canonical lowercase tool
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
       { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
       { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+      { path: "estimate", element: <Suspense fallback={null}><EstimatePage /></Suspense> },
       { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
       { path: "intake", element: <Suspense fallback={null}><IntakeWizard /></Suspense> },
       { path: "*", element: <Suspense fallback={null}><LandingPage /></Suspense> },
