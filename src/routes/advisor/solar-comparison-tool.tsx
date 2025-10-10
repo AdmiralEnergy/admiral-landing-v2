@@ -439,9 +439,7 @@ export default function SolarComparisonTool() {
           </div>
         </div>
 
-<<<<<<< HEAD
-        {/* full canonical UI continues (identical to src/pages/SolarComparisonTool.tsx) */}
-=======
+        
         {/* Sungage Financing Options */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-8 mb-8 text-white">
           <div className="flex items-center gap-3 mb-6">
@@ -1176,8 +1174,7 @@ export default function SolarComparisonTool() {
               </div>
             </div>
           </div>
-        </div>
->>>>>>> origin/fix/advisor-sync-canonical
+  </div>
       </div>
     </div>
   );
