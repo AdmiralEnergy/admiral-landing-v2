@@ -7,6 +7,7 @@ const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
 // Keep advisor feature gated by env flag, but mount canonical tool at /advisor and the wizard at /intake
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
+const EstimatePage = lazy(() => import("./pages/Estimate"));
 
 // LIGHT LAYOUT + 404
 import Header from "./components/layout/Header";
@@ -51,7 +52,8 @@ const router = createBrowserRouter([
         }
       }] : []),
       { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
-      { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+  { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+  { path: "estimate", element: <Suspense fallback={null}><EstimatePage /></Suspense> },
       { path: "*", element: <NotFound /> }, // keep LAST
     ],
   },
