@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Sun, Battery, Shield, Award, CheckCircle, TrendingUp, Star, Zap } from 'lucide-react';
 
 const BRAND = {
@@ -1025,21 +1026,24 @@ const ProductCatalog = () => {
             Ready to Design Your Perfect System?
           </h3>
           <p style={{ color: BRAND.navy, fontSize: '20px', fontWeight: '600', marginBottom: '24px' }}>
-            See exactly how much you'll save with our free calculator
+            Get a custom solar or battery estimate in minutes — no pressure, no cold calls.
           </p>
-          <button style={{
-            background: BRAND.navy,
-            color: BRAND.cream,
-            padding: '20px 48px',
-            borderRadius: '14px',
-            fontSize: '20px',
-            fontWeight: 'bold',
-            border: 'none',
-            cursor: 'pointer',
-            boxShadow: '0 8px 24px rgba(12, 47, 74, 0.4)'
-          }}>
-            Calculate My Savings Now →
-          </button>
+          <Link
+            to="/estimate?source=catalog"
+            style={{
+              background: BRAND.navy,
+              color: BRAND.cream,
+              padding: '20px 48px',
+              borderRadius: '14px',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              display: 'inline-block',
+              boxShadow: '0 8px 24px rgba(12, 47, 74, 0.4)'
+            }}
+          >
+            Request an Estimate Now →
+          </Link>
         </div>
       </div>
 

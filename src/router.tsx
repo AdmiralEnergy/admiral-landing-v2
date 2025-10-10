@@ -34,12 +34,12 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
-      { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
-      { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
-      { path: "estimate", element: <Suspense fallback={null}><EstimatePage /></Suspense> },
-      { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
-      { path: "intake", element: <Suspense fallback={null}><IntakeWizard /></Suspense> },
-      { path: "*", element: <Suspense fallback={null}><LandingPage /></Suspense> },
+  { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
+  { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
+  { path: "estimate", element: <Suspense fallback={null}><EstimatePage /></Suspense> },
+  { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
+  { path: "intake", element: <Suspense fallback={null}><IntakeWizard /></Suspense> },
+  { path: "*", element: <Suspense fallback={null}><LandingPage /></Suspense> },
     ],
   },
 ]);

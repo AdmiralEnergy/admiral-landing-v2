@@ -40,5 +40,9 @@
         window.gtag?.('event', 'lead_submit', { form: 'lead-intake' });
       });
     </script>
+    <!-- Hidden form to ensure Netlify detects the React-based Estimate form at build time -->
+    <form name="estimate" method="POST" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="estimate" />
+    </form>
   </body>
 </html>

@@ -7,6 +7,7 @@ declare global {
   }
   interface ImportMetaEnv {
     readonly VITE_ENABLE_ADVISOR?: 'true' | 'false' | string;
+    readonly VITE_GA_ID?: string;
   }
 
   interface ImportMeta {
