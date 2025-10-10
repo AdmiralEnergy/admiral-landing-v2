@@ -1,6 +1,9 @@
 [build]
 command = "npm run build"
 publish = "dist"
+# If there are no changes outside excluded paths, 'git diff --quiet' exits 0 → Netlify skips the build
+# Excluded paths: docs/**, .github/**, CODEOWNERS
+ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)docs/**' ':(exclude).github/**' ':(exclude)CODEOWNERS'"
 
 [build.environment]
 NODE_VERSION = "22"
