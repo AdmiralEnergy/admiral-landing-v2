@@ -842,14 +842,17 @@ const ProductCatalog = () => {
         </div>
 
         {/* PowerPair Incentive Banner */}
-        <div style={{
-          background: 'linear-gradient(135deg, #dc2626, #991b1b)',
-          border: '4px solid #fef3c7',
-          borderRadius: '20px',
-          padding: '32px',
-          marginBottom: '48px',
-          boxShadow: '0 12px 40px rgba(220, 38, 38, 0.4)'
-        }}>
+        <div
+          className="relative overflow-hidden rounded-2xl px-4 sm:px-6 py-6 sm:py-8"
+          style={{
+            background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+            border: '4px solid #fef3c7',
+            borderRadius: '20px',
+            padding: '32px',
+            marginBottom: '48px',
+            boxShadow: '0 12px 40px rgba(220, 38, 38, 0.4)'
+          }}
+        >
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <div style={{
               display: 'inline-block',
@@ -863,10 +866,10 @@ const ProductCatalog = () => {
             }}>
               ⚡ LIMITED TIME - CAPACITY FILLING FAST
             </div>
-            <h3 style={{ color: '#fef3c7', fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>
+            <h3 className="text-2xl md:text-3xl lg:text-4xl" style={{ color: '#fef3c7', fontWeight: 'bold', marginBottom: '8px' }}>
               Duke Energy PowerPair Rebate
             </h3>
-            <p style={{ color: '#fef3c7', fontSize: '48px', fontWeight: 'bold', marginBottom: '8px' }}>
+            <p className="text-3xl sm:text-4xl leading-tight" style={{ color: '#fef3c7', fontWeight: 'bold', marginBottom: '8px' }}>
               Get Up to $9,000 Back
             </p>
             <p style={{ color: '#fef3c7', fontSize: '18px', marginBottom: '0' }}>
@@ -874,57 +877,34 @@ const ProductCatalog = () => {
             </p>
           </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '20px',
-            marginBottom: '24px'
-          }}>
-            <div style={{ background: 'rgba(254, 243, 199, 0.95)', borderRadius: '12px', padding: '20px' }}>
-              <div style={{ color: '#78350f', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-                SOLAR PANELS REBATE
-              </div>
-              <div style={{ color: '#78350f', fontSize: '28px', fontWeight: 'bold', marginBottom: '4px' }}>
-                $0.36/watt
-              </div>
-              <div style={{ color: '#78350f', fontSize: '16px', fontWeight: '600' }}>
-                Up to $3,600 (10kW max)
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
+            <div className="rounded-2xl bg-amber-50/95 text-gray-900 p-4 sm:p-5 shadow-sm">
+              <h3 className="text-xs font-semibold tracking-wider text-amber-700 mb-1">SOLAR PANELS REBATE</h3>
+              <div className="text-3xl sm:text-4xl font-extrabold leading-tight">$0.36/watt</div>
+              <p className="text-sm sm:text-base mt-1">Up to $3,600 (10kW max)</p>
             </div>
 
-            <div style={{ background: 'rgba(254, 243, 199, 0.95)', borderRadius: '12px', padding: '20px' }}>
-              <div style={{ color: '#78350f', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-                BATTERY STORAGE REBATE
-              </div>
-              <div style={{ color: '#78350f', fontSize: '28px', fontWeight: 'bold', marginBottom: '4px' }}>
-                $400/kWh
-              </div>
-              <div style={{ color: '#78350f', fontSize: '16px', fontWeight: '600' }}>
-                Up to $5,400 (13.5kWh max)
-              </div>
+            <div className="rounded-2xl bg-amber-50/95 text-gray-900 p-4 sm:p-5 shadow-sm">
+              <h3 className="text-xs font-semibold tracking-wider text-amber-700 mb-1">BATTERY STORAGE REBATE</h3>
+              <div className="text-3xl sm:text-4xl font-extrabold leading-tight">$400/kWh</div>
+              <p className="text-sm sm:text-base mt-1">Up to $5,400 (13.5kWh max)</p>
             </div>
 
-            <div style={{ background: 'rgba(254, 243, 199, 0.95)', borderRadius: '12px', padding: '20px' }}>
-              <div style={{ color: '#78350f', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-                FEDERAL TAX CREDIT
-              </div>
-              <div style={{ color: '#78350f', fontSize: '28px', fontWeight: 'bold', marginBottom: '4px' }}>
-                30% Back
-              </div>
-              <div style={{ color: '#78350f', fontSize: '16px', fontWeight: '600' }}>
-                On entire system cost
-              </div>
+            <div className="rounded-2xl bg-amber-50/95 text-gray-900 p-4 sm:p-5 shadow-sm">
+              <h3 className="text-xs font-semibold tracking-wider text-amber-700 mb-1">FEDERAL TAX CREDIT</h3>
+              <div className="text-3xl sm:text-4xl font-extrabold leading-tight">30% Back</div>
+              <p className="text-sm sm:text-base mt-1">On entire system cost</p>
             </div>
           </div>
 
-          <div style={{
-            background: 'rgba(254, 243, 199, 0.95)',
-            borderRadius: '12px',
-            padding: '20px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '16px'
-          }}>
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
+            style={{
+              background: 'rgba(254, 243, 199, 0.95)',
+              borderRadius: '12px',
+              padding: '20px'
+            }}
+          >
             <div style={{ borderRight: '2px solid #78350f', paddingRight: '16px' }}>
               <div style={{ color: '#dc2626', fontSize: '13px', fontWeight: 'bold', marginBottom: '4px' }}>
                 ⚠️ PROGRAM STATUS
