@@ -796,11 +796,14 @@ const ProductCatalog = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: `linear-gradient(135deg, ${BRAND.navy} 0%, ${BRAND.navyLight} 50%, ${BRAND.navy} 100%)`,
-      padding: '60px 20px'
-    }}>
+    <div
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 px-4 sm:px-6 md:px-8 py-6 sm:py-10"
+      style={{
+        minHeight: '100vh',
+        background: `linear-gradient(135deg, ${BRAND.navy} 0%, ${BRAND.navyLight} 50%, ${BRAND.navy} 100%)`,
+        padding: '60px 20px'
+      }}
+    >
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{
@@ -949,7 +952,10 @@ const ProductCatalog = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '48px' }}>
+        <div
+          className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-5 sm:mb-8"
+          style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '48px' }}
+        >
           <button
             onClick={() => setView('panels')}
             style={{
@@ -1003,17 +1009,21 @@ const ProductCatalog = () => {
           </button>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '28px',
-          marginBottom: '60px'
-        }}>
-          {view === 'panels' 
-            ? SOLAR_PANELS.map(panel => <PanelCard key={panel.id} panel={panel} />)
-            : BATTERIES.map(battery => <BatteryCard key={battery.id} battery={battery} />)
-          }
-        </div>
+        <section
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 mb-16"
+        >
+          {view === 'panels'
+            ? SOLAR_PANELS.map(panel => (
+                <article key={panel.id} className="w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+                  <PanelCard panel={panel} />
+                </article>
+              ))
+            : BATTERIES.map(battery => (
+                <article key={battery.id} className="w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+                  <BatteryCard battery={battery} />
+                </article>
+              ))}
+        </section>
 
         <div style={{
           background: `linear-gradient(135deg, ${BRAND.gold}, ${BRAND.goldDark})`,
@@ -1030,6 +1040,7 @@ const ProductCatalog = () => {
           </p>
           <Link
             to="/estimate?source=catalog"
+            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-4 py-3 text-base sm:text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
             style={{
               background: BRAND.navy,
               color: BRAND.cream,
