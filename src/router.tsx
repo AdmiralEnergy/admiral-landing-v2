@@ -1,15 +1,19 @@
-// src/router.tsx
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// PAGES – PascalCase, default exports
+// Pages (default exports)
 const LandingPage = lazy(() => import("./pages/AdmiralEnergyLanding"));
 const CalculatorPage = lazy(() => import("./pages/SolarCalculator"));
-// Keep advisor feature gated by env flag, but mount canonical tool at /advisor and the wizard at /intake
 const CatalogPage = lazy(() => import("./pages/ProductCatalog"));
 
-// LIGHT LAYOUT + 404
+// Advisor routes
+// /advisor -> canonical lowercase tool
+// /intake  -> preserved wizard
+const AdvisorPage = lazy(() => import("./routes/advisor/solar-comparison-tool"));
+const IntakeWizard = lazy(() => import("./routes/advisor/index"));
+
 import Header from "./components/layout/Header";
+
 function Layout() {
   return (
     <>
@@ -22,42 +26,20 @@ function Layout() {
     </>
   );
 }
-function NotFound() {
-  return <div style={{ padding: 24 }}>404 — Not Found</div>;
-}
 
-const ENABLE_ADVISOR = (import.meta.env.VITE_ENABLE_ADVISOR ?? 'true') === 'true';
-
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
       { index: true, element: <Suspense fallback={null}><LandingPage /></Suspense> },
-      // /advisor -> canonical SolarComparisonTool (lazy loaded from routes/advisor)
-      ...(ENABLE_ADVISOR ? [{
-        path: "advisor",
-        lazy: async () => {
-          const m = await import("./routes/advisor/solar-comparison-tool");
-          return { Component: m.default };
-        }
-      }] : []),
-      // /intake -> preserved advisor wizard
-      ...(ENABLE_ADVISOR ? [{
-        path: "intake",
-        lazy: async () => {
-          const m = await import("./routes/advisor/index");
-          return { Component: m.default };
-        }
-      }] : []),
       { path: "calculator", element: <Suspense fallback={null}><CalculatorPage /></Suspense> },
       { path: "catalog", element: <Suspense fallback={null}><CatalogPage /></Suspense> },
-      { path: "*", element: <NotFound /> }, // keep LAST
+      { path: "advisor", element: <Suspense fallback={null}><AdvisorPage /></Suspense> },
+      { path: "intake", element: <Suspense fallback={null}><IntakeWizard /></Suspense> },
+      { path: "*", element: <Suspense fallback={null}><LandingPage /></Suspense> },
     ],
   },
 ]);
 
-export { router };
-export default function AppRouter() {
-  return <RouterProvider router={router} />;
-}
+export default router;
